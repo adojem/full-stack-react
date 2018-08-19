@@ -1,26 +1,26 @@
-const create = user => {
+const create = (user) => {
    return fetch('/api/users/', {
       method: 'POST',
       headers: {
          Accept: 'application/json',
-         'Cotent-Type': 'application/json'
+         'Content-Type': 'application/json'
       },
       body: JSON.stringify(user)
    })
-      .then(response => {
+      .then((response) => {
          return response.json();
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
 };
 
 const list = () => {
    return fetch('/api/users/', {
       method: 'GET'
    })
-      .then(response => {
+      .then((response) => {
          return response.json();
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
 };
 
 const read = (params, credentials) => {
@@ -32,26 +32,26 @@ const read = (params, credentials) => {
          Authorization: 'Bearer ' + credentials.t
       }
    })
-      .then(response => {
+      .then((response) => {
          return response.json();
       })
-      .catch(err => cnnsole.log(err));
+      .catch((err) => console.log(err));
 };
 
 const update = (params, credentials, user) => {
-   return fetch('/api/user/' + params.userId, {
+   return fetch('/api/users/' + params.userId, {
       method: 'PUT',
       headers: {
          Accept: 'application/json',
-         'Content-Type': 'applicaiton/json',
-         Autorization: 'Bearer ' + credentials.t
+         'Content-Type': 'application/json',
+         Authorization: 'Bearer ' + credentials.t
       },
       body: JSON.stringify(user)
    })
-      .then(response => {
+      .then((response) => {
          return response.json();
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
 };
 
 const remove = (params, credentials) => {
@@ -59,14 +59,14 @@ const remove = (params, credentials) => {
       method: 'DELETE',
       headers: {
          Accept: 'application/json',
-         'Content-Type': 'applicatoin/json',
-         Authorization: 'Bearerr ' + credentials.t
+         'Content-Type': 'application/json',
+         Authorization: 'Bearer ' + credentials.t
       }
    })
-      .then(response => {
+      .then((response) => {
          return response.json();
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
 };
 
 export { create, list, read, update, remove };

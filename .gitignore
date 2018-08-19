@@ -1,4 +1,4 @@
 node_modules/
-bundle.js
-server.generated.js
+dist/
 config.js
+yarn-error.log

@@ -56,7 +56,7 @@ const update = (req, res, next) => {
         }
         user.hashed_password = undefined;
         user.salt = undefined;
-        rse.json(user);
+        res.json(user);
     });
 };
 
