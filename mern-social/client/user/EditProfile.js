@@ -18,7 +18,9 @@ const styles = (theme) => ({
    card: {
       maxWidth: 600,
       margin: 'auto',
-      textAlign: 'center'
+      textAlign: 'center',
+      marginTop: theme.spacing.unit * 5,
+      paddingBottom: theme.spacing.unit * 2
    },
    title: {
       margin: theme.spacing.unit * 2,
@@ -26,6 +28,11 @@ const styles = (theme) => ({
    },
    error: {
       verticalAlign: 'middle'
+   },
+   textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+      width: 300
    },
    submit: {
       margin: 'auto',
@@ -38,6 +45,7 @@ class EditProfile extends Component {
       super();
       this.state = {
          name: '',
+         about: '',
          email: '',
          password: '',
          redirectToProfile: false,
@@ -57,7 +65,8 @@ class EditProfile extends Component {
          if (data.error) {
             this.setState({ error: data.error });
          } else {
-            this.setState({ name: data.name, email: data.email });
+            console.log(data);
+            this.setState({ name: data.name, email: data.email, about: data.about });
          }
       });
    };
@@ -67,7 +76,8 @@ class EditProfile extends Component {
       const user = {
          name: this.state.name || undefined,
          email: this.state.email || undefined,
-         password: this.state.password || undefined
+         password: this.state.password || undefined,
+         about: this.state.about || undefined
       };
       update(
          {
@@ -111,6 +121,17 @@ class EditProfile extends Component {
                   className={classes.textField}
                   value={this.state.name}
                   onChange={this.handleChange('name')}
+                  margin="normal"
+               />
+               <br />
+               <TextField
+                  id="multiline-flexible"
+                  label="About"
+                  multiline
+                  rows="2"
+                  value={this.state.about}
+                  onChange={this.handleChange('about')}
+                  className={classes.textField}
                   margin="normal"
                />
                <br />

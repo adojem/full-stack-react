@@ -100,7 +100,8 @@ class Profile extends Component {
                   <Divider />
                   <ListItem>
                      <ListItemText
-                        primary={
+                        primary={this.state.user.about}
+                        secondary={
                            'Joined: ' +
                            new Date(this.state.user.created).toDateString()
                         }
