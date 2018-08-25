@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import auth from '../auth/auth-helper';
 import {
+   Avatar,
    Card,
    CardActions,
    CardContent,
@@ -10,9 +11,9 @@ import {
    TextField,
    Typography
 } from '@material-ui/core';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { withStyles } from '@material-ui/core/styles';
 import { read, update } from './api-user';
-import Profile from '../../../../sample/Chapter03 and 04/mern-skeleton/client/user/Profile';
 
 const styles = (theme) => ({
    card: {
@@ -37,6 +38,20 @@ const styles = (theme) => ({
    submit: {
       margin: 'auto',
       marginBottom: theme.spacing.unit * 2
+   },
+   bigAvatar: {
+      width: 60,
+      height: 60,
+      margin: 'auto'
+   },
+   input: {
+      display: 'none'
+   },
+   filename: {
+      marginLeft: '10px'
+   },
+   rightIcon: {
+      marginLeft: theme.spacing.unit
    }
 });
 
@@ -46,6 +61,7 @@ class EditProfile extends Component {
       this.state = {
          name: '',
          about: '',
+         photo: '',
          email: '',
          password: '',
          redirectToProfile: false,
@@ -55,6 +71,7 @@ class EditProfile extends Component {
    }
 
    componentDidMount = () => {
+      this.userData = new FormData();
       const jwt = auth.isAuthenticated();
       read(
          {
@@ -65,8 +82,12 @@ class EditProfile extends Component {
          if (data.error) {
             this.setState({ error: data.error });
          } else {
-            console.log(data);
-            this.setState({ name: data.name, email: data.email, about: data.about });
+            this.setState({
+               id: data._id,
+               name: data.name,
+               email: data.email,
+               about: data.about
+            });
          }
       });
    };
@@ -86,24 +107,31 @@ class EditProfile extends Component {
          {
             t: jwt.token
          },
-         user
+         this.userData
       ).then((data) => {
          if (data.error) {
             this.setState({ error: data.error });
          } else {
-            this.setState({ 'userId': data._id, redirectToProfile: true });
+            this.setState({ redirectToProfile: true });
          }
       });
    };
 
    handleChange = (name) => (event) => {
-      this.setState({ [name]: event.target.value });
+      const value =
+         name === 'photo' ? event.target.files[0] : event.target.value;
+      this.userData.set(name, value);
+      this.setState({ [name]: value });
    };
 
    render() {
+      console.log(this.state);
       const { classes } = this.props;
+      const photoUrl = this.state.id
+         ? `/api/users/photo/${this.state.id}?${new Date().getTime()}`
+         : '/api/users/defaultphoto';
       if (this.state.redirectToProfile) {
-         return <Redirect to={'/user/' + this.state.userId} />;
+         return <Redirect to={'/user/' + this.state.id} />;
       }
       return (
          <Card className={classes.card}>
@@ -115,6 +143,25 @@ class EditProfile extends Component {
                >
                   Edit Profile
                </Typography>
+               <Avatar src={photoUrl} className={classes.bigAvatar} />
+               <br />
+               <input
+                  accept="image/*"
+                  onChange={this.handleChange('photo')}
+                  className={classes.input}
+                  id="icon-button-file"
+                  type="file"
+               />
+               <label htmlFor="icon-button-file">
+                  <Button variant="raised" color="default" component="span">
+                     Upload
+                     <CloudUploadIcon className={classes.rightIcon} />
+                  </Button>
+               </label>
+               <span className={classes.filename}>
+                  {this.state.photo ? this.state.photo.name : ''}
+               </span>
+               <br/>
                <TextField
                   id="name"
                   label="Name"
@@ -179,7 +226,7 @@ class EditProfile extends Component {
    }
 }
 
-Profile.propTypes = {
+EditProfile.propTypes = {
    classes: PropTypes.object.isRequired
 };
 

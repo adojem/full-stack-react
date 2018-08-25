@@ -8,12 +8,12 @@ import {
    IconButton,
    List,
    ListItem,
+   ListItemAvatar,
    ListItemText,
    ListItemSecondaryAction,
    Paper,
    Typography
 } from '@material-ui/core';
-import PersonRounded from '@material-ui/icons/PersonRounded';
 import { withStyles } from '@material-ui/core/styles';
 import auth from '../auth/auth-helper';
 import { read } from './api-user';
@@ -35,7 +35,11 @@ const styles = (theme) => ({
 class Profile extends Component {
    constructor({ match }) {
       super();
-      this.state = { user: '', redirectToSignin: false };
+      this.state = {
+         user: '',
+         redirectToSignin: false,
+         photos: []
+      };
       this.match = match;
    }
 
@@ -65,6 +69,9 @@ class Profile extends Component {
 
    render() {
       const { classes } = this.props;
+      const photoUrl = this.state.user._id
+         ? `/api/users/photo/${this.state.user._id}?${new Date().getTime()}`
+         : '/api/users/defaultphoto';
       const redirectToSignin = this.state.redirectToSignin;
       if (redirectToSignin) {
          return <Redirect to="/signin" />;
@@ -77,9 +84,9 @@ class Profile extends Component {
                </Typography>
                <List dense>
                   <ListItem>
-                     <Avatar>
-                        <PersonRounded />
-                     </Avatar>
+                     <ListItemAvatar>
+                        <Avatar src={photoUrl} className={classes.bigAvatar} />
+                     </ListItemAvatar>
                      <ListItemText
                         primary={this.state.user.name}
                         secondary={this.state.user.email}
