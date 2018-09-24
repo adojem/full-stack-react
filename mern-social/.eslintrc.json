@@ -1,0 +1,22 @@
+{
+   "env": {
+      "browser": true,
+      "node": true,
+      "mongo": true
+   },
+   "parser": "babel-eslint",
+   "rules": {
+      "indent": ["error", 3, { "SwitchCase": 1}],
+      "brace-style": ["error", "stroustrup"],
+      "react/jsx-indent": ["error", 3],
+      "react/jsx-indent-props": ["error", 3],
+      "react/jsx-filename-extension": "off",
+      "implicit-arrow-linebreak": "off",
+      "no-underscore-dangle": "off",
+      "no-shadow": "off"
+   },
+   "extends": [
+      "airbnb"
+   ],
+   "plugins": ["react"]
+}

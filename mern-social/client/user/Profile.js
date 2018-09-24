@@ -12,33 +12,37 @@ import {
    ListItemText,
    ListItemSecondaryAction,
    Paper,
-   Typography
+   Typography,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import auth from '../auth/auth-helper';
 import { read } from './api-user';
 import DeleteUser from './DeleteUser';
+import FollowProfileButton from './FollowProfileButton';
 
-const styles = (theme) => ({
+const styles = theme => ({
    root: theme.mixins.gutters({
       maxWidth: 600,
       margin: 'auto',
       padding: theme.spacing.unit * 3,
-      marginTop: theme.spacing.unit * 5
+      marginTop: theme.spacing.unit * 5,
    }),
    title: {
       margin: `${theme.spacing.unit * 3}px 0 ${theme.spacing.unit * 2}px`,
-      color: theme.palette.error.light
-   }
+      color: theme.palette.error.light,
+   },
 });
 
 class Profile extends Component {
    constructor({ match }) {
       super();
       this.state = {
-         user: '',
+         user: {
+            following: [],
+            followers: [],
+         },
          redirectToSignin: false,
-         photos: []
+         photos: [],
       };
       this.match = match;
    }
@@ -47,14 +51,16 @@ class Profile extends Component {
       const jwt = auth.isAuthenticated();
       read(
          {
-            userId: userId
+            userId,
          },
-         { t: jwt.token }
+         { t: jwt.token },
       ).then((data) => {
          if (data.error) {
             this.setState({ redirectToSignin: true });
-         } else {
-            this.setState({ user: data });
+         }
+         else {
+            const following = this.checkFollow(data);
+            this.setState({ user: data, following });
          }
       });
    };
@@ -64,15 +70,43 @@ class Profile extends Component {
    };
 
    componentWillReceiveProps = () => {
-      this.init(this.props.match.params.userId);
+      const { match } = this.props;
+      this.init(match.params.userId);
+   };
+
+   checkFollow = (user) => {
+      const jwt = auth.isAuthenticated();
+      const match = user.followers.find(follower => follower._id === jwt.user._id);
+      return match;
+   };
+
+   clickFollowButton = (callApi) => {
+      const jwt = auth.isAuthenticated();
+      const { user, following } = this.state;
+      callApi(
+         {
+            userId: jwt.user._id,
+         },
+         {
+            t: jwt.token,
+         },
+         user._id,
+      ).then((data) => {
+         if (data.error) {
+            this.setState({ error: data.error });
+         }
+         else {
+            this.setState({ user: data, following: !following });
+         }
+      });
    };
 
    render() {
       const { classes } = this.props;
-      const photoUrl = this.state.user._id
-         ? `/api/users/photo/${this.state.user._id}?${new Date().getTime()}`
+      const { user, redirectToSignin, following } = this.state;
+      const photoUrl = user._id
+         ? `/api/users/photo/${user._id}?${new Date().getTime()}`
          : '/api/users/defaultphoto';
-      const redirectToSignin = this.state.redirectToSignin;
       if (redirectToSignin) {
          return <Redirect to="/signin" />;
       }
@@ -87,35 +121,31 @@ class Profile extends Component {
                      <ListItemAvatar>
                         <Avatar src={photoUrl} className={classes.bigAvatar} />
                      </ListItemAvatar>
-                     <ListItemText
-                        primary={this.state.user.name}
-                        secondary={this.state.user.email}
-                     />
-                     {auth.isAuthenticated().user &&
-                        auth.isAuthenticated().user._id ==
-                           this.state.user._id && (
-                           <ListItemSecondaryAction>
-                              <Link to={'/user/edit/' + this.state.user._id}>
-                                 <IconButton color="primary">
-                                    <Icon>edit_icon</Icon>
-                                 </IconButton>
-                              </Link>
-                              <DeleteUser userId={this.state.user._id} />
-                           </ListItemSecondaryAction>
-                        )}
+                     <ListItemText primary={user.name} secondary={user.email} />
+                     {auth.isAuthenticated().user && auth.isAuthenticated().user._id === user._id ? (
+                        <ListItemSecondaryAction>
+                           <Link to={`/user/edit/${user._id}`}>
+                              <IconButton color="primary">
+                                 <Icon>edit_icon</Icon>
+                              </IconButton>
+                           </Link>
+                           <DeleteUser userId={user._id} />
+                        </ListItemSecondaryAction>
+                     ) : (
+                        <FollowProfileButton
+                           following={following}
+                           onButtonClick={this.clickFollowButton}
+                        />
+                     )}
                   </ListItem>
                   <Divider />
                   <ListItem>
                      <ListItemText
-                        primary={this.state.user.about}
-                        secondary={
-                           'Joined: ' +
-                           new Date(this.state.user.created).toDateString()
-                        }
+                        primary={user.about}
+                        secondary={`Joined: ${new Date(user.created).toDateString()}`}
                      />
-                     {auth.isAuthenticated().user &&
-                        auth.isAuthenticated().user._id ==
-                           this.state.user.id && <ListItemSecondaryAction />}
+                     {auth.isAuthenticated().user
+                        && auth.isAuthenticated().user._id === user.id && <ListItemSecondaryAction />}
                   </ListItem>
                </List>
             </Paper>
@@ -125,7 +155,7 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
-   classes: PropTypes.object.isRequired
+   classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Profile);

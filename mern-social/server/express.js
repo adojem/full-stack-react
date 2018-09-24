@@ -5,24 +5,25 @@ import cookieParser from 'cookie-parser';
 import compress from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
-import Template from './../template';
-import userRoutes from './routes/user.routes';
-import authRoutes from './routes/auth.routes';
 
 // modules for server side rendering
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import StaticRouter from 'react-router-dom/StaticRouter';
-import MainRouter from './../client/MainRouter';
 
 import JssProvider from 'react-jss/lib/JssProvider';
 import { SheetsRegistry } from 'jss';
 import {
    createMuiTheme,
    MuiThemeProvider,
-   createGenerateClassName
+   createGenerateClassName,
 } from '@material-ui/core/styles';
 import { indigo, pink } from '@material-ui/core/colors';
+import MainRouter from '../client/MainRouter';
+
+import Template from '../template';
+import userRoutes from './routes/user.routes';
+import authRoutes from './routes/auth.routes';
 
 // comment out before building for production
 import devBundle from './devBundle';
@@ -54,32 +55,29 @@ app.get('*', (req, res) => {
             light: '#757de8',
             main: '#3f51b5',
             dark: '#002984',
-            contrastText: '#fff'
+            contrastText: '#fff',
          },
          secondary: {
             light: '#ff79b0',
             main: '#ff4081',
             dark: '#c60055',
-            contrastText: '#000'
+            contrastText: '#000',
          },
          openTitle: indigo['400'],
          protectedTitle: pink['400'],
-         type: 'light'
-      }
+         type: 'light',
+      },
    });
    const generateClassName = createGenerateClassName();
    const context = {};
    const markup = ReactDOMServer.renderToString(
       <StaticRouter locatin={req.url} context={context}>
-         <JssProvider
-            registry={sheetsRegistry}
-            generateClassName={generateClassName}
-         >
+         <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
             <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
                <MainRouter />
             </MuiThemeProvider>
          </JssProvider>
-      </StaticRouter>
+      </StaticRouter>,
    );
    if (context.url) {
       return res.redirect(303, context.url);
@@ -91,7 +89,7 @@ app.get('*', (req, res) => {
 // Catch unauthorized errors
 app.use((err, req, res, next) => {
    if (err.name === 'UnauthorizedError') {
-      res.status(401).json({ error: err.name + ': ' + err.message });
+      res.status(401).json({ error: `${err.name}: ${err.message}` });
    }
 });
 

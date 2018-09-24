@@ -1,28 +1,28 @@
 import React from 'react';
-import MainRouter from './MainRouter';
 import { BrowserRouter } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { indigo, pink } from '@material-ui/core/colors';
+import { teal, orange } from '@material-ui/core/colors';
 import { hot } from 'react-hot-loader';
+import MainRouter from './MainRouter';
 
 const theme = createMuiTheme({
    palatte: {
       primary: {
-         light: '#757de8',
-         main: '#3f51f5',
-         dark: '#002984',
+         light: '#52c7b8',
+         main: '#009688',
+         dark: '#00675b',
          contrastText: '#fff',
       },
       secondary: {
-         light: '#ff79b0',
-         main: '#ff4081',
-         dark: '#c60055',
+         light: '#ffd95b',
+         main: '#ffa726',
+         dark: '#c77800',
          contrastText: '#000',
       },
-      openTitle: indigo['400'],
-      protetedTitle: pink['400'],
+      openTitle: teal['700'],
+      protetedTitle: orange['700'],
       type: 'light',
-   }
+   },
 });
 
 const App = () => (
@@ -34,4 +34,3 @@ const App = () => (
 );
 
 export default hot(module)(App);
-// export default App;

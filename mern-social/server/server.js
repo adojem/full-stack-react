@@ -1,16 +1,19 @@
-import config from './../config/config';
-import app from './express';
 import mongoose from 'mongoose';
+import config from '../config/config';
+import app from './express';
 
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongoUri);
+mongoose.set('useCreateIndex', true).connect(
+   config.mongoUri,
+   { useNewUrlParser: true },
+);
 mongoose.connection.on('error', () => {
-    throw new Error(`unable to connect to database: ${mongoUri}`);
+   throw new Error(`unable to connect to database: ${config.mongoUri}`);
 });
 
 app.listen(config.port, (err) => {
-    if (err) {
-        console.log(er);
-    }
-    console.log('Server started on port %s.', config.port);
+   if (err) {
+      console.log(er);
+   }
+   console.log('Server started on port %s.', config.port);
 });
