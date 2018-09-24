@@ -19,6 +19,7 @@ import auth from '../auth/auth-helper';
 import { read } from './api-user';
 import DeleteUser from './DeleteUser';
 import FollowProfileButton from './FollowProfileButton';
+import ProfileTabs from './ProfileTabs';
 
 const styles = theme => ({
    root: theme.mixins.gutters({
@@ -34,7 +35,7 @@ const styles = theme => ({
 });
 
 class Profile extends Component {
-   constructor({ match }) {
+   constructor({match}) {
       super();
       this.state = {
          user: {
@@ -148,6 +149,7 @@ class Profile extends Component {
                         && auth.isAuthenticated().user._id === user.id && <ListItemSecondaryAction />}
                   </ListItem>
                </List>
+               <ProfileTabs user={user} />
             </Paper>
          </div>
       );
