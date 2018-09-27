@@ -6,7 +6,7 @@ import { hot } from 'react-hot-loader';
 import MainRouter from './MainRouter';
 
 const theme = createMuiTheme({
-   palatte: {
+   palette: {
       primary: {
          light: '#52c7b8',
          main: '#009688',
@@ -20,7 +20,7 @@ const theme = createMuiTheme({
          contrastText: '#000',
       },
       openTitle: teal['700'],
-      protetedTitle: orange['700'],
+      protectedTitle: orange['700'],
       type: 'light',
    },
 });

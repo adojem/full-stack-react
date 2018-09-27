@@ -35,7 +35,7 @@ const styles = theme => ({
 });
 
 class Profile extends Component {
-   constructor({match}) {
+   constructor({ match }) {
       super();
       this.state = {
          user: {
@@ -43,6 +43,7 @@ class Profile extends Component {
             followers: [],
          },
          redirectToSignin: false,
+         following: false,
          photos: [],
       };
       this.match = match;

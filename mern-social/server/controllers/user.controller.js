@@ -175,6 +175,19 @@ const removeFollower = (req, res) => {
       });
 };
 
+const findPeople = (req, res) => {
+   const { following } = req.profile;
+   following.push(req.profile._id);
+   User.find({ _id: { $nin: following } }, (err, users) => {
+      if (err) {
+         return res.status(400).json({
+            error: errorHandler.getErrorMessage(err),
+         });
+      }
+      return res.json(users);
+   }).select('name');
+};
+
 export default {
    create,
    userByID,
@@ -188,4 +201,5 @@ export default {
    addFollower,
    removeFollowing,
    removeFollower,
+   findPeople,
 };
