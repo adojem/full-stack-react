@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Card, Divider, Typography } from '@material-ui/core';
+import PostList from './PostList';
 
 const styles = theme => ({
    card: {
@@ -36,6 +37,7 @@ class Newsfeed extends Component {
 
    render() {
       const { classes } = this.props;
+      const { posts } = this.state;
 
       return (
          <Card className={classes.card}>
@@ -43,13 +45,14 @@ class Newsfeed extends Component {
                Newsfeed
             </Typography>
             <Divider />
+            <PostList removeUpdate={this.removePost} posts={posts} />
          </Card>
       );
    }
 }
 
 Newsfeed.propTypes = {
-   classes: PropTypes.node.isRequired,
+   classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Newsfeed);
