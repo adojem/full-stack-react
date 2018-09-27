@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import seashellImg from '../assets/images/seashell.jpg';
 import FindPeople from '../user/FindPeople';
+import Newsfeed from '../post/Newsfeed';
 import auth from '../auth/auth-helper';
 
 const styles = theme => ({
@@ -74,6 +75,9 @@ class Home extends Component {
             )}
             {!defaultPage && (
                <Grid>
+                  <Grid>
+                     <Newsfeed />
+                  </Grid>
                   <Grid>
                      <FindPeople />
                   </Grid>
