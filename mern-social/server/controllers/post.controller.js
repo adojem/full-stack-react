@@ -47,4 +47,20 @@ const listNewsFeed = (req, res) => {
       });
 };
 
-export default { create, listNewsFeed };
+const listByUser = (req, res) => {
+   Post.find({ postedBy: req.profile._id })
+      .populate('comments', 'text created')
+      .populate('comments.postedBy', '_id name')
+      .populate('postedBy', '_id name')
+      .sort('-created')
+      .exec((err, posts) => {
+         if (err) {
+            return res.status(400).json({
+               error: errorHandler.getErrorMessage(err),
+            });
+         }
+         return res.json(posts);
+      });
+};
+
+export default { create, listByUser, listNewsFeed };

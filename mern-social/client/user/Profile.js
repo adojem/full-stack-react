@@ -17,6 +17,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import auth from '../auth/auth-helper';
 import { read } from './api-user';
+import { listByUser } from '../post/api-post'
 import DeleteUser from './DeleteUser';
 import FollowProfileButton from './FollowProfileButton';
 import ProfileTabs from './ProfileTabs';
@@ -44,7 +45,7 @@ class Profile extends Component {
          },
          redirectToSignin: false,
          following: false,
-         photos: [],
+         posts: [],
       };
       this.match = match;
    }
@@ -63,6 +64,7 @@ class Profile extends Component {
          else {
             const following = this.checkFollow(data);
             this.setState({ user: data, following });
+            this.loadPosts(data._id);
          }
       });
    };
@@ -103,9 +105,35 @@ class Profile extends Component {
       });
    };
 
+   loadPosts = (user) => {
+      const jwt = auth.isAuthenticated();
+      listByUser({
+         userId: user,
+      }, {
+         t: jwt.token,
+      })
+         .then((data) => {
+            if (data.error) {
+               console.log(data.error);
+            }
+            else {
+               this.setState({ posts: data });
+            }
+         });
+   };
+
+   removePost = (post) => {
+      const { posts: updatedPost } = this.state;
+      const index = updatedPost.indexOf(post);
+      updatedPost.splice(index, 1);
+      return this.setState({ posts: updatedPost });
+   }
+
    render() {
       const { classes } = this.props;
-      const { user, redirectToSignin, following } = this.state;
+      const {
+         user, posts, redirectToSignin, following,
+      } = this.state;
       const photoUrl = user._id
          ? `/api/users/photo/${user._id}?${new Date().getTime()}`
          : '/api/users/defaultphoto';
@@ -150,7 +178,7 @@ class Profile extends Component {
                         && auth.isAuthenticated().user._id === user.id && <ListItemSecondaryAction />}
                   </ListItem>
                </List>
-               <ProfileTabs user={user} />
+               <ProfileTabs user={user} posts={posts} removeUpdate={this.removePost} />
             </Paper>
          </div>
       );

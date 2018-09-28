@@ -4,10 +4,12 @@ import {
    AppBar, Tab, Tabs, Typography,
 } from '@material-ui/core';
 import FollowGrid from './FollowGrid';
+import PostList from '../post/PostList';
 
 class ProfileTabs extends Component {
    state = {
       tab: 0,
+      posts: [],
    };
 
    componentWillReceiveProps = (props) => {
@@ -20,7 +22,7 @@ class ProfileTabs extends Component {
 
    render() {
       const { tab } = this.state;
-      const { user } = this.props;
+      const { user, posts, removeUpdate } = this.props;
 
       return (
          <div>
@@ -32,16 +34,22 @@ class ProfileTabs extends Component {
                   textColor="primary"
                   fullWidth
                >
+                  <Tab label="Posts" />
                   <Tab label="Following" />
                   <Tab label="Followers" />
                </Tabs>
             </AppBar>
             {tab === 0 && (
                <TabContainer>
-                  <FollowGrid people={user.following} />
+                  <PostList posts={posts} removeUpdate={removeUpdate} />
                </TabContainer>
             )}
             {tab === 1 && (
+               <TabContainer>
+                  <FollowGrid people={user.following} />
+               </TabContainer>
+            )}
+            {tab === 2 && (
                <TabContainer>
                   <FollowGrid people={user.followers} />
                </TabContainer>
@@ -53,6 +61,7 @@ class ProfileTabs extends Component {
 
 ProfileTabs.propTypes = {
    user: PropTypes.object.isRequired,
+   posts: PropTypes.array.isRequired,
 };
 
 const TabContainer = ({ children }) => (

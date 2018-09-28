@@ -98,7 +98,6 @@ class NewPost extends Component {
       const {
          error, photo, text, user,
       } = this.state;
-      console.log(user);
 
       return (
          <div className={classes.root}>
