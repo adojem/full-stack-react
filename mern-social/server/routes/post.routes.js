@@ -13,6 +13,10 @@ router.route('/api/posts/by/:userId').get(authCtrl.requireSignin, postCtrl.listB
 
 router.route('/api/posts/feed/:userId').get(postCtrl.listNewsFeed);
 
+router
+   .route('/api/posts/:postId')
+   .delete(authCtrl.requireSignin, postCtrl.isPoster, postCtrl.remove);
+
 router.param('userId', userCtrl.userByID);
 router.param('postId', postCtrl.postByID);
 

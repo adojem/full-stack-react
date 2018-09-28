@@ -22,6 +22,18 @@ const listNewsFeed = (params, credentials) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const remove = (params, credentials) =>
+   fetch(`/api/posts/${params.postId}`, {
+      method: 'DELETE',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type': 'application/json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 const listByUser = (params, credentials) =>
    fetch(`/api/posts/by/${params.userId}`, {
       method: 'GET',
@@ -34,4 +46,6 @@ const listByUser = (params, credentials) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create, listByUser, listNewsFeed };
+export {
+   create, listByUser, listNewsFeed, remove,
+};

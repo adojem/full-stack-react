@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import {
    Avatar,
    Card,
@@ -18,6 +19,7 @@ import {
 } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core';
 import auth from '../auth/auth-helper';
+import { remove } from './api-post';
 
 const styles = theme => ({
    card: {
@@ -46,6 +48,24 @@ class Post extends Component {
    };
 
    componentDidMount = () => {};
+
+   deletePost = () => {
+      const { post, onRemove } = this.props;
+      const jwt = auth.isAuthenticated();
+      remove(
+         {
+            postId: post._id,
+         },
+         {
+            t: jwt.token,
+         },
+      ).then((data) => {
+         if (data.error) {
+            return console.log(data.error);
+         }
+         return onRemove(post);
+      });
+   };
 
    render() {
       const { classes, post } = this.props;
@@ -96,5 +116,11 @@ class Post extends Component {
       );
    }
 }
+
+Post.propTypes = {
+   classes: PropTypes.object.isRequired,
+   post: PropTeypes.object.isRequired,
+   onRemove: PropTypes.func.isRequired,
+};
 
 export default withStyles(styles)(Post);
