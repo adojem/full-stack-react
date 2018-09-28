@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Card, Divider, Typography } from '@material-ui/core';
+import auth from '../auth/auth-helper';
 import PostList from './PostList';
+import { listNewsFeed } from './api-post';
+import NewPost from './NewPost';
 
 const styles = theme => ({
    card: {
@@ -20,6 +23,27 @@ const styles = theme => ({
 class Newsfeed extends Component {
    state = {
       posts: [],
+   };
+
+   loadPosts = () => {
+      const jwt = auth.isAuthenticated();
+      listNewsFeed(
+         {
+            userId: jwt.user._id,
+         },
+         {
+            t: jwt.token,
+         },
+      ).then((data) => {
+         if (data.error) {
+            return console.log(data.error);
+         }
+         return this.setState({ posts: data });
+      });
+   };
+
+   componentDidMount = () => {
+      this.loadPosts();
    };
 
    addPost = (post) => {
@@ -44,6 +68,8 @@ class Newsfeed extends Component {
             <Typography variant="title" className={classes.title}>
                Newsfeed
             </Typography>
+            <Divider />
+            <NewPost addUpdate={this.addPost} />
             <Divider />
             <PostList removeUpdate={this.removePost} posts={posts} />
          </Card>

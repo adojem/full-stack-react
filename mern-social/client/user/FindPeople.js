@@ -126,7 +126,8 @@ class FindPeople extends Component {
                                  aria-label="Follow"
                                  variant="raised"
                                  color="primary"
-                                 onClick={this.cilckFollow.bind(this, item, i)}
+                                 // onClick={this.cilckFollow.bind(this, item, i)}
+                                 onClick={e => this.cilckFollow(item, i, e)}
                               >
                                  Follow
                               </Button>

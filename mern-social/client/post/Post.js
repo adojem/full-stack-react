@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Card, Divider } from '@material-ui/core';
+import {
+   Avatar, Card, CardHeader, CardContent, Divider, Typography,
+} from '@material-ui/core';
 import { withStyles } from '@material-ui/core';
 
 const styles = theme => ({
@@ -9,9 +11,18 @@ const styles = theme => ({
 });
 
 class Post extends Component {
+   componentDidMount = () => {};
+
    render() {
-      const { classes } = this.props;
-      return <Card className={classes.card} />;
+      const { classes, post } = this.props;
+      return (
+         <Card className={classes.card}>
+            <CardHeader avatar={<Avatar src={`/api/users/photo/${post.postedBy._id}`} />} />
+            <CardContent>
+               <Typography>{post.text}</Typography>
+            </CardContent>
+         </Card>
+      );
    }
 }
 

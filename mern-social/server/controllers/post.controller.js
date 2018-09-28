@@ -1,5 +1,33 @@
+import formidable from 'formidable';
+import fs from 'fs';
 import Post from '../models/post.model';
 import errorHandler from '../helpers/dbErrorHandler';
+
+const create = (req, res) => {
+   const form = new formidable.IncomingForm();
+   form.keepExtensions = true;
+   form.parse(req, (err, fields, files) => {
+      if (err) {
+         return res.status(400).json({
+            error: 'Image could not be uploaded',
+         });
+      }
+      const post = new Post(fields);
+      post.postedBy = req.profile;
+      if (files.photo) {
+         post.photo.data = fs.readFileSync(files.photo.path);
+         post.photo.contentType = files.photo.type;
+      }
+      post.save((err, result) => {
+         if (err) {
+            return res.status(400).json({
+               error: errorHandler.getErrorMessage(err),
+            });
+         }
+         return res.json(result);
+      });
+   });
+};
 
 const listNewsFeed = (req, res) => {
    const { following } = req.profile;
@@ -19,4 +47,4 @@ const listNewsFeed = (req, res) => {
       });
 };
 
-export default { listNewsFeed };
+export default { create, listNewsFeed };
