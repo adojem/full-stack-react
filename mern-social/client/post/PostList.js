@@ -5,7 +5,7 @@ import Post from './Post';
 const PostList = ({ posts, removeUpdate }) => (
    <div>
       {posts.map((item, i) => (
-         <Post post={item} key={i} onRemove={removeUpdate} />
+         <Post post={item} key={item._id} onRemove={removeUpdate} />
       ))}
    </div>
 );
