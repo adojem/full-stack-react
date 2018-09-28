@@ -29,6 +29,20 @@ const create = (req, res) => {
    });
 };
 
+const postByID = (req, res, next, id) => {
+   Post.findById(id)
+      .populate('postedBy', '_id name')
+      .exec((err, post) => {
+         if (err || !post) {
+            return res.status(400).json({
+               error: 'Post not found',
+            });
+         }
+         req.post = post;
+         return next();
+      });
+};
+
 const listNewsFeed = (req, res) => {
    const { following } = req.profile;
    following.push(req.profile._id);
@@ -63,4 +77,15 @@ const listByUser = (req, res) => {
       });
 };
 
-export default { create, listByUser, listNewsFeed };
+const photo = (req, res) => {
+   res.set('Content-Type', req.post.photo.contentType);
+   return res.send(req.post.photo.data);
+};
+
+export default {
+   create,
+   listByUser,
+   listNewsFeed,
+   photo,
+   postByID,
+};
