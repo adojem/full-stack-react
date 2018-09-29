@@ -47,7 +47,28 @@ class Post extends Component {
       comments: [],
    };
 
-   componentDidMount = () => {};
+   componentDidMount = () => {
+      const { post } = this.props;
+      this.setState({
+         like: this.checkLike(post.lieks),
+         likes: post.likes.length,
+         comments: post.comments,
+      });
+   };
+
+   componentWillReceiveProps = ({ post }) => {
+      this.setState({
+         like: this.checkLike(post.lieks),
+         likes: post.likes.length,
+         comments: post.comments,
+      });
+   };
+
+   checkLike = (likes) => {
+      const jwt = auth.isAuthenticated();
+      const match = likes.indexOf(jwt.user._id) !== -1;
+      return match;
+   };
 
    deletePost = () => {
       const { post, onRemove } = this.props;
