@@ -1,3 +1,6 @@
+import Post from '../../server/models/post.model';
+import dbErrorHandler from '../../server/helpers/dbErrorHandler';
+
 const create = (params, credentials, post) =>
    fetch(`/api/posts/new/${params.userId}`, {
       method: 'POST',
@@ -59,6 +62,19 @@ const like = (params, credentials, postId) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const unlike = (params, credentials, postId) =>
+   fetch('/api/posts/unlike', {
+      method: 'PUT',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type': 'application/joson',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+      body: JSON.stringify({ userId: params.userId, postId: params.postId }),
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 export {
-   create, like, listByUser, listNewsFeed, remove,
+   create, like, listByUser, listNewsFeed, unlike, remove,
 };

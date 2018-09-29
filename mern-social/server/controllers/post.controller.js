@@ -107,6 +107,21 @@ const like = (req, res) => {
    );
 };
 
+const unlike = (req, res) => {
+   Post.findByIdAndUpdate(
+      req.body.postId,
+      { $pull: { likes: req.body.userId } },
+      { new: true },
+   ).exec((err, result) => {
+      if (err) {
+         return res.status(400).json({
+            error: dbErrorHandler.getErrorMessage(err),
+         });
+      }
+      return res.json(result);
+   });
+};
+
 const isPoster = (req, res, next) => {
    const isPoster = req.post && req.auth && req.post.postedBy._id === req.auth._id;
    if (!isPoster) {
@@ -125,5 +140,6 @@ export default {
    listNewsFeed,
    photo,
    postByID,
+   unlike,
    remove,
 };
