@@ -14,8 +14,9 @@ router.route('/api/posts/by/:userId').get(authCtrl.requireSignin, postCtrl.listB
 router.route('/api/posts/feed/:userId').get(postCtrl.listNewsFeed);
 
 router.route('/api/posts/like').put(authCtrl.requireSignin, postCtrl.like);
-
 router.route('/api/posts/unlike').put(authCtrl.requireSignin, postCtrl.unlike);
+
+router.route('/api/posts/comment').put(authCtrl.requireSignin, postCtrl.comment);
 
 router
    .route('/api/posts/:postId')

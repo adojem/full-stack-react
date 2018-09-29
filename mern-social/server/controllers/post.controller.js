@@ -62,7 +62,7 @@ const listNewsFeed = (req, res) => {
 };
 
 const remove = (req, res) => {
-   const post = req.post;
+   const { post } = req;
    post.remove((err, deletePost) => {
       if (err) {
          return res.status(400).json({
@@ -123,6 +123,22 @@ const unlike = (req, res) => {
    });
 };
 
+const comment = (req, res) => {
+   const { comment, userId, postId } = req.body;
+   comment.postedBy = userId;
+   Post.findByIdAndUpdate(postId, { $push: { comments: comment } }, { new: true })
+      .populate('comments.postedBy', '_id name')
+      .populate('postedBy', '_id name')
+      .exec((err, result) => {
+         if (err) {
+            return res.status(400).json({
+               error: errorHandler.getErrorMessage(err),
+            });
+         }
+         return res.json(result);
+      });
+};
+
 const isPoster = (req, res, next) => {
    const isPoster = req.post && req.auth && req.post.postedBy._id == req.auth._id;
    if (!isPoster) {
@@ -134,6 +150,7 @@ const isPoster = (req, res, next) => {
 };
 
 export default {
+   comment,
    create,
    isPoster,
    like,

@@ -72,6 +72,19 @@ const unlike = (params, credentials, postId) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const comment = (params, credentials, postId, comment) =>
+   fetch('/api/posts/comment', {
+      method: 'PUT',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type': 'application/json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+      body: JSON.stringify({ userId: params.userId, postId, comment }),
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 export {
-   create, like, listByUser, listNewsFeed, unlike, remove,
+   comment, create, like, listByUser, listNewsFeed, unlike, remove,
 };
