@@ -9,18 +9,12 @@ const PostSchema = new mongoose.Schema({
       data: Buffer,
       contentType: String,
    },
-   postedBy: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User',
-   },
-   created: {
-      type: Date,
-      default: Date.now,
-   },
-   likes: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User',
-   },
+   likes: [
+      {
+         type: mongoose.Schema.ObjectId,
+         ref: 'User',
+      },
+   ],
    comments: [
       {
          text: String,
@@ -34,6 +28,14 @@ const PostSchema = new mongoose.Schema({
          },
       },
    ],
+   postedBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+   },
+   created: {
+      type: Date,
+      default: Date.now,
+   },
 });
 
 export default mongoose.model('Post', PostSchema);

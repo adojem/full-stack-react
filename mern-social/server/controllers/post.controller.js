@@ -65,7 +65,7 @@ const remove = (req, res) => {
    const post = req.post;
    post.remove((err, deletePost) => {
       if (err) {
-         return ress.status(400).json({
+         return res.status(400).json({
             error: errorHandler.getErrorMessage(err),
          });
       }
@@ -102,6 +102,7 @@ const like = (req, res) => {
                error: errorHandler.getErrorMessage(err),
             });
          }
+         console.log(result);
          return res.json(result);
       },
    );
@@ -115,7 +116,7 @@ const unlike = (req, res) => {
    ).exec((err, result) => {
       if (err) {
          return res.status(400).json({
-            error: dbErrorHandler.getErrorMessage(err),
+            error: errorHandler.getErrorMessage(err),
          });
       }
       return res.json(result);
@@ -123,7 +124,7 @@ const unlike = (req, res) => {
 };
 
 const isPoster = (req, res, next) => {
-   const isPoster = req.post && req.auth && req.post.postedBy._id === req.auth._id;
+   const isPoster = req.post && req.auth && req.post.postedBy._id == req.auth._id;
    if (!isPoster) {
       return res.status(403).json({
          error: 'User is not authorized',

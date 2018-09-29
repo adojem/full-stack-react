@@ -11,6 +11,7 @@
       "react/jsx-indent": ["error", 3],
       "react/jsx-indent-props": ["error", 3],
       "react/jsx-filename-extension": "off",
+      "react/destructuring-assignment": "off",
       "implicit-arrow-linebreak": "off",
       "no-underscore-dangle": "off",
       "no-shadow": "off"

@@ -1,6 +1,3 @@
-import Post from '../../server/models/post.model';
-import dbErrorHandler from '../../server/helpers/dbErrorHandler';
-
 const create = (params, credentials, post) =>
    fetch(`/api/posts/new/${params.userId}`, {
       method: 'POST',
@@ -67,10 +64,10 @@ const unlike = (params, credentials, postId) =>
       method: 'PUT',
       headers: {
          Accept: 'application/json',
-         'Content-Type': 'application/joson',
+         'Content-Type': 'application/json',
          Authorization: `Bearer ${credentials.t}`,
       },
-      body: JSON.stringify({ userId: params.userId, postId: params.postId }),
+      body: JSON.stringify({ userId: params.userId, postId }),
    })
       .then(response => response.json())
       .catch(err => console.log(err));

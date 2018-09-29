@@ -1,69 +1,63 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { signin } from './api-auth';
-import auth from './auth-helper';
 import {
-   Card,
-   CardActions,
-   CardContent,
-   Button,
-   TextField,
-   Typography
+   Card, CardActions, CardContent, Button, TextField, Typography,
 } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import { withStyles } from '@material-ui/core/styles';
+import auth from './auth-helper';
+import { signin } from './api-auth';
 
-const styles = (theme) => {
-   return {
-      card: {
-         maxWidth: 600,
-         margin: 'auto',
-         textAlign: 'center',
-         marginTop: theme.spacing.unit * 5,
-         paddingBottom: theme.spacing.unit * 2
-      },
-      error: {
-         verticalAlign: 'middle'
-      },
-      title: {
-         marginTop: theme.spacing.unit * 2,
-         color: theme.palette.primary.main
-      },
-      textField: {
-         marginLeft: theme.spacing.unit,
-         marginRight: theme.spacing.unit,
-         width: 300
-      },
-      submit: {
-         margin: 'auto',
-         marginBottom: theme.spacing.unit * 2
-      }
-   };
-};
+const styles = theme => ({
+   card: {
+      maxWidth: 600,
+      margin: 'auto',
+      textAlign: 'center',
+      marginTop: theme.spacing.unit * 5,
+      paddingBottom: theme.spacing.unit * 2,
+   },
+   error: {
+      verticalAlign: 'middle',
+   },
+   title: {
+      marginTop: theme.spacing.unit * 2,
+      color: theme.palette.primary.main,
+   },
+   textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+      width: 300,
+   },
+   submit: {
+      margin: 'auto',
+      marginBottom: theme.spacing.unit * 2,
+   },
+});
 
 class Signin extends Component {
    state = {
       password: '',
       email: '',
       error: '',
-      redirectToReferrer: false
+      redirectToReferrer: false,
    };
 
-   handleChange = (name) => (event) => {
+   handleChange = name => (event) => {
       this.setState({ [name]: event.target.value });
    };
 
    clickSubmit = () => {
       const user = {
          email: this.state.email || undefined,
-         password: this.state.password || undefined
+         password: this.state.password || undefined,
       };
 
       signin(user).then((data) => {
          if (data.error) {
             this.setState({ error: data.error });
-         } else {
+         }
+         else {
             auth.authenticate(data, () => {
                this.setState({ redirectToReferrer: true });
             });
@@ -76,18 +70,13 @@ class Signin extends Component {
       const { from } = this.props.location.state || { from: { pathname: '/' } };
       const { redirectToReferrer } = this.state;
       if (redirectToReferrer) {
-         return (<Redirect to={from} />);
+         return <Redirect to={from} />;
       }
 
       return (
          <Card className={classes.card}>
             <CardContent>
-               <Typography
-                  type="headline"
-                  component="h2"
-                  className={classes.title}
-                  variant="title"
-               >
+               <Typography type="headline" component="h2" className={classes.title} variant="title">
                   Sign In
                </Typography>
                <TextField
@@ -135,7 +124,7 @@ class Signin extends Component {
 }
 
 Signin.proptypes = {
-   classes: PropTypes.object.isRequired
+   classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Signin);

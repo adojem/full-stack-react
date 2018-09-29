@@ -17,9 +17,9 @@ import {
    Favorite as FavoriteIcon,
    FavoriteBorder as FavoriteBorderIcon,
 } from '@material-ui/icons';
-import { withStyles } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import auth from '../auth/auth-helper';
-import { remove } from './api-post';
+import { remove, like, unlike } from './api-post';
 
 const styles = theme => ({
    card: {
@@ -50,7 +50,7 @@ class Post extends Component {
    componentDidMount = () => {
       const { post } = this.props;
       this.setState({
-         like: this.checkLike(post.lieks),
+         like: this.checkLike(post.likes),
          likes: post.likes.length,
          comments: post.comments,
       });
@@ -58,7 +58,7 @@ class Post extends Component {
 
    componentWillReceiveProps = ({ post }) => {
       this.setState({
-         like: this.checkLike(post.lieks),
+         like: this.checkLike(post.likes),
          likes: post.likes.length,
          comments: post.comments,
       });
@@ -68,6 +68,29 @@ class Post extends Component {
       const jwt = auth.isAuthenticated();
       const match = likes.indexOf(jwt.user._id) !== -1;
       return match;
+   };
+
+   like = () => {
+      const { post } = this.props;
+      const callApi = this.state.like ? unlike : like;
+      const jwt = auth.isAuthenticated();
+      callApi(
+         {
+            userId: jwt.user._id,
+         },
+         {
+            t: jwt.token,
+         },
+         post._id,
+      ).then((data) => {
+         if (data.error) {
+            return console.log(data.error);
+         }
+         return this.setState(state => ({
+            like: !state.like,
+            likes: data.likes.length,
+         }));
+      });
    };
 
    deletePost = () => {
@@ -98,7 +121,7 @@ class Post extends Component {
                avatar={<Avatar src={`/api/users/photo/${post.postedBy._id}`} />}
                action={
                   post.postedBy._id === auth.isAuthenticated().user._id && (
-                     <IconButton>
+                     <IconButton onClick={this.deletePost}>
                         <DeleteIcon />
                      </IconButton>
                   )
@@ -119,11 +142,21 @@ class Post extends Component {
             </CardContent>
             <CardActions>
                {like ? (
-                  <IconButton className={classes.button} aria-label="Like" color="secondary">
+                  <IconButton
+                     onClick={this.like}
+                     className={classes.button}
+                     aria-label="Like"
+                     color="secondary"
+                  >
                      <FavoriteIcon />
                   </IconButton>
                ) : (
-                  <IconButton className={classes.button} aria-label="Unlike" color="secondary">
+                  <IconButton
+                     onClick={this.like}
+                     className={classes.button}
+                     aria-label="Unlike"
+                     color="secondary"
+                  >
                      <FavoriteBorderIcon />
                   </IconButton>
                )}
