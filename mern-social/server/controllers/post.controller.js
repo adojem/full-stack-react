@@ -94,6 +94,19 @@ const photo = (req, res) => {
    return res.send(req.post.photo.data);
 };
 
+const like = (req, res) => {
+   Post.findByIdAndUpdate(req.body.postId, { $push: { likes: req.body.userId }, new: true }).exec(
+      (err, result) => {
+         if (err) {
+            return res.status(400).json({
+               error: errorHandler.getErrorMessage(err),
+            });
+         }
+         return res.json(result);
+      },
+   );
+};
+
 const isPoster = (req, res, next) => {
    const isPoster = req.post && req.auth && req.post.postedBy._id === req.auth._id;
    if (!isPoster) {
@@ -107,6 +120,7 @@ const isPoster = (req, res, next) => {
 export default {
    create,
    isPoster,
+   like,
    listByUser,
    listNewsFeed,
    photo,

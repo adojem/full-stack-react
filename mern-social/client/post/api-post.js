@@ -46,6 +46,19 @@ const listByUser = (params, credentials) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const like = (params, credentials, postId) =>
+   fetch('/api/posts/like', {
+      method: 'PUT',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type': 'application/json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+      body: JSON.stringify({ userId: params.userId, postId }),
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 export {
-   create, listByUser, listNewsFeed, remove,
+   create, like, listByUser, listNewsFeed, remove,
 };

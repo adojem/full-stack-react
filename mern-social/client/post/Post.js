@@ -119,7 +119,7 @@ class Post extends Component {
 
 Post.propTypes = {
    classes: PropTypes.object.isRequired,
-   post: PropTeypes.object.isRequired,
+   post: PropTypes.object.isRequired,
    onRemove: PropTypes.func.isRequired,
 };
 
