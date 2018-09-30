@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
 import withStyles from '@material-ui/core/styles/withStyles';
 import auth from '../auth/auth-helper';
-import { comment } from './api-post';
+import { comment, uncomment } from './api-post';
 
 const styles = theme => ({
    cardHeader: {
@@ -30,6 +30,11 @@ const styles = theme => ({
       display: 'block',
       color: 'gray',
       fontSize: '0.8em',
+   },
+   commentDelete: {
+      fontSize: '1.6em',
+      verticalAlign: 'middle',
+      cursor: 'pointer',
    },
 });
 
@@ -68,6 +73,26 @@ class Comment extends Component {
       }
    };
 
+   deleteComment = comment => () => {
+      const { postId, updateComments } = this.props;
+      const jwt = auth.isAuthenticated();
+      uncomment(
+         {
+            userId: jwt.user._id,
+         },
+         {
+            t: jwt.token,
+         },
+         postId,
+         comment,
+      ).then((data) => {
+         if (data.error) {
+            return console.log(data.error);
+         }
+         return updateComments(data.comments);
+      });
+   };
+
    render() {
       const { text } = this.state;
       const { classes, comments } = this.props;
@@ -80,7 +105,9 @@ class Comment extends Component {
                {new Date(item.created).toDateString()}
                {' '}
 |
-               {auth.isAuthenticated().user._id === item.postedBy._id && <Icon>delete</Icon>}
+               {auth.isAuthenticated().user._id === item.postedBy._id && (
+                  <Icon onClick={this.deleteComment(item)} className={classes.commentDelete}>delete</Icon>
+               )}
             </span>
          </p>
       );
