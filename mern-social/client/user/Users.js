@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { list } from './api-user';
 import { withStyles } from '@material-ui/core/styles';
 import {
    Typography,
@@ -11,31 +10,33 @@ import {
    ListItemText,
    ListItemSecondaryAction,
    Avatar,
-   IconButton
+   IconButton,
 } from '@material-ui/core';
 import { PersonRounded, ArrowForward } from '@material-ui/icons';
+import { list } from './api-user';
 
-const styles = (theme) => ({
+const styles = theme => ({
    root: theme.mixins.gutters({
       padding: theme.spacing.unit,
-      margin: theme.spacing.unit * 5
+      margin: theme.spacing.unit * 5,
    }),
    title: {
       margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`,
-      color: theme.palette.openTitle
-   }
+      color: theme.palette.openTitle,
+   },
 });
 
 class Users extends Component {
    state = {
-      users: []
+      users: [],
    };
 
    componentDidMount = () => {
       list().then((data) => {
          if (data.error) {
             console.log(data.error);
-         } else {
+         }
+         else {
             this.setState({ users: data });
          }
       });
@@ -50,7 +51,7 @@ class Users extends Component {
             </Typography>
             <List>
                {this.state.users.map((item, i) => (
-                  <Link to={'/user/' + item._id} key={i}>
+                  <Link to={`/user/${item._id}`} key={i}>
                      <ListItem button>
                         <Avatar>
                            <PersonRounded />
@@ -71,7 +72,7 @@ class Users extends Component {
 }
 
 Users.propTypes = {
-   classes: PropTypes.object.isRequired
+   classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Users);

@@ -10,20 +10,19 @@ import Profile from './user/Profile';
 import PrivateRoute from './auth/PrivateRoute';
 
 class MainRouter extends Component {
-
    componentDidMount() {
       const jssStyles = document.getElementById('jss-server-side');
       if (jssStyles && jssStyles.parentNode) {
          jssStyles.parentNode.removeChild(jssStyles);
       }
    }
-   
+
    render() {
       return (
          <div>
             <Menu />
             <Switch>
-               <Route exact path="/" component={Home} /> 
+               <Route exact path="/" component={Home} />
                <Route path="/users" component={Users} />
                <Route path="/signup" component={Signup} />
                <Route path="/signin" component={Signin} />

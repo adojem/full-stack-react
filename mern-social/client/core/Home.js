@@ -13,6 +13,10 @@ import Newsfeed from '../post/Newsfeed';
 import auth from '../auth/auth-helper';
 
 const styles = theme => ({
+   root: {
+      flexGrow: 1,
+      margin: 30,
+   },
    card: {
       maxWidth: 600,
       margin: 'auto',
@@ -74,11 +78,11 @@ class Home extends Component {
                </Grid>
             )}
             {!defaultPage && (
-               <Grid>
-                  <Grid>
+               <Grid container spacing={24}>
+                  <Grid item xs={8} sm={7}>
                      <Newsfeed />
                   </Grid>
-                  <Grid>
+                  <Grid item xs={6} sm={5}>
                      <FindPeople />
                   </Grid>
                </Grid>
@@ -93,4 +97,3 @@ Home.propTypes = {
 };
 
 export default withStyles(styles)(Home);
-// export default Home;
