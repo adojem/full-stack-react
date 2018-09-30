@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import Link from 'react-router-dom/Link';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import CardHeader from '@material-ui/core/CardHeader';
 import TextField from '@material-ui/core/TextField';
+import Icon from '@material-ui/core/Icon';
 import withStyles from '@material-ui/core/styles/withStyles';
 import auth from '../auth/auth-helper';
 import { comment } from './api-post';
@@ -18,6 +20,16 @@ const styles = theme => ({
    },
    commentField: {
       width: '96%',
+   },
+   commentText: {
+      backgroundColor: 'white',
+      padding: theme.spacing.unit,
+      margin: `2px ${theme.spacing.unit * 2}px 2px 2px`,
+   },
+   commentDate: {
+      display: 'block',
+      color: 'gray',
+      fontSize: '0.8em',
    },
 });
 
@@ -58,28 +70,57 @@ class Comment extends Component {
 
    render() {
       const { text } = this.state;
-      const { classes } = this.props;
+      const { classes, comments } = this.props;
+      const commentBody = item => (
+         <p className={classes.commentText}>
+            <Link to={`/user/${item.postedBy._id}`}>{item.postedBy.name}</Link>
+            <br />
+            {item.text}
+            <span className={classes.commentDate}>
+               {new Date(item.created).toDateString()}
+               {' '}
+|
+               {auth.isAuthenticated().user._id === item.postedBy._id && <Icon>delete</Icon>}
+            </span>
+         </p>
+      );
 
       return (
-         <CardHeader
-            avatar={(
-               <Avatar
-                  className={classes.smallAvatar}
-                  src={`/api/users/photo/${auth.isAuthenticated().user._id}`}
+         <div>
+            <CardHeader
+               avatar={(
+                  <Avatar
+                     className={classes.smallAvatar}
+                     src={`/api/users/photo/${auth.isAuthenticated().user._id}`}
+                  />
+               )}
+               title={(
+                  <TextField
+                     onKeyDown={this.addComment}
+                     multiline
+                     value={text}
+                     onChange={this.handleChange('text')}
+                     placeholder="Write something ..."
+                     className={classes.commentField}
+                     margin="normal"
+                  />
+               )}
+               className={classes.cardHeader}
+            />
+            {comments.map(item => (
+               <CardHeader
+                  avatar={(
+                     <Avatar
+                        className={classes.smallAvatar}
+                        src={`/api/users/photo/${item.postedBy._id}`}
+                     />
+                  )}
+                  title={commentBody(item)}
+                  className={classes.cardHeader}
+                  key={item._id}
                />
-            )}
-            title={(
-               <TextField
-                  multiline
-                  value={text}
-                  onChange={this.handleChange('text')}
-                  placeholder="Write something ..."
-                  className={classes.commentField}
-                  margin="normal"
-               />
-            )}
-            className={classes.cardHeader}
-         />
+            ))}
+         </div>
       );
    }
 }
