@@ -20,6 +20,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import auth from '../auth/auth-helper';
 import { remove, like, unlike } from './api-post';
+import Comment from './Comment';
 
 const styles = theme => ({
    card: {
@@ -91,6 +92,10 @@ class Post extends Component {
             likes: data.likes.length,
          }));
       });
+   };
+
+   updateComments = (comments) => {
+      this.setState({ comments });
    };
 
    deletePost = () => {
@@ -166,6 +171,8 @@ class Post extends Component {
                </IconButton>
                <span>{comments.length}</span>
             </CardActions>
+            <Divider />
+            <Comment postId={post._id} comments={comments} updateComments={this.updateComments} />
          </Card>
       );
    }
