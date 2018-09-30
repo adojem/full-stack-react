@@ -178,7 +178,7 @@ class Profile extends Component {
                         && auth.isAuthenticated().user._id === user.id && <ListItemSecondaryAction />}
                   </ListItem>
                </List>
-               <ProfileTabs user={user} posts={posts} removeUpdate={this.removePost} />
+               <ProfileTabs user={user} posts={posts} removePostUpdate={this.removePost} />
             </Paper>
          </div>
       );

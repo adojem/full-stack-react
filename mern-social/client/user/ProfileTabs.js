@@ -9,10 +9,9 @@ import PostList from '../post/PostList';
 class ProfileTabs extends Component {
    state = {
       tab: 0,
-      posts: [],
    };
 
-   componentWillReceiveProps = (props) => {
+   componentWillReceiveProps = () => {
       this.setState({ tab: 0 });
    };
 
@@ -22,7 +21,7 @@ class ProfileTabs extends Component {
 
    render() {
       const { tab } = this.state;
-      const { user, posts, removeUpdate } = this.props;
+      const { user, posts, removePostUpdate } = this.props;
 
       return (
          <div>
@@ -41,7 +40,7 @@ class ProfileTabs extends Component {
             </AppBar>
             {tab === 0 && (
                <TabContainer>
-                  <PostList posts={posts} removeUpdate={removeUpdate} />
+                  <PostList posts={posts} removeUpdate={removePostUpdate} />
                </TabContainer>
             )}
             {tab === 1 && (
@@ -61,6 +60,7 @@ class ProfileTabs extends Component {
 
 ProfileTabs.propTypes = {
    user: PropTypes.object.isRequired,
+   removePostUpdate: PropTypes.func.isRequired,
    posts: PropTypes.array.isRequired,
 };
 

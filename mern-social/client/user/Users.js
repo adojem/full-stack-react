@@ -53,9 +53,7 @@ class Users extends Component {
                {this.state.users.map((item, i) => (
                   <Link to={`/user/${item._id}`} key={i}>
                      <ListItem button>
-                        <Avatar>
-                           <PersonRounded />
-                        </Avatar>
+                        <Avatar src={`/api/users/photo/${item._id}`} />
                         <ListItemText primary={item.name} />
                         <ListItemSecondaryAction>
                            <IconButton>

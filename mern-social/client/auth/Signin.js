@@ -97,6 +97,7 @@ class Signin extends Component {
                   value={this.state.password}
                   onChange={this.handleChange('password')}
                   margin="normal"
+                  onKeyDown={e => e.keyCode === 13 && this.clickSubmit()}
                />
                <br />
                {this.state.error && (

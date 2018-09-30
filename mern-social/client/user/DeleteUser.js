@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import auth from '../auth/auth-helper';
-import { remove } from './api-user';
 import {
    Button,
    Dialog,
@@ -10,9 +8,11 @@ import {
    DialogContent,
    DialogContentText,
    DialogTitle,
-   IconButton
+   IconButton,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import auth from '../auth/auth-helper';
+import { remove } from './api-user';
 
 class DeleteUser extends Component {
    state = { redirect: false, open: false };
@@ -30,7 +30,8 @@ class DeleteUser extends Component {
       remove({ userId: this.props.userId }, { t: jwt.token }).then((data) => {
          if (data.error) {
             console.log(data.errror);
-         } else {
+         }
+         else {
             auth.signout(() => console.log('deleted'));
             this.setState({ redirect: true });
          }
@@ -38,35 +39,25 @@ class DeleteUser extends Component {
    };
 
    render() {
-      const redirect = this.state.redirect;
+      const { redirect } = this.state;
       if (redirect) {
          return <Redirect to="/" />;
       }
       return (
          <span>
-            <IconButton
-               aria-label="Delete"
-               onClick={this.clickButton}
-               color="secondary"
-            >
+            <IconButton aria-label="Delete" onClick={this.clickButton} color="secondary">
                <DeleteIcon />
             </IconButton>
             <Dialog open={this.state.open} onClose={this.handleRequestClose}>
-               <DialogTitle>{'Delete Account'}</DialogTitle>
+               <DialogTitle>Delete Account</DialogTitle>
                <DialogContent>
-                  <DialogContentText>
-                     Confirm to delete your account.
-                  </DialogContentText>
+                  <DialogContentText>Confirm to delete your account.</DialogContentText>
                </DialogContent>
                <DialogActions>
                   <Button onClick={this.handleRequestClose} color="primary">
                      Cancel
                   </Button>
-                  <Button
-                     onClick={this.deleteAccount}
-                     color="secondary"
-                     autoFocus="autoFocus"
-                  >
+                  <Button onClick={this.deleteAccount} color="secondary" autoFocus="autoFocus">
                      Confirm
                   </Button>
                </DialogActions>
@@ -77,7 +68,7 @@ class DeleteUser extends Component {
 }
 
 DeleteUser.propTypes = {
-   userId: PropTypes.string.isRequired
+   userId: PropTypes.string.isRequired,
 };
 
 export default DeleteUser;

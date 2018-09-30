@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { create } from './api-user';
 import {
    Card,
    CardActions,
@@ -17,35 +16,33 @@ import {
 } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import { withStyles } from '@material-ui/core/styles';
+import { create } from './api-user';
 
-const styles = theme => {
-   console.dir(theme.palette);
-   return {
-      card: {
-         maxWidth: 600,
-         margin: 'auto',
-         textAlign: 'center',
-         marginTop: theme.spacing.unit * 5,
-         paddingBottom: theme.spacing.unit * 2,
-      },
-      error: {
-         verticalAlign: 'middle'
-      },
-      title: {
-         marginTop: theme.spacing.unit * 2,
-         color: theme.palette.primary.main
-      },
-      textField: {
-         marginLeft: theme.spacing.unit,
-         marginRight: theme.spacing.unit,
-         width: 300
-      },
-      submit: {
-         margin: 'auto',
-         marginBottom: theme.spacing.unit * 2,
-      }
-   };
-};
+const styles = theme => ({
+   card: {
+      maxWidth: 600,
+      margin: 'auto',
+      textAlign: 'center',
+      marginTop: theme.spacing.unit * 5,
+      paddingBottom: theme.spacing.unit * 2,
+   },
+   error: {
+      verticalAlign: 'middle',
+   },
+   title: {
+      marginTop: theme.spacing.unit * 2,
+      color: theme.palette.primary.main,
+   },
+   textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+      width: 300,
+   },
+   submit: {
+      margin: 'auto',
+      marginBottom: theme.spacing.unit * 2,
+   },
+});
 
 class Signup extends Component {
    state = {
@@ -53,10 +50,10 @@ class Signup extends Component {
       password: '',
       email: '',
       open: false,
-      error: ''
+      error: '',
    };
 
-   handleChange = (name) => (event) => {
+   handleChange = name => (event) => {
       this.setState({ [name]: event.target.value });
    };
 
@@ -64,13 +61,14 @@ class Signup extends Component {
       const user = {
          name: this.state.name || undefined,
          email: this.state.email || undefined,
-         password: this.state.password || undefined
+         password: this.state.password || undefined,
       };
 
       create(user).then((data) => {
          if (data.error) {
             this.setState({ error: data.error });
-         } else {
+         }
+         else {
             this.setState({ error: '', open: true });
          }
       });
@@ -83,11 +81,7 @@ class Signup extends Component {
          <div>
             <Card className={classes.card}>
                <CardContent>
-                  <Typography
-                     component="h2"
-                     className={classes.title}
-                     variant="headline"
-                  >
+                  <Typography component="h2" className={classes.title} variant="headline">
                      Sign Up
                   </Typography>
                   <TextField
@@ -117,6 +111,7 @@ class Signup extends Component {
                      value={this.state.password}
                      onChange={this.handleChange('password')}
                      margin="normal"
+                     onKeyDown={e => e.keyCode === 13 && this.clickSubmit()}
                   />
                   <br />
                   {this.state.error && (
@@ -139,20 +134,13 @@ class Signup extends Component {
                   </Button>
                </CardActions>
             </Card>
-            <Dialog open={this.state.open} disableBackdropClick={true}>
+            <Dialog open={this.state.open} disableBackdropClick>
                <DialogTitle>New Account</DialogTitle>
                <DialogContent>
-                  <DialogContentText>
-                     New account successfully created.
-                  </DialogContentText>
+                  <DialogContentText>New account successfully created.</DialogContentText>
                </DialogContent>
                <DialogActions>
-                  <Button
-                     component={Link}
-                     to="/signin"
-                     color="primary"
-                     variant="raised"
-                  >
+                  <Button component={Link} to="/signin" color="primary" variant="raised">
                      Sign In
                   </Button>
                </DialogActions>
@@ -162,7 +150,7 @@ class Signup extends Component {
    }
 }
 
-Signup.proptypes = {
+Signup.propTypes = {
    classes: PropTypes.object.isRequired,
 };
 

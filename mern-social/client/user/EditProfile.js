@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import auth from '../auth/auth-helper';
 import {
    Avatar,
    Card,
@@ -9,50 +8,51 @@ import {
    CardContent,
    Button,
    TextField,
-   Typography
+   Typography,
 } from '@material-ui/core';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { withStyles } from '@material-ui/core/styles';
+import auth from '../auth/auth-helper';
 import { read, update } from './api-user';
 
-const styles = (theme) => ({
+const styles = theme => ({
    card: {
       maxWidth: 600,
       margin: 'auto',
       textAlign: 'center',
       marginTop: theme.spacing.unit * 5,
-      paddingBottom: theme.spacing.unit * 2
+      paddingBottom: theme.spacing.unit * 2,
    },
    title: {
       margin: theme.spacing.unit * 2,
-      color: theme.palette.error.light
+      color: theme.palette.error.light,
    },
    error: {
-      verticalAlign: 'middle'
+      verticalAlign: 'middle',
    },
    textField: {
       marginLeft: theme.spacing.unit,
       marginRight: theme.spacing.unit,
-      width: 300
+      width: 300,
    },
    submit: {
       margin: 'auto',
-      marginBottom: theme.spacing.unit * 2
+      marginBottom: theme.spacing.unit * 2,
    },
    bigAvatar: {
       width: 60,
       height: 60,
-      margin: 'auto'
+      margin: 'auto',
    },
    input: {
-      display: 'none'
+      display: 'none',
    },
    filename: {
-      marginLeft: '10px'
+      marginLeft: '10px',
    },
    rightIcon: {
-      marginLeft: theme.spacing.unit
-   }
+      marginLeft: theme.spacing.unit,
+   },
 });
 
 class EditProfile extends Component {
@@ -65,7 +65,7 @@ class EditProfile extends Component {
          email: '',
          password: '',
          redirectToProfile: false,
-         error: ''
+         error: '',
       };
       this.match = match;
    }
@@ -75,18 +75,19 @@ class EditProfile extends Component {
       const jwt = auth.isAuthenticated();
       read(
          {
-            userId: this.match.params.userId
+            userId: this.match.params.userId,
          },
-         { t: jwt.token }
+         { t: jwt.token },
       ).then((data) => {
          if (data.error) {
             this.setState({ error: data.error });
-         } else {
+         }
+         else {
             this.setState({
                id: data._id,
                name: data.name,
                email: data.email,
-               about: data.about
+               about: data.about,
             });
          }
       });
@@ -98,49 +99,44 @@ class EditProfile extends Component {
          name: this.state.name || undefined,
          email: this.state.email || undefined,
          password: this.state.password || undefined,
-         about: this.state.about || undefined
+         about: this.state.about || undefined,
       };
       update(
          {
-            userId: this.match.params.userId
+            userId: this.match.params.userId,
          },
          {
-            t: jwt.token
+            t: jwt.token,
          },
-         this.userData
+         this.userData,
       ).then((data) => {
          if (data.error) {
             this.setState({ error: data.error });
-         } else {
+         }
+         else {
             this.setState({ redirectToProfile: true });
          }
       });
    };
 
-   handleChange = (name) => (event) => {
-      const value =
-         name === 'photo' ? event.target.files[0] : event.target.value;
+   handleChange = name => (event) => {
+      const value = name === 'photo' ? event.target.files[0] : event.target.value;
       this.userData.set(name, value);
       this.setState({ [name]: value });
    };
 
    render() {
-      console.log(this.state);
       const { classes } = this.props;
       const photoUrl = this.state.id
          ? `/api/users/photo/${this.state.id}?${new Date().getTime()}`
          : '/api/users/defaultphoto';
       if (this.state.redirectToProfile) {
-         return <Redirect to={'/user/' + this.state.id} />;
+         return <Redirect to={`/user/${this.state.id}`} />;
       }
       return (
          <Card className={classes.card}>
             <CardContent>
-               <Typography
-                  component="h2"
-                  className={classes.title}
-                  variant="headline"
-               >
+               <Typography component="h2" className={classes.title} variant="headline">
                   Edit Profile
                </Typography>
                <Avatar src={photoUrl} className={classes.bigAvatar} />
@@ -161,7 +157,7 @@ class EditProfile extends Component {
                <span className={classes.filename}>
                   {this.state.photo ? this.state.photo.name : ''}
                </span>
-               <br/>
+               <br />
                <TextField
                   id="name"
                   label="Name"
@@ -227,7 +223,7 @@ class EditProfile extends Component {
 }
 
 EditProfile.propTypes = {
-   classes: PropTypes.object.isRequired
+   classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(EditProfile);
