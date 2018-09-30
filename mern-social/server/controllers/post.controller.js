@@ -139,6 +139,21 @@ const comment = (req, res) => {
       });
 };
 
+const uncomment = (req, res) => {
+   const { comment, postId } = req.body;
+   Post.findByIdAndUpdate(postId, { $pull: { comments: { _id: comment._id } } }, { new: true })
+      .populate('comments.postedBy', '_id name')
+      .populate('postedBy', '_id name')
+      .exec((err, result) => {
+         if (err) {
+            return res.status(400).json({
+               error: errorHandler.getErrorMessage(err),
+            });
+         }
+         return res.json(result);
+      });
+};
+
 const isPoster = (req, res, next) => {
    const isPoster = req.post && req.auth && req.post.postedBy._id == req.auth._id;
    if (!isPoster) {
@@ -158,6 +173,7 @@ export default {
    listNewsFeed,
    photo,
    postByID,
+   uncomment,
    unlike,
    remove,
 };
