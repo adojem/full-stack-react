@@ -17,7 +17,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import auth from '../auth/auth-helper';
 import { read } from './api-user';
-import { listByUser } from '../post/api-post'
+import { listByUser } from '../post/api-post';
 import DeleteUser from './DeleteUser';
 import FollowProfileButton from './FollowProfileButton';
 import ProfileTabs from './ProfileTabs';
