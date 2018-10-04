@@ -6,6 +6,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import Template from '../template';
 import userRoutes from './routes/user.routes';
+import authRoutes from './routes/auth.routes';
 
 // comment out before building for production
 import devBundle from './devBundle';
@@ -30,6 +31,7 @@ app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));
 
 // mount routes
 app.use('/', userRoutes);
+app.use('/', authRoutes);
 
 app.get('/', (req, res) => res.status(200).send(Template()));
 
