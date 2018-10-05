@@ -30,6 +30,7 @@ const Home = ({ classes }) => (
             Home Page
          </Typography>
          <Link to="/users">Users</Link>
+         <Link to="/signup">Signup</Link>
          <CardMedia className={classes.media} image={seashellImg} title="Unicorn Shells" />
          <CardContent>
             <Typography variant="body1" component="p">

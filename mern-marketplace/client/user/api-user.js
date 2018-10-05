@@ -1,6 +1,6 @@
 const create = user => fetch('/api/users/', {
    method: 'POST',
-   haders: {
+   headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
    },
