@@ -27,7 +27,6 @@
       ],
       "react/jsx-filename-extension": "off",
       "react/destructuring-assignment": "off",
-      "implicit-arrow-linebreak": "off",
       "no-underscore-dangle": "off",
       "no-shadow": "off"
    },
