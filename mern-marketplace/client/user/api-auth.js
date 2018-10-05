@@ -1,4 +1,4 @@
-const signin = user => fetch('/api/signin/', {
+const signin = user => fetch('/auth/signin/', {
    method: 'POST',
    headers: {
       Accept: 'application/json',
@@ -16,4 +16,4 @@ const signout = () => fetch('/api/signout', {
    .then(response => response.json())
    .catch(err => console.log(err));
 
-export default { signin, signout };
+export { signin, signout };

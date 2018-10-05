@@ -31,6 +31,7 @@ const Home = ({ classes }) => (
          </Typography>
          <Link to="/users">Users</Link>
          <Link to="/signup">Signup</Link>
+         <Link to="/signin">Signin</Link>
          <CardMedia className={classes.media} image={seashellImg} title="Unicorn Shells" />
          <CardContent>
             <Typography variant="body1" component="p">
