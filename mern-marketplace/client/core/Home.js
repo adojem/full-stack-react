@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -28,6 +29,7 @@ const Home = ({ classes }) => (
          <Typography variant="headline" component="h2" className={classes.title}>
             Home Page
          </Typography>
+         <Link to="/users">Users</Link>
          <CardMedia className={classes.media} image={seashellImg} title="Unicorn Shells" />
          <CardContent>
             <Typography variant="body1" component="p">

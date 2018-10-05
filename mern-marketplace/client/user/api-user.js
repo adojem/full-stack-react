@@ -49,10 +49,6 @@ const remove = (params, credentials) => fetch(`/api/users/${params.userId}`, {
    .then(response => response.json())
    .catch(err => console.log(err));
 
-export default {
-   create,
-   list,
-   read,
-   update,
-   remove,
+export {
+   create, list, read, update, remove,
 };
