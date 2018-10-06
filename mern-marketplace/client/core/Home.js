@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import seashellImg from '../assets/images/seashell.jpg';
+import auth from '../auth/auth-helper';
 
 const styles = theme => ({
    card: {
@@ -32,6 +33,7 @@ const Home = ({ classes }) => (
          <Link to="/users">Users</Link>
          <Link to="/signup">Signup</Link>
          <Link to="/signin">Signin</Link>
+         <Link to={`/user/${auth.isAuthenticated().user._id}`}>Profile</Link>
          <CardMedia className={classes.media} image={seashellImg} title="Unicorn Shells" />
          <CardContent>
             <Typography variant="body1" component="p">
