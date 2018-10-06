@@ -20,6 +20,16 @@ const auth = {
       }
       cb();
    },
+   updateUser(user, cb) {
+      if (typeof window !== 'undefined') {
+         if (sessionStorage.getItem('jwt')) {
+            const auth = JSON.parse(sessionStorage.getItem('jwt'));
+            auth.user = user;
+            sessionStorage.setItem('jwt', JSON.stringify(auth));
+            cb();
+         }
+      }
+   },
 };
 
 export default auth;

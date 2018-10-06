@@ -40,7 +40,6 @@ class Users extends Component {
 
    render() {
       const { classes } = this.props;
-      console.log(classes);
       const { users } = this.state;
 
       return (

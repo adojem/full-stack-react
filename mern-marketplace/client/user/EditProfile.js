@@ -7,6 +7,8 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Icon from '@material-ui/core/Icon';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import auth from '../auth/auth-helper';
@@ -36,6 +38,10 @@ const styles = theme => ({
       margin: 'auto',
       marginBottom: theme.spacing.unit * 2,
    },
+   subheading: {
+      marginTop: theme.spacing.unit * 2,
+      color: theme.palette.openTitle,
+   },
 });
 
 class EditProfile extends Component {
@@ -45,6 +51,7 @@ class EditProfile extends Component {
          name: '',
          password: '',
          email: '',
+         seller: false,
          redirectToProfile: false,
          error: '',
       };
@@ -58,7 +65,7 @@ class EditProfile extends Component {
          if (data.error) {
             return this.setState({ error: data.error });
          }
-         return this.setState({ name: data.name, email: data.email });
+         return this.setState({ name: data.name, email: data.email, seller: data.seller });
       });
    };
 
@@ -66,13 +73,20 @@ class EditProfile extends Component {
       this.setState({ [name]: event.target.value });
    };
 
+   handleCheck = (event, checked) => {
+      this.setState({ seller: checked });
+   };
+
    clickSubmit = () => {
       const jwt = auth.isAuthenticated();
-      const { name, email, password } = this.state;
+      const {
+         name, email, password, seller,
+      } = this.state;
       const user = {
          name: name || undefined,
          email: email || undefined,
          password: password || undefined,
+         seller,
       };
       update(
          {
@@ -86,14 +100,16 @@ class EditProfile extends Component {
          if (data.error) {
             return this.setState({ error: data.error });
          }
-         return this.setState({ userId: data._id, redirectToProfile: true });
+         return auth.updateUser(data, () => {
+            this.setState({ userId: data._id, redirectToProfile: true });
+         });
       });
    };
 
    render() {
       const { classes } = this.props;
       const {
-         name, email, password, error, redirectToProfile,
+         name, email, password, error, redirectToProfile, seller,
       } = this.state;
       if (redirectToProfile) {
          return <Redirect to={`/user/${this.state.userId}`} />;
@@ -133,6 +149,22 @@ class EditProfile extends Component {
                   value={password}
                   onChange={this.handleChange('password')}
                   margin="normal"
+               />
+               <Typography variant="subheading" component="h4" className={classes.subheading}>
+                  Seller Account
+               </Typography>
+               <FormControlLabel
+                  control={(
+                     <Switch
+                        classes={{
+                           checked: classes.checked,
+                           bar: classes.bar,
+                        }}
+                        checked={seller}
+                        onChange={this.handleCheck}
+                     />
+                  )}
+                  label={seller ? 'Active' : 'Inactive'}
                />
                <br />
                {error && (
