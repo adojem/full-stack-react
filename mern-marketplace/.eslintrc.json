@@ -26,7 +26,6 @@
          3
       ],
       "react/jsx-filename-extension": "off",
-      "react/destructuring-assignment": "off",
       "no-underscore-dangle": "off",
       "no-shadow": "off"
    },

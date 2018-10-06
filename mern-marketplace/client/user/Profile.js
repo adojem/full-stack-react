@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { ListItemSecondaryAction } from '@material-ui/core';
 import Edit from '@material-ui/icons/Edit';
+import DeleteUser from './DeleteUser';
 import auth from '../auth/auth-helper';
 import { read } from './api-user';
 
@@ -61,7 +62,6 @@ class Profile extends Component {
    };
 
    render() {
-      console.log(this.state);
       const { classes } = this.props;
       const { user, redirectToSignin } = this.state;
       if (redirectToSignin) {
@@ -89,6 +89,7 @@ class Profile extends Component {
                               <Edit />
                            </IconButton>
                         </Link>
+                        <DeleteUser userId={user._id} />
                      </ListItemSecondaryAction>
                   )}
                </ListItem>

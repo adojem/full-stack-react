@@ -30,10 +30,6 @@ const Home = ({ classes }) => (
          <Typography variant="headline" component="h2" className={classes.title}>
             Home Page
          </Typography>
-         <Link to="/users">Users</Link>
-         <Link to="/signup">Signup</Link>
-         <Link to="/signin">Signin</Link>
-         <Link to={`/user/${auth.isAuthenticated().user._id}`}>Profile</Link>
          <CardMedia className={classes.media} image={seashellImg} title="Unicorn Shells" />
          <CardContent>
             <Typography variant="body1" component="p">
