@@ -11,7 +11,7 @@ import Icon from '@material-ui/core/Icon';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import auth from '../auth/auth-helper';
-import create from './api-shop';
+import { create } from './api-shop';
 
 const styles = theme => ({
    card: {
