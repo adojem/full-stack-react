@@ -7,4 +7,13 @@ const router = express.Router();
 
 router
    .route('/api/shops/by/:userId')
-   .post(authCtrl.requireSignin, authCtrl.requireSignin, userCtrl.isSeller, shopController.create);
+   .post(
+      authCtrl.requireSignin,
+      authCtrl.hasAuthorization,
+      userCtrl.isSeller,
+      shopController.create,
+   );
+
+router.param('userId', userCtrl.userByID);
+
+export default router;

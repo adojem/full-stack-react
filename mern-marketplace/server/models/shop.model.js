@@ -15,7 +15,7 @@ const ShopSchema = new mongoose.Schema({
       contentType: String,
    },
    owner: {
-      type: mongoose.Schema.ObjetId,
+      type: mongoose.Schema.ObjectId,
       ref: 'User',
    },
    updated: Date,

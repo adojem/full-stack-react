@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -30,21 +30,26 @@ const Menu = withRouter(({ history }) => (
             <Button style={isActive(history, '/users')}>Users</Button>
          </Link>
          {!auth.isAuthenticated() && (
-            <span>
+            <Fragment>
                <Link to="/signup">
                   <Button style={isActive(history, '/signup')}>Sign Up</Button>
                </Link>
                <Link to="/signin">
                   <Button style={isActive(history, '/signin')}>Sign In</Button>
                </Link>
-            </span>
+            </Fragment>
          )}
          {auth.isAuthenticated() && (
-            <span>
+            <Fragment>
                {auth.isAuthenticated().user.seller && (
-                  <Link to="/seller/shops">
-                     <Button style={isActive(history, '/seller/shops')}>My Shops</Button>
-                  </Link>
+                  <Fragment>
+                     <Link to="/seller/shops">
+                        <Button style={isActive(history, '/seller/shops/')}>My Shops</Button>
+                     </Link>
+                     <Link to="/seller/shop/new">
+                        <Button style={isActive(history, '/seller/shop/new')}>New Shops</Button>
+                     </Link>
+                  </Fragment>
                )}
                <Link to={`/user/${auth.isAuthenticated().user._id}`}>
                   <Button style={isActive(history, `/user/${auth.isAuthenticated().user._id}`)}>
@@ -54,7 +59,7 @@ const Menu = withRouter(({ history }) => (
                <Button color="inherit" onClick={() => auth.signout(() => history.push('/'))}>
                   Sign Out
                </Button>
-            </span>
+            </Fragment>
          )}
       </Toolbar>
    </AppBar>

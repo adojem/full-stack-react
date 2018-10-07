@@ -1,10 +1,10 @@
 import fs from 'fs';
-import fromidable from 'formidable';
+import formidable from 'formidable';
 import errorHandler from '../helpers/dbErrorHandler';
 import Shop from '../models/shop.model';
 
 const create = (req, res, next) => {
-   const form = new fromidable.IncomingForm();
+   const form = new formidable.IncomingForm();
    form.keepExtensions = true;
    form.parse(req, (err, fields, files) => {
       if (err) {
@@ -18,7 +18,7 @@ const create = (req, res, next) => {
          shop.image.data = fs.readFileSync(files.image.path);
          shop.image.contentType = files.image.type;
       }
-      shop((err, result) => {
+      shop.save((err, result) => {
          if (err) {
             return res.status(400).json({
                error: errorHandler.getErrorMessage(err),

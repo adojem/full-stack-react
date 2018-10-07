@@ -1,5 +1,5 @@
 const create = (params, credentials, shop) => fetch(`/api/shops/by/${params.userId}`, {
-   method: 'GET',
+   method: 'POST',
    headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${credentials.t}`,
@@ -9,4 +9,4 @@ const create = (params, credentials, shop) => fetch(`/api/shops/by/${params.user
    .then(response => response.json())
    .catch(err => console.log(err));
 
-export default { create };
+export default create;
