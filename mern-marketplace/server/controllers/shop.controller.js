@@ -40,4 +40,15 @@ const list = (req, res) => {
    });
 };
 
-export default { create, list };
+const listByOwner = (req, res) => {
+   Shop.find({ owner: req.profile._id }, (err, shops) => {
+      if (err) {
+         return res.status(400).json({
+            error: errorHandler.getErrorMessage(err),
+         });
+      }
+      return res.json(shops);
+   }).populate('owner', '_id name');
+};
+
+export default { create, list, listByOwner };
