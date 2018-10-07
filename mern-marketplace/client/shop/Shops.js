@@ -50,7 +50,6 @@ class Shops extends Component {
          if (data.error) {
             return console.log(data.error);
          }
-         console.log(data);
          return this.setState({ shops: data });
       });
    };

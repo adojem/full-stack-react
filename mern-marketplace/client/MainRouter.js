@@ -8,6 +8,7 @@ import Signin from './auth/Signin';
 import Profile from './user/Profile';
 import EditProfile from './user/EditProfile';
 import Shops from './shop/Shops';
+import MyShops from './shop/MyShops';
 import NewShop from './shop/NewShop';
 import PrivateRoute from './auth/PrivateRoute';
 
@@ -33,7 +34,7 @@ class MainRouter extends Component {
 
                <Route path="/shops/all" component={Shops} />
 
-               <PrivateRoute path="/seller/shops" />
+               <PrivateRoute path="/seller/shops" component={MyShops} />
                <PrivateRoute path="/seller/shop/new" component={NewShop} />
             </Switch>
          </div>
