@@ -19,9 +19,12 @@ import {
 } from '@material-ui/core/styles';
 import { indigo, pink } from '@material-ui/core/colors';
 
+// client side route
 import MainRouter from '../client/MainRouter';
+// server side routes
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
+import shopRoutes from './routes/shop.routes';
 
 import Template from '../template';
 
@@ -49,6 +52,7 @@ app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));
 // mount routes
 app.use('/', userRoutes);
 app.use('/', authRoutes);
+app.use('/', shopRoutes);
 
 app.get('*', (req, res) => {
    const sheetsRegistry = new SheetsRegistry();
