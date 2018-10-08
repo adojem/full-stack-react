@@ -1,5 +1,6 @@
 import fs from 'fs';
 import formidable from 'formidable';
+import _ from 'lodash';
 import errorHandler from '../helpers/dbErrorHandler';
 import Shop from '../models/shop.model';
 import profileImage from '../../client/assets/images/profile-pic.png';

@@ -11,6 +11,7 @@ import Shops from './shop/Shops';
 import Shop from './shop/Shop';
 import MyShops from './shop/MyShops';
 import NewShop from './shop/NewShop';
+import EditShop from './shop/EditShop';
 import PrivateRoute from './auth/PrivateRoute';
 
 class MainRouter extends Component {
@@ -38,6 +39,7 @@ class MainRouter extends Component {
 
                <PrivateRoute path="/seller/shops" component={MyShops} />
                <PrivateRoute path="/seller/shop/new" component={NewShop} />
+               <PrivateRoute path="/seller/shop/edit/:shopId" component={EditShop} />
             </Switch>
          </div>
       );

@@ -85,7 +85,10 @@ class MyShops extends Component {
                   <Fragment key={shop._id}>
                      <ListItem button>
                         <ListItemAvatar>
-                           <Avatar className={classes.avatar} />
+                           <Avatar
+                              src={`/api/shops/logo/${shop._id}?${new Date().getTime()}`}
+                              className={classes.avatar}
+                           />
                         </ListItemAvatar>
                         <ListItemText primary={shop.name} secondary={shop.description} />
                         {auth.isAuthenticated().user
