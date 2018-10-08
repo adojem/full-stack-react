@@ -51,7 +51,7 @@ const listByOwner = (req, res) => {
    }).populate('owner', '_id name');
 };
 
-const read = (req, res) => res.josn(req.shop);
+const read = (req, res) => res.json(req.shop);
 
 const shopById = (req, res, next, id) => {
    Shop.findById(id)

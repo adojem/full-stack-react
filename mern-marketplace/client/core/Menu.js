@@ -26,8 +26,8 @@ const Menu = withRouter(({ history }) => (
                <HomeIcon />
             </IconButton>
          </Link>
-         <Link to="/users">
-            <Button style={isActive(history, '/users')}>Users</Button>
+         <Link to="/shops/all">
+            <Button style={isActive(history, '/shops/all')}>All Shops</Button>
          </Link>
          {!auth.isAuthenticated() && (
             <Fragment>

@@ -9,7 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Icon from '@material-ui/core/Icon';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { signin } from '../user/api-auth';
+import { signin } from './api-auth';
 import auth from './auth-helper';
 
 const styles = theme => ({

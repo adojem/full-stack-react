@@ -8,6 +8,7 @@ import Signin from './auth/Signin';
 import Profile from './user/Profile';
 import EditProfile from './user/EditProfile';
 import Shops from './shop/Shops';
+import Shop from './shop/Shop';
 import MyShops from './shop/MyShops';
 import NewShop from './shop/NewShop';
 import PrivateRoute from './auth/PrivateRoute';
@@ -33,6 +34,7 @@ class MainRouter extends Component {
                <Route path="/user/:userId" component={Profile} />
 
                <Route path="/shops/all" component={Shops} />
+               <Route path="/shops/:shopId" component={Shop} />
 
                <PrivateRoute path="/seller/shops" component={MyShops} />
                <PrivateRoute path="/seller/shop/new" component={NewShop} />
