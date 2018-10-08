@@ -25,11 +25,16 @@ const styles = theme => ({
       textAlign: 'center',
       fontSize: '1.2rem',
    },
+   avatar: {
+      width: 100,
+      height: 100,
+   },
    subheading: {
       color: theme.palette.text.secondary,
    },
    shopTitle: {
       fontSize: '1.2rem',
+      marginBottom: '5px',
    },
    details: {
       padding: '1.5rem',
@@ -69,7 +74,10 @@ class Shops extends Component {
                      <Divider />
                      <ListItem button>
                         <ListItemAvatar>
-                           <Avatar className={classes.avatar} />
+                           <Avatar
+                              className={classes.avatar}
+                              src={`/api/shops/logo/${shop._id}?${new Date().getTime()}`}
+                           />
                         </ListItemAvatar>
                         <div className={classes.details}>
                            <Typography

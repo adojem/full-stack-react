@@ -2,6 +2,7 @@ import fs from 'fs';
 import formidable from 'formidable';
 import errorHandler from '../helpers/dbErrorHandler';
 import Shop from '../models/shop.model';
+import profileImage from '../../client/assets/images/profile-pic.png';
 
 const create = (req, res, next) => {
    const form = new formidable.IncomingForm();
@@ -67,10 +68,23 @@ const shopById = (req, res, next, id) => {
       });
 };
 
+const photo = (req, res, next) => {
+   const { image } = req.shop;
+   if (image.data) {
+      res.set('Content-Type', image.contentType);
+      return res.send(image.data);
+   }
+   return next();
+};
+
+const defaultPhoto = (req, res) => res.sendFile(process.cwd() + profileImage);
+
 export default {
    create,
+   defaultPhoto,
    list,
    listByOwner,
+   photo,
    read,
    shopById,
 };
