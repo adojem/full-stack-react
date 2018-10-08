@@ -51,4 +51,26 @@ const listByOwner = (req, res) => {
    }).populate('owner', '_id name');
 };
 
-export default { create, list, listByOwner };
+const read = (req, res) => res.josn(req.shop);
+
+const shopById = (req, res, next, id) => {
+   Shop.findById(id)
+      .populate('owner', '_id name')
+      .exec((err, shop) => {
+         if (err || !shop) {
+            return res.status(400).json({
+               error: 'Shop not found',
+            });
+         }
+         req.shop = shop;
+         return next();
+      });
+};
+
+export default {
+   create,
+   list,
+   listByOwner,
+   read,
+   shopById,
+};

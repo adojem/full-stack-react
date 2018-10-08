@@ -23,4 +23,10 @@ const listByOwner = (params, credentials) => fetch(`/api/shops/by/${params.userI
    .then(response => response.json())
    .catch(err => console.log(err));
 
-export { create, list, listByOwner };
+const read = params => fetch(`/api/shop/${params.shopId}`, { metod: 'GET' })
+   .then(response => response.json())
+   .catch(err => console.log(err));
+
+export {
+   create, list, listByOwner, read,
+};
