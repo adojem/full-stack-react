@@ -9,4 +9,8 @@ const create = (params, credentials, product) => fetch(`/api/products/by/${param
    .then(response => response.json())
    .catch(err => console.log(err));
 
-export { create };
+const listByShop = params => fetch(`/api/products/by/${params.shopId}`, { method: 'GET' })
+   .then(response => response.json())
+   .catch(err => console.log(err));
+
+export { create, listByShop };

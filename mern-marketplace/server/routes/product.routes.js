@@ -4,6 +4,9 @@ import shopCtrl from '../controllers/shop.controller';
 
 const router = express.Router();
 
-router.route('/api/products/by/:shopId').post(authCtrl.requireSignin, shopCtrl.isOwner);
+router
+   .route('/api/products/by/:shopId')
+   .get(shopCtrl.listByOwner)
+   .post(authCtrl.requireSignin, shopCtrl.isOwner);
 
 export default router;
