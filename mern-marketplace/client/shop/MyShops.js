@@ -17,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import Edit from '@material-ui/icons/Edit';
 import { listByOwner } from './api-shop';
 import auth from '../auth/auth-helper';
+import DeleteShop from './DeleteShop';
 
 const styles = theme => ({
    root: theme.mixins.gutters({
@@ -63,6 +64,14 @@ class MyShops extends Component {
       });
    };
 
+   removeShop = (shop) => {
+      const { shops } = this.state;
+      const updatedShops = shops;
+      const index = updatedShops.indexOf(shop);
+      updatedShops.splice(index, 1);
+      return this.setState({ shops: updatedShops });
+   };
+
    render() {
       const { classes } = this.props;
       const { shops } = this.state;
@@ -104,6 +113,7 @@ class MyShops extends Component {
                                     <Edit />
                                  </IconButton>
                               </Link>
+                              <DeleteShop shop={shop} onRemove={this.removeShop} />
                            </ListItemSecondaryAction>
                         )}
                      </ListItem>

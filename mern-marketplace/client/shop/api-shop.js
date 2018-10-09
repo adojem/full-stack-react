@@ -38,17 +38,17 @@ const update = (params, credentials, shop) => fetch(`/api/shops/${params.shopId}
    .then(response => response.json())
    .catch(err => console.log(err));
 
-const remove = (params, credentials) => fetch(`/api/ships/${params.sopId}`, {
+const remove = (params, credentials) => fetch(`/api/shops/${params.shopId}`, {
    method: 'DELETE',
    headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${credentails.t},`,
+      Authorization: `Bearer ${credentials.t}`,
    },
 })
    .then(response => response.json())
    .catch(err => console.log(err));
 
 export {
-   create, list, listByOwner, read, update,
+   create, list, listByOwner, read, remove, update,
 };
