@@ -55,20 +55,6 @@ const listByOwner = (req, res) => {
 
 const read = (req, res) => res.json(req.shop);
 
-const shopById = (req, res, next, id) => {
-   Shop.findById(id)
-      .populate('owner', '_id name')
-      .exec((err, shop) => {
-         if (err || !shop) {
-            return res.status(400).json({
-               error: 'Shop not found',
-            });
-         }
-         req.shop = shop;
-         return next();
-      });
-};
-
 const photo = (req, res, next) => {
    const { image } = req.shop;
    if (image.data) {
@@ -77,6 +63,8 @@ const photo = (req, res, next) => {
    }
    return next();
 };
+
+const defaultPhoto = (req, res) => res.sendFile(process.cwd() + profileImage);
 
 const update = (req, res) => {
    const form = new formidable.IncomingForm();
@@ -105,6 +93,17 @@ const update = (req, res) => {
    });
 };
 
+const remove = ({ shop }, res) => {
+   shop.remove((err, deletedShop) => {
+      if (err) {
+         return res.status(400).json({
+            error: errorHandler.getErrorMessage(err),
+         });
+      }
+      return res.json(deletedShop);
+   });
+};
+
 const isOwner = (req, res, next) => {
    const isOwner = req.shop && req.auth && req.shop.owner._id == req.auth._id;
    if (!isOwner) {
@@ -115,7 +114,19 @@ const isOwner = (req, res, next) => {
    return next();
 };
 
-const defaultPhoto = (req, res) => res.sendFile(process.cwd() + profileImage);
+const shopById = (req, res, next, id) => {
+   Shop.findById(id)
+      .populate('owner', '_id name')
+      .exec((err, shop) => {
+         if (err || !shop) {
+            return res.status(400).json({
+               error: 'Shop not found',
+            });
+         }
+         req.shop = shop;
+         return next();
+      });
+};
 
 export default {
    create,
@@ -125,6 +136,7 @@ export default {
    listByOwner,
    photo,
    read,
+   remove,
    shopById,
    update,
 };
