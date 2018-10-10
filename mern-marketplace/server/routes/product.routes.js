@@ -10,6 +10,8 @@ router
    .get(productCtrl.listByShop)
    .post(authCtrl.requireSignin, shopCtrl.isOwner, productCtrl.create);
 
+router.route('/api/products/latest').get(productCtrl.listLatest);
+
 router.param('shopId', shopCtrl.shopById);
 
 export default router;

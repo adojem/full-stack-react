@@ -42,4 +42,19 @@ const listByShop = (req, res) => {
       .select('-image');
 };
 
-export default { create, listByShop };
+const listLatest = (req, res) => {
+   Product.find({})
+      .sort('-created')
+      .limit(5)
+      .populate('shop', '_id name')
+      .exec((err, products) => {
+         if (err) {
+            return res.status(400).json({
+               error: errorHandler.getErrorMessage(err),
+            });
+         }
+         return res.json(products);
+      });
+};
+
+export default { create, listByShop, listLatest };

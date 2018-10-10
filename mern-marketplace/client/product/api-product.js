@@ -15,4 +15,9 @@ const listByShop = params =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create, listByShop };
+const listLatest = () =>
+   fetch('/api/products/latest', { method: 'GET' })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
+export { create, listByShop, listLatest };
