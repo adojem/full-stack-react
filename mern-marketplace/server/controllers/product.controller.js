@@ -3,6 +3,11 @@ import formidable from 'formidable';
 import errorHandler from '../helpers/dbErrorHandler';
 import Product from '../models/product.model';
 
+const read = (req, res) => {
+   req.product.image = undefined;
+   return res.json(req.product);
+};
+
 const create = (req, res) => {
    const form = new formidable.IncomingForm();
    form.keepExtensions = true;
@@ -91,4 +96,5 @@ export default {
    listLatest,
    listRelated,
    productById,
+   read,
 };

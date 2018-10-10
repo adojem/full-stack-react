@@ -1,3 +1,8 @@
+const read = params =>
+   fetch(`/api/products/${params.productId}`, { method: 'GET' })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 const create = (params, credentials, product) =>
    fetch(`/api/products/by/${params.shopId}`, {
       method: 'POST',
@@ -26,5 +31,5 @@ const listRelated = params =>
       .catch(err => console.log(err));
 
 export {
-   create, listByShop, listLatest, listRelated,
+   create, listByShop, listLatest, listRelated, read,
 };
