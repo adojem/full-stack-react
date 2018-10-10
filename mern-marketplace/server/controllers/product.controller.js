@@ -2,6 +2,7 @@ import fs from 'fs';
 import formidable from 'formidable';
 import errorHandler from '../helpers/dbErrorHandler';
 import Product from '../models/product.model';
+import profileImage from '../../client/assets/images/profile-pic.png';
 
 const read = (req, res) => {
    req.product.image = undefined;
@@ -79,7 +80,7 @@ const listRelated = (req, res) => {
 const productById = (req, res, next, id) => {
    Product.findById(id)
       .populate('shop', '_id name')
-      .exec((err, porduct) => {
+      .exec((err, product) => {
          if (err || !product) {
             return res.status(400).json({
                error: errorHandler.getErrorMessage(err),
@@ -90,8 +91,20 @@ const productById = (req, res, next, id) => {
       });
 };
 
+const photo = (req, res, next) => {
+   if (req.product.image.data) {
+      res.set('Content-Type', req.product.image.contentType);
+      return res.send(req.product.image.data);
+   }
+   return next();
+};
+
+const defaultPhoto = (req, res) => res.sendFile(process.cwd() + profileImage);
+
 export default {
    create,
+   photo,
+   defaultPhoto,
    listByShop,
    listLatest,
    listRelated,

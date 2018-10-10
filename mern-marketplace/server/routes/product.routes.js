@@ -16,6 +16,9 @@ router.route('/api/products/related/:productId').get(productCtrl.listRelated);
 
 router.route('/api/products/:productId').get(productCtrl.read);
 
+router.route('/api/product/image/:productId').get(productCtrl.photo, productCtrl.defaultPhoto);
+router.route('/api/product/defaultphoto').get(productCtrl.defaultPhoto);
+
 router.param('shopId', shopCtrl.shopById);
 router.param('productId', productCtrl.productById);
 
