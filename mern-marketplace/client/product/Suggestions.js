@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import Divider from '@material-ui/core/Divider';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
@@ -69,61 +70,70 @@ const styles = theme => ({
    },
 });
 
-const Suggestions = ({ classes }) => (
+const Suggestions = ({ classes, products, title }) => (
    <Paper className={classes.root} elevation={4}>
       <Typography variant="title" className={classes.title}>
-         Product Title
+         {title}
       </Typography>
-      <span>
-         <Card className={classes.card}>
-            <CardMedia className={classes.cover} />
-            <div className={classes.detials}>
-               <CardContent className={classes.content}>
-                  <Link to="/product/">
+      {products.map(item => (
+         <span key={item._id}>
+            <Card className={classes.card}>
+               <CardMedia
+                  className={classes.cover}
+                  image={`/api/product/image/${item._id}`}
+                  title={item.name}
+               />
+               <div className={classes.detials}>
+                  <CardContent className={classes.content}>
+                     <Link to={`/product/${item._id}`}>
+                        <Typography
+                           variant="title"
+                           component="h3"
+                           className={classes.productTitle}
+                           color="primary"
+                        >
+                           {item.name}
+                        </Typography>
+                     </Link>
+                     <Link to={`/shop/${item.shop._id}`}>
+                        <Typography variant="subheading" className={classes.subheading}>
+                           <Icon className={classes.icon}>shopping_basket</Icon>
+                           {item.shop.name}
+                        </Typography>
+                     </Link>
+                     <Typography component="p" className={classes.date}>
+                        {`Added on ${new Date(item.created).toDateString()}`}
+                     </Typography>
+                  </CardContent>
+                  <div className={classes.controls}>
                      <Typography
-                        variant="title"
+                        variant="subheading"
                         component="h3"
-                        className={classes.productTitle}
+                        className={classes.price}
                         color="primary"
                      >
-                        Item Name
+                        {`$ ${item.price}`}
                      </Typography>
-                  </Link>
-                  <Link to="/shop/">
-                     <Typography variant="subheading" className={classes.subheading}>
-                        <Icon className={classes.icon}>shopping_basket</Icon>
-                        Shop Name
-                     </Typography>
-                  </Link>
-                  <Typography component="p" className={classes.date}>
-                     Added on
-                  </Typography>
-               </CardContent>
-               <div className={classes.controls}>
-                  <Typography
-                     variant="subheading"
-                     component="h3"
-                     className={classes.price}
-                     color="primary"
-                  >
-                     $ 9.99
-                  </Typography>
-                  <span className={classes.actions}>
-                     <Link to="/product/">
-                        <IconButton color="secondary">
-                           <Visibility className={classes.iconButton} />
-                        </IconButton>
-                     </Link>
-                  </span>
+                     <span className={classes.actions}>
+                        <Link to={`/product/${item._id}`}>
+                           <IconButton color="secondary">
+                              <Visibility className={classes.iconButton} />
+                           </IconButton>
+                        </Link>
+                     </span>
+                  </div>
                </div>
-            </div>
-         </Card>
-      </span>
+            </Card>
+            <Divider />
+         </span>
+      ))}
    </Paper>
 );
 
 Suggestions.propTypes = {
    classes: PropTypes.object.isRequired,
+   products: PropTypes.array.isRequired,
+   title: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(Suggestions);
