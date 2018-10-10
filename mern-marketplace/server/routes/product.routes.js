@@ -12,6 +12,9 @@ router
 
 router.route('/api/products/latest').get(productCtrl.listLatest);
 
+router.route('/api/products/related/:productId').get(productCtrl.listRelated);
+
 router.param('shopId', shopCtrl.shopById);
+router.param('productId', productCtrl.productById);
 
 export default router;

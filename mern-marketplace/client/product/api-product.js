@@ -20,4 +20,11 @@ const listLatest = () =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create, listByShop, listLatest };
+const listRelated = params =>
+   fetch(`/api/products/related/${params.productId}`, { method: 'GET' })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
+export {
+   create, listByShop, listLatest, listRelated,
+};

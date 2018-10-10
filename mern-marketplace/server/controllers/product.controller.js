@@ -57,4 +57,38 @@ const listLatest = (req, res) => {
       });
 };
 
-export default { create, listByShop, listLatest };
+const listRelated = (req, res) => {
+   Product.find({ _id: { $ne: req.product }, category: req.product.category })
+      .limit(5)
+      .populate('shop', '_id name')
+      .exec((err, products) => {
+         if (err) {
+            return res.status(400).json({
+               error: errorHandler.getErrorMessage(err),
+            });
+         }
+         return res.json(products);
+      });
+};
+
+const productById = (req, res, next, id) => {
+   Product.findById(id)
+      .populate('shop', '_id name')
+      .exec((err, porduct) => {
+         if (err || !product) {
+            return res.status(400).json({
+               error: errorHandler.getErrorMessage(err),
+            });
+         }
+         req.product = product;
+         return next();
+      });
+};
+
+export default {
+   create,
+   listByShop,
+   listLatest,
+   listRelated,
+   productById,
+};
