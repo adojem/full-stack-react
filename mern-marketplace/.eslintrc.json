@@ -27,7 +27,8 @@
       ],
       "react/jsx-filename-extension": "off",
       "no-underscore-dangle": "off",
-      "no-shadow": "off"
+      "no-shadow": "off",
+      "implicit-arrow-linebreak": "off"
    },
    "extends": [
       "airbnb"

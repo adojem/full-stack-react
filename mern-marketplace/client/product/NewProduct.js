@@ -25,6 +25,9 @@ const styles = theme => ({
       verticalAlign: 'middle',
       marginRight: theme.spacing.unit,
    },
+   errorTxt: {
+      marginTop: theme.spacing.unit,
+   },
    title: {
       marginTop: theme.spacing.unit * 2,
       marginBottom: theme.spacing.unit * 2,
@@ -77,7 +80,7 @@ class NewProduct extends Component {
       const jwt = auth.isAuthenticated();
       create(
          {
-            shopId: this.matchh.params.shopId,
+            shopId: this.match.params.shopId,
          },
          {
             t: jwt.token,
@@ -176,7 +179,7 @@ class NewProduct extends Component {
                />
                <br />
                {error && (
-                  <Typography component="p" color="error">
+                  <Typography className={classes.errorTxt} component="p" color="error">
                      <Icon color="error" className={classes.error}>
                         error
                      </Icon>

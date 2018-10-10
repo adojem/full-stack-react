@@ -18,7 +18,7 @@ const create = (req, res) => {
          product.image.data = fs.readFileSync(files.image.path);
          product.image.contentType = files.image.type;
       }
-      product.save((err, result) => {
+      return product.save((err, result) => {
          if (err) {
             return res.status(400).json({
                error: errorHandler.getErrorMessage(err),
@@ -30,15 +30,16 @@ const create = (req, res) => {
 };
 
 const listByShop = (req, res) => {
-   Product.find({ shop: req.shop._id }, (err, product) => {
+   Product.find({ shop: req.shop._id }, (err, products) => {
       if (err) {
          return res.status(400).json({
             error: errorHandler.getErrorMessage(err),
          });
       }
+      return res.json(products);
    })
       .populate('shop', '_id name')
       .select('-image');
 };
 
-export { create, listByShop };
+export default { create, listByShop };

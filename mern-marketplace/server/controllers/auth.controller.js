@@ -35,7 +35,10 @@ const signin = (req, res) => {
          return res.json({
             token,
             user: {
-               _id: user._id, name: user.name, email: user.email, seller: user.seller,
+               _id: user._id,
+               name: user.name,
+               email: user.email,
+               seller: user.seller,
             },
          });
       },
@@ -61,7 +64,7 @@ const hasAuthorization = (req, res, next) => {
          error: 'User is not authorized',
       });
    }
-   next();
+   return next();
 };
 
 export default {
