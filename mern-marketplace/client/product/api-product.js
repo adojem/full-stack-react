@@ -21,7 +21,7 @@ const remove = (params, credentials) =>
       headers: {
          Accept: 'application/json',
          'Content-Type': 'application/json',
-         Autorization: `Bearer ${credentials.t}`,
+         Authorization: `Bearer ${credentials.t}`,
       },
    })
       .then(response => response.json())

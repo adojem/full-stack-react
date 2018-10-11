@@ -64,7 +64,7 @@ const update = (req, res, next) => {
 };
 
 const remove = (req, res) => {
-   const product = req.product;
+   const { product } = req;
    product.remove((err, deletedProduct) => {
       if (err) {
          return res.status(400).json({

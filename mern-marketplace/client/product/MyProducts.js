@@ -14,6 +14,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Edit from '@material-ui/icons/Edit';
 import Typography from '@material-ui/core/Typography';
 import { listByShop } from './api-product';
+import DeleteProduct from './DeleteProduct';
 
 const styles = theme => ({
    products: {
@@ -71,8 +72,15 @@ class MyProducts extends Component {
       this.loadProducts();
    };
 
+   removeProduct = (product) => {
+      const updatedProducts = this.state.products;
+      const index = updatedProducts.indexOf(product);
+      updatedProducts.splice(index, 1);
+      this.setState({ shops: updatedProducts });
+   };
+
    render() {
-      const { classes } = this.props;
+      const { classes, shopId } = this.props;
       const { products } = this.state;
 
       return (
@@ -119,6 +127,11 @@ class MyProducts extends Component {
                                  <Edit />
                               </IconButton>
                            </Link>
+                           <DeleteProduct
+                              product={product}
+                              shopId={shopId}
+                              onRemove={this.removeProduct}
+                           />
                         </ListItemSecondaryAction>
                      </ListItem>
                      <Divider />
