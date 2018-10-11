@@ -13,6 +13,7 @@ import MyShops from './shop/MyShops';
 import NewShop from './shop/NewShop';
 import EditShop from './shop/EditShop';
 import NewProduct from './product/NewProduct';
+import Product from './product/Product';
 import PrivateRoute from './auth/PrivateRoute';
 
 class MainRouter extends Component {
@@ -34,6 +35,8 @@ class MainRouter extends Component {
                <Route path="/signin" component={Signin} />
                <PrivateRoute path="/user/edit/:userId" component={EditProfile} />
                <Route path="/user/:userId" component={Profile} />
+
+               <Route path="/product/:productId" component={Product} />
 
                <Route path="/shops/all" component={Shops} />
                <Route path="/shops/:shopId" component={Shop} />

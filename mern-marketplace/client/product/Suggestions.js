@@ -23,7 +23,7 @@ const styles = theme => ({
       color: theme.palette.openTitle,
    },
    card: {
-      display: 'inline-block',
+      display: 'inline-flex',
       width: '100%',
    },
    details: {
@@ -83,7 +83,7 @@ const Suggestions = ({ classes, products, title }) => (
                   image={`/api/product/image/${item._id}`}
                   title={item.name}
                />
-               <div className={classes.detials}>
+               <div className={classes.details}>
                   <CardContent className={classes.content}>
                      <Link to={`/product/${item._id}`}>
                         <Typography
