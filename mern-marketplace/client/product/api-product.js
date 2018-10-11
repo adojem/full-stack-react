@@ -1,3 +1,5 @@
+import queryString from 'querystring';
+
 const read = params =>
    fetch(`/api/products/${params.productId}`, { method: 'GET' })
       .then(response => response.json())
@@ -39,6 +41,13 @@ const create = (params, credentials, product) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const list = (params) => {
+   const query = queryString.stringify(params);
+   return fetch(`/api/products?${query}`, { method: 'GET' })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+};
+
 const listByShop = params =>
    fetch(`/api/products/by/${params.shopId}`, { method: 'GET' })
       .then(response => response.json())
@@ -60,5 +69,5 @@ const listCategories = () =>
       .catch(err => console.log(err));
 
 export {
-   create, listByShop, listCategories, listLatest, listRelated, update, read, remove,
+   create, list, listByShop, listCategories, listLatest, listRelated, update, read, remove,
 };
