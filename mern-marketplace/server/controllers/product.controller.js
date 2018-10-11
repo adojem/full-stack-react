@@ -117,6 +117,17 @@ const listRelated = (req, res) => {
       });
 };
 
+const listCategories = (req, res) => {
+   Product.distinct('category', {}, (err, products) => {
+      if (err) {
+         return res.status(400).json({
+            error: errorHandler.getErrorMessage(err),
+         });
+      }
+      return res.json(products);
+   });
+};
+
 const productById = (req, res, next, id) => {
    Product.findById(id)
       .populate('shop', '_id name')
@@ -148,6 +159,7 @@ export default {
    listByShop,
    listLatest,
    listRelated,
+   listCategories,
    productById,
    read,
    remove,

@@ -54,6 +54,11 @@ const listRelated = params =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const listCategories = () =>
+   fetch('/api/products/categories', { method: 'GET' })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 export {
-   create, listByShop, listLatest, listRelated, update, read, remove,
+   create, listByShop, listCategories, listLatest, listRelated, update, read, remove,
 };
