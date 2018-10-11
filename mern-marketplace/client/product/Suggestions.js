@@ -47,6 +47,7 @@ const styles = theme => ({
    },
    icon: {
       verticalAlign: 'sub',
+      marginRight: '0.5rem',
    },
    iconButton: {
       width: '1.75rem',
@@ -54,8 +55,10 @@ const styles = theme => ({
    },
    productTitle: {
       marginBottom: '5px',
+      fontSize: '1.2rem',
    },
    subheading: {
+      fontSize: '0.9rem',
       color: 'rgba(88,114,128, 0.67)',
    },
    actions: {

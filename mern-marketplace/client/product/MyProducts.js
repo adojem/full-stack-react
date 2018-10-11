@@ -7,9 +7,11 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import Divider from '@material-ui/core/Divider';
 import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Edit from '@material-ui/icons/Edit';
 import Typography from '@material-ui/core/Typography';
 import { listByShop } from './api-product';
 
@@ -27,9 +29,13 @@ const styles = theme => ({
       maring: theme.spacing.unit * 2,
       color: theme.palette.protectedTitle,
    },
+   productTitle: {
+      fontSize: '1.1rem',
+   },
    subheading: {
       marginTop: theme.spacing.unit * 2,
       color: theme.palette.openTitle,
+      fontSize: '0.9rem',
    },
    cover: {
       width: 110,
@@ -85,7 +91,11 @@ class MyProducts extends Component {
                {products.map(product => (
                   <span key={product._id}>
                      <ListItem>
-                        <CardMedia className={classes.cover} title={product.name} />
+                        <CardMedia
+                           className={classes.cover}
+                           image={`/api/product/image/${product._id}?${new Date().getTime()}`}
+                           title={product.name}
+                        />
                         <div className={classes.details}>
                            <Typography
                               variant="headline"
@@ -104,7 +114,11 @@ class MyProducts extends Component {
                            </Typography>
                         </div>
                         <ListItemSecondaryAction>
-                           <Link to={`/seller/${product.shop._id}/${product._id}/edit`} />
+                           <Link to={`/seller/${product.shop._id}/${product._id}/edit`}>
+                              <IconButton aria-label="Edit" color="primary">
+                                 <Edit />
+                              </IconButton>
+                           </Link>
                         </ListItemSecondaryAction>
                      </ListItem>
                      <Divider />
