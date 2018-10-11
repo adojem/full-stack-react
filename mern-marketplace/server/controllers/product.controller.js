@@ -63,6 +63,18 @@ const update = (req, res, next) => {
    });
 };
 
+const remove = (req, res) => {
+   const product = req.product;
+   product.remove((err, deletedProduct) => {
+      if (err) {
+         return res.status(400).json({
+            error: errorHandler.getErrorMessage(err),
+         });
+      }
+      return res.json(deletedProduct);
+   });
+};
+
 const listByShop = (req, res) => {
    Product.find({ shop: req.shop._id }, (err, products) => {
       if (err) {
@@ -138,5 +150,6 @@ export default {
    listRelated,
    productById,
    read,
+   remove,
    update,
 };

@@ -15,6 +15,18 @@ const update = (params, credentials, product) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const remove = (params, credentials) =>
+   fetch(`/api/product/${params.shopId}/${params.productId}`, {
+      method: 'DELETE',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type': 'application/json',
+         Autorization: `Bearer ${credentials.t}`,
+      },
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 const create = (params, credentials, product) =>
    fetch(`/api/products/by/${params.shopId}`, {
       method: 'POST',
@@ -43,5 +55,5 @@ const listRelated = params =>
       .catch(err => console.log(err));
 
 export {
-   create, listByShop, listLatest, listRelated, update, read,
+   create, listByShop, listLatest, listRelated, update, read, remove,
 };
