@@ -23,6 +23,12 @@ const styles = theme => ({
       minHeight: 200,
       padding: '16px 0 10px',
    },
+   title: {
+      width: '100%',
+      padding: `${theme.spacing.unit * 3}px ${theme.spacing.unit * 2.5}px ${theme.spacing.unit
+         * 2}px`,
+      color: theme.palette.openTitle,
+   },
    tileBar: {
       backgroundColor: 'rgba(0,0,0, 0.72)',
       textAlign: 'left',
@@ -34,7 +40,7 @@ const styles = theme => ({
    },
 });
 
-const Products = ({ classes, products }) => (
+const Products = ({ classes, products, searched }) => (
    <div className={classes.root}>
       {products.length > 0 ? (
          <div className={classes.container}>
@@ -63,7 +69,11 @@ $
             </GridList>
          </div>
       ) : (
-         <Typography>No products found!</Typography>
+         searched && (
+            <Typography variant="subheading" component="h4" className={classes.title}>
+               No products found!
+            </Typography>
+         )
       )}
    </div>
 );
@@ -71,6 +81,7 @@ $
 Products.propTypes = {
    classes: PropTypes.object.isRequired,
    products: PropTypes.array.isRequired,
+   searched: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(Products);

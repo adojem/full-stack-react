@@ -6,7 +6,7 @@ import Card from '@material-ui/core/Card';
 import Divider from '@material-ui/core/Divider';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
-import { Search as SearchIcon } from '@material-ui/icons';
+import SearchIcon from '@material-ui/icons/Search';
 import { list } from './api-product';
 import Products from './Products';
 
@@ -61,7 +61,10 @@ class Search extends Component {
             if (data.error) {
                return console.log(data.error);
             }
-            return this.setState({ results: data, searched: true });
+            return this.setState({
+               results: data,
+               searched: true,
+            });
          });
       }
    };
