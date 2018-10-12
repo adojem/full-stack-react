@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
@@ -12,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { listRelated, read } from './api-product';
 import Suggestions from './Suggestions';
 
-const styles = theme => ({
+const styles = () => ({
    root: {
       flexGrow: 1,
       margin: 30,
@@ -81,7 +80,6 @@ class Product extends Component {
    componentWillReceiveProps = props => this.loadProduct(props.match.params.productId);
 
    render() {
-      console.log(this.state);
       const { product, suggestions, suggestionTitle } = this.state;
       const imageUrl = product._id
          ? `/api/product/image/${product._id}?${new Date().getTime()}`
@@ -135,6 +133,11 @@ class Product extends Component {
 
 Product.propTypes = {
    classes: PropTypes.object.isRequired,
+   match: PropTypes.shape({
+      params: PropTypes.shape({
+         productId: PropTypes.string.isRequired,
+      }).isRequired,
+   }).isRequired,
 };
 
 export default withStyles(styles)(Product);
