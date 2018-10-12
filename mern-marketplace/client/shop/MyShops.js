@@ -117,12 +117,6 @@ class MyShops extends Component {
                            </ListItemSecondaryAction>
                         )}
                      </ListItem>
-                     <Divider />
-                     <Link to={`/seller/${shop._id}/products/new`}>
-                        <Button aria-label="New Product" color="primary">
-                           New Product
-                        </Button>
-                     </Link>
                   </Fragment>
                ))}
             </List>

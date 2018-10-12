@@ -39,6 +39,7 @@ const styles = theme => ({
       lineHeight: 2.5,
       verticalAlign: 'middle',
       fontSize: '1.3rem',
+      cursor: 'pointer',
    },
    link: {
       position: 'absolute',
@@ -46,7 +47,6 @@ const styles = theme => ({
       left: '50%',
       color: '#4d6538',
       textShadow: '0 2px 12px #fff',
-      cursor: 'pointer',
       transform: 'translate(-50%, -50%)',
    },
    icon: {
@@ -72,9 +72,8 @@ class Categories extends Component {
    };
 
    listByCategory = category => () => {
-      const { categories } = this.props;
       this.setState({ selected: category });
-      list({ category: categories[0] }).then((data) => {
+      list({ category }).then((data) => {
          if (data.error) {
             return console.log(data.error);
          }
@@ -93,9 +92,10 @@ class Categories extends Component {
             </Typography>
             <div className={classes.root}>
                <GridList className={classes.gridList} cols={4}>
-                  {categories.map((tile, i) => (
+                  {categories.map(tile => (
                      <GridListTile
-                        key={i}
+                        onClick={this.listByCategory(tile)}
+                        key={tile}
                         className={classes.tileTitle}
                         style={{
                            height: '64px',
@@ -103,7 +103,7 @@ class Categories extends Component {
                               selected == tile ? 'rgba(95,139,137, .56)' : 'rgba(95,124,139, .32)',
                         }}
                      >
-                        <span className={classes.link} onClick={this.listByCategory(tile)}>
+                        <span className={classes.link}>
                            {tile}
                            <Icon className={classes.icon}>
                               {selected === tile && 'arrow_drop_down'}

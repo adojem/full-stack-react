@@ -55,7 +55,7 @@ const styles = theme => ({
    },
    productTitle: {
       marginBottom: '5px',
-      fontSize: '1.2rem',
+      fontSize: '1.1rem',
    },
    subheading: {
       fontSize: '0.9rem',

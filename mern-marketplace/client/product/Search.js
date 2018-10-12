@@ -96,7 +96,7 @@ class Search extends Component {
                   },
                }}
             >
-               <MenuItem>All</MenuItem>
+               <MenuItem value="All">All</MenuItem>
                {categories.map(option => (
                   <MenuItem key={option} value={option}>
                      {option}

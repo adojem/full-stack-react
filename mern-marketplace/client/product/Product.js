@@ -11,19 +11,21 @@ import Typography from '@material-ui/core/Typography';
 import { listRelated, read } from './api-product';
 import Suggestions from './Suggestions';
 
-const styles = () => ({
+const styles = theme => ({
    root: {
       flexGrow: 1,
       margin: 30,
    },
    flex: {
       display: 'flex',
+      alignItems: 'stretch',
    },
    card: {
       padding: '24px 40px 40px',
    },
    subheading: {
       margin: '24px',
+      color: theme.palette.openTitle,
    },
    price: {
       display: 'flex',
@@ -34,9 +36,9 @@ const styles = () => ({
    },
    media: {
       display: 'inline-block',
-      height: 200,
       width: '50%',
       marginLeft: '24px',
+      flexShrink: 0,
    },
    icon: {
       verticalAlign: 'sub',
@@ -88,6 +90,7 @@ class Product extends Component {
 
       return (
          <div className={classes.root}>
+            {console.log(this.state)}
             <Grid container spacing={40}>
                <Grid item xs={7} sm={7}>
                   <Card className={classes.card}>
