@@ -10,6 +10,7 @@ import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import { listRelated, read } from './api-product';
 import Suggestions from './Suggestions';
+import AddToCart from '../cart/AddToCart';
 
 const styles = theme => ({
    root: {
@@ -90,14 +91,17 @@ class Product extends Component {
 
       return (
          <div className={classes.root}>
-            {console.log(this.state)}
             <Grid container spacing={40}>
                <Grid item xs={7} sm={7}>
                   <Card className={classes.card}>
                      <CardHeader
                         title={product.name}
                         subheader={product.quantity > 0 ? 'In Stock' : 'Out of Stock'}
-                        action={<span className={classes.action} />}
+                        action={(
+                           <span className={classes.action}>
+                              <AddToCart item={product} />
+                           </span>
+                        )}
                      />
                      <div className={classes.flex}>
                         <CardMedia
