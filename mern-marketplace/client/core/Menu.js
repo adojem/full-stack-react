@@ -5,8 +5,11 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { Home as HomeIcon } from '@material-ui/icons';
+import Badge from '@material-ui/core/Badge';
+import HomeIcon from '@material-ui/icons/Home';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import auth from '../auth/auth-helper';
+import cart from '../cart/cart-helper';
 
 const isActive = (history, path) => {
    if (history.location.pathname === path) {
@@ -29,6 +32,18 @@ const Menu = withRouter(({ history }) => (
             </Link>
             <Link to="/shops/all">
                <Button style={isActive(history, '/shops/all')}>All Shops</Button>
+            </Link>
+            <Link to="/cart">
+               <Button style={isActive(history, '/cart')}>
+                  Cart
+                  <Badge
+                     color="secondary"
+                     style={{ marginLeft: '7px' }}
+                     badgeContent={cart.itemTotal()}
+                  >
+                     <ShoppingCartIcon />
+                  </Badge>
+               </Button>
             </Link>
          </div>
          <div
