@@ -23,6 +23,15 @@ const cart = {
          cb();
       }
    },
+
+   getCart() {
+      if (typeof window !== 'undefined') {
+         if (localStorage.getItem('cart')) {
+            return JSON.parse(localStorage.getItem('cart'));
+         }
+      }
+      return [];
+   },
 };
 
 export default cart;
