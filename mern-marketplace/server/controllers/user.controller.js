@@ -1,6 +1,8 @@
 import _ from 'lodash';
+import request from 'request';
 import User from '../models/user.model';
 import errorHandler from '../helpers/dbErrorHandler';
+import config from '../../config/config';
 
 const create = (req, res, next) => {
    const user = new User(req.body);
@@ -85,12 +87,37 @@ const isSeller = (req, res, next) => {
    return next();
 };
 
+const stripeAuth = (req, res, next) => {
+   request(
+      {
+         url: 'https://connect.stripe.com/oauth/token',
+         method: 'POST',
+         json: true,
+         body: {
+            client_secret: config.stripe_test_secret_key,
+            code: req.body.stripe,
+            grant_type: 'authorization_code',
+         },
+      },
+      (error, response, body) => {
+         if (body.error) {
+            return res.status(400).json({
+               error: body.error_description,
+            });
+         }
+         req.body.stripe_seller = body;
+         return next();
+      },
+   );
+};
+
 export default {
    create,
    userByID,
    read,
    list,
    remove,
+   stripeAuth,
    update,
    isSeller,
 };

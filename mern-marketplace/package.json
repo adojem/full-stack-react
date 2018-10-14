@@ -30,6 +30,7 @@
     "react-jss": "^8.6.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
+    "request": "^2.88.0",
     "webpack": "^4.20.2",
     "webpack-dev-middleware": "^3.4.0",
     "webpack-hot-middleware": "^2.24.2",
