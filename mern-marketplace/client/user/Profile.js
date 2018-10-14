@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -17,6 +18,8 @@ import Edit from '@material-ui/icons/Edit';
 import DeleteUser from './DeleteUser';
 import auth from '../auth/auth-helper';
 import { read } from './api-user';
+import config from '../../config/config';
+import stripeButton from '../assets/images/stripeButton.png';
 
 const styles = theme => ({
    root: theme.mixins.gutters({
@@ -28,6 +31,15 @@ const styles = theme => ({
    title: {
       margin: `${theme.spacing.unit * 3}px 0 ${theme.spacing.unit * 2}px`,
       color: theme.palette.protectedTitle,
+   },
+   stripe_connect: {
+      marginRight: '10px',
+   },
+   stripe_connected: {
+      marginRight: '10px',
+   },
+   stripeIcon: {
+      verticalAlign: 'middle',
    },
 });
 
@@ -82,8 +94,30 @@ class Profile extends Component {
                   </ListItemAvatar>
                   <ListItemText primary={user.name} secondary={user.email} />
                   {auth.isAuthenticated().user
-                     && auth.isAuthenticated().user._id === user._id && (
+                     && auth.isAuthenticated().user._id == user._id && (
                      <ListItemSecondaryAction>
+                        {user.seller && user.stripe_seller ? (
+                           <Button
+                              className={classes.stripe_connected}
+                              variant="raised"
+                              disabled
+                           >
+                                 Stripe connected
+                           </Button>
+                        ) : (
+                           <a
+                              href={`https://connect.stripe.com/oauth/authorize?response_type=code&clinet_id=${
+                                 config.stripe_connect_test_client_id
+                              }&scope=read_write`}
+                              className={classes.stripe_connect}
+                           >
+                              <img
+                                 className={classes.stripeIcon}
+                                 src={stripeButton}
+                                 alt="Connect with Stripe"
+                              />
+                           </a>
+                        )}
                         <Link to={`/user/edit/${user._id}`}>
                            <IconButton>
                               <Edit />
