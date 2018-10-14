@@ -6,9 +6,11 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import cart from './cart-helper';
+import auth from '../auth/auth-helper';
 
 const styles = theme => ({
    card: {
@@ -67,6 +69,17 @@ const styles = theme => ({
    removeButton: {
       fontSize: '0.8125rem',
    },
+   checkout: {
+      float: 'right',
+      margin: '1.5rem',
+   },
+   total: {
+      marginRight: '1rem',
+      color: 'rgb(53,97,85)',
+      fontSize: '1.1875rem',
+      fontWeight: 600,
+      verticalAlign: 'bottom',
+   },
 });
 
 class CartItems extends Component {
@@ -75,6 +88,21 @@ class CartItems extends Component {
    };
 
    componentDidMount = () => this.setState({ cartItems: cart.getCart() });
+
+   getTotal() {
+      const { cartItems } = this.state;
+      return cartItems.reduce((a, b) => a + b.quantity * b.product.price, 0);
+   }
+
+   removeItem = index => () => {
+      const cartItems = cart.removeItem(index);
+      if (cartItems.length === 0) {
+         this.props.setCheckout(false);
+      }
+      this.setState({ cartItems });
+   };
+
+   openCheckout = () => this.props.setCheckout(true);
 
    handleChange = index => (event) => {
       const { cartItems } = this.state;
@@ -88,17 +116,9 @@ class CartItems extends Component {
       cart.updateCart(index, event.target.value);
    };
 
-   removeItem = index => () => {
-      const cartItems = cart.removeItem(index);
-      if (cartItems.length === 0) {
-         this.props.setCheckout(false);
-      }
-      this.setState({ cartItems });
-   };
-
    render() {
       const { cartItems } = this.state;
-      const { classes } = this.props;
+      const { classes, checkout } = this.props;
 
       return (
          <Card className={classes.card}>
@@ -159,8 +179,23 @@ class CartItems extends Component {
                               </div>
                            </div>
                         </Card>
+                        <Divider />
                      </span>
                   ))}
+                  <div className={classes.checkout}>
+                     <span className={classes.total}>{`Total: $${this.getTotal()}`}</span>
+                     {!checkout && auth.isAuthenticated() ? (
+                        <Button color="secondary" variant="raised" onClick={this.openCheckout}>
+                           Checkout
+                        </Button>
+                     ) : (
+                        <Link to="/signin">
+                           <Button color="primary" variant="raised">
+                              Sign in to checkout
+                           </Button>
+                        </Link>
+                     )}
+                  </div>
                </Fragment>
             ) : (
                <Typography variant="subheading" component="h3" color="primary">
