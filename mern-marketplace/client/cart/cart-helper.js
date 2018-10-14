@@ -24,6 +24,15 @@ const cart = {
       }
    },
 
+   getCart() {
+      if (typeof window !== 'undefined') {
+         if (localStorage.getItem('cart')) {
+            return JSON.parse(localStorage.getItem('cart'));
+         }
+      }
+      return [];
+   },
+
    updateCart(itemIndex, quantity) {
       let cart = [];
       if (typeof window !== 'undefined') {
@@ -35,13 +44,16 @@ const cart = {
       }
    },
 
-   getCart() {
+   removeItem(itemIndex) {
+      let cart = [];
       if (typeof window !== 'undefined') {
          if (localStorage.getItem('cart')) {
-            return JSON.parse(localStorage.getItem('cart'));
+            cart = JSON.parse(localStorage.getItem('cart'));
          }
+         cart.splice(itemIndex, 1);
+         localStorage.setItem('cart', JSON.stringify(cart));
       }
-      return [];
+      return cart;
    },
 };
 

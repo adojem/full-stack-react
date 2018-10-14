@@ -88,6 +88,14 @@ class CartItems extends Component {
       cart.updateCart(index, event.target.value);
    };
 
+   removeItem = index => () => {
+      const cartItems = cart.removeItem(index);
+      if (cartItems.length === 0) {
+         this.props.setCheckout(false);
+      }
+      this.setState({ cartItems });
+   };
+
    render() {
       const { cartItems } = this.state;
       const { classes } = this.props;
@@ -141,7 +149,11 @@ class CartItems extends Component {
                                     InputLabelProps={{ shrink: true }}
                                     onChange={this.handleChange(i)}
                                  />
-                                 <Button className={classes.removeButton} color="primary">
+                                 <Button
+                                    className={classes.removeButton}
+                                    color="primary"
+                                    onClick={this.removeItem(i)}
+                                 >
                                     x Remove
                                  </Button>
                               </div>
