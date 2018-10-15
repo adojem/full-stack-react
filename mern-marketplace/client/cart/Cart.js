@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { StripeProvider } from 'react-stripe-elements';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import CartItems from './CartItems';
 import config from '../../config/config';
+import Checkout from './Checkout';
 
 const styles = () => ({
    root: {
@@ -30,7 +32,7 @@ class Cart extends Component {
    setCheckout = val => this.setState({ checkout: val });
 
    render() {
-      const { checkout } = this.state;
+      const { checkout, stripe } = this.state;
       const { classes } = this.props;
 
       return (
@@ -40,7 +42,9 @@ class Cart extends Component {
                   <CartItems checkout={checkout} setCheckout={this.setCheckout} />
                </Grid>
                <Grid item xs={6} sm={6}>
-                  Cart
+                  <StripeProvider stripe={stripe}>
+                     <Checkout />
+                  </StripeProvider>
                </Grid>
             </Grid>
          </div>
