@@ -55,6 +55,13 @@ const cart = {
       }
       return cart;
    },
+
+   emptyCart(cb) {
+      if (typeof window !== 'undefined') {
+         localStorage.removeItem('cart');
+         cb();
+      }
+   },
 };
 
 export default cart;

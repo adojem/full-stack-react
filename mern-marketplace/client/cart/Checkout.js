@@ -5,6 +5,8 @@ import Card from '@material-ui/core/Card';
 import Icon from '@material-ui/core/Icon';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import { Elements } from 'react-stripe-elements';
+import PlaceOrder from './PlaceOrder';
 
 const styles = theme => ({
    card: {
@@ -75,7 +77,6 @@ class Checkout extends Component {
    };
 
    render() {
-      console.log(this.state);
       const { checkoutDetails, error } = this.state;
       const { classes } = this.props;
 
@@ -161,6 +162,11 @@ class Checkout extends Component {
                   {error}
                </Typography>
             )}
+            <div>
+               <Elements>
+                  <PlaceOrder checkoutDetails={checkoutDetails} />
+               </Elements>
+            </div>
          </Card>
       );
    }
