@@ -29,6 +29,7 @@ const UserSchema = new mongoose.Schema({
       default: false,
    },
    stripe_seller: {},
+   stripe_customer: {},
 });
 
 UserSchema.virtual('password')

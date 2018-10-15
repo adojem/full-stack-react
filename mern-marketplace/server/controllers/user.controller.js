@@ -1,8 +1,11 @@
 import _ from 'lodash';
 import request from 'request';
+import stripe from 'stripe';
 import User from '../models/user.model';
 import errorHandler from '../helpers/dbErrorHandler';
 import config from '../../config/config';
+
+const myStripe = stripe(config.stripe_test_secret_key);
 
 const create = (req, res, next) => {
    const user = new User(req.body);
@@ -87,7 +90,7 @@ const isSeller = (req, res, next) => {
    return next();
 };
 
-const stripeAuth = (req, res, next) => {
+const stripe_auth = (req, res, next) => {
    request(
       {
          url: 'https://connect.stripe.com/oauth/token',
@@ -111,13 +114,57 @@ const stripeAuth = (req, res, next) => {
    );
 };
 
+const stripeCustomer = (req, res, next) => {
+   if (req.profile.stripe_customer) {
+      // update stripe customer
+      myStripe.customers.update(
+         req.profile.stripe_customer,
+         {
+            source: req.body.token,
+         },
+         (err, customer) => {
+            if (err) {
+               return res.status(400).json({
+                  error: errorHandler.getErrorMessage(err),
+               });
+            }
+            req.body.order.payment_id = customer.id;
+            return next();
+         },
+      );
+   }
+   else {
+      myStripe.customers
+         .create({
+            email: req.profile.email,
+            source: req.body.token,
+         })
+         .then((customer) => {
+            User.update(
+               { _id: req.profile._id },
+               { $set: { stripe_customer: customer._id } },
+               (err, order) => {
+                  if (err) {
+                     return res.status(400).json({
+                        error: errorHandler.getErrorMessage(err),
+                     });
+                  }
+                  req.body.order.payment_id = customer.id;
+                  return next();
+               },
+            );
+         });
+   }
+};
+
 export default {
    create,
    userByID,
    read,
    list,
    remove,
-   stripeAuth,
+   stripe_auth,
+   stripeCustomer,
    update,
    isSeller,
 };

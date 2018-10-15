@@ -139,6 +139,11 @@ class Profile extends Component {
 
 Profile.propTypes = {
    classes: PropTypes.object.isRequired,
+   match: PropTypes.shape({
+      params: PropTypes.shape({
+         userId: PropTypes.string.isRequired,
+      }).isRequired,
+   }).isRequired,
 };
 
 export default withStyles(styles)(Profile);
