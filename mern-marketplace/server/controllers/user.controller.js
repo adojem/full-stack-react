@@ -157,8 +157,40 @@ const stripeCustomer = (req, res, next) => {
    }
 };
 
+const createCharge = (req, res, next) => {
+   if (!req.profile.stripe_seller) {
+      return res.status(400).json({
+         error: 'Please connect your Stripe account',
+      });
+   }
+   myStripe.tokens
+      .create(
+         {
+            customer: req.order.payment_id,
+         },
+         {
+            stripe_account: req.profile.stripe_seller.stripe_user_id,
+         },
+      )
+      .then((token) => {
+         myStripe.charges
+            .create(
+               {
+                  amount: req.body.amount * 100,
+                  currency: 'usd',
+                  source: token.id,
+               },
+               {
+                  stripe_account: req.profile.stripe_seller.stripe_user_id,
+               },
+            )
+            .then(() => next());
+      });
+};
+
 export default {
    create,
+   createCharge,
    userByID,
    read,
    list,
