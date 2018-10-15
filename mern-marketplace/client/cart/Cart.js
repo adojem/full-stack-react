@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import CartItems from './CartItems';
+import config from '../../config/config';
 
 const styles = () => ({
    root: {
@@ -14,6 +15,16 @@ const styles = () => ({
 class Cart extends Component {
    state = {
       checkout: false,
+      stripe: null,
+   };
+
+   componentDidMount = () => {
+      if (window.Stripe) {
+         return this.setState({ stripe: window.Stripe(config.stripe_test_api_key) });
+      }
+      return document.querySelector('#stripe-js').addEventListener('load', () => {
+         this.setState({ stripe: window.Stripe(config.stripe_test_api_key) });
+      });
    };
 
    setCheckout = val => this.setState({ checkout: val });
