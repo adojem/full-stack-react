@@ -11,4 +11,15 @@ const create = (params, credentials, order, token) =>
       .then(response => response.json())
       .catch(err => console.lgo(err));
 
-export { create };
+const listByShop = (params, credentials) =>
+   fetch(`/api/orders/shop/${params.shopId}`, {
+      method: 'GET',
+      headers: {
+         Accept: 'application/json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
+export { create, listByShop };
