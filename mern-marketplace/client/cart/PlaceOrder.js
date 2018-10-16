@@ -7,6 +7,8 @@ import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import auth from '../auth/auth-helper';
+import cart from './cart-helper';
+import { create } from '../order/api-order';
 
 const styles = theme => ({
    subheading: {
@@ -43,12 +45,31 @@ class PlaceOrder extends Component {
    };
 
    placeOrder = () => {
-      const { stripe } = this.props;
+      const { stripe, checkoutDetails } = this.props;
       stripe.createToken().then((payload) => {
          if (payload.error) {
             return this.setState({ error: payload.error.message });
          }
          const jwt = auth.isAuthenticated();
+         return create(
+            {
+               userId: jwt.user._id,
+            },
+            {
+               t: jwt.token,
+            },
+            checkoutDetails,
+            payload.token.id,
+         ).then((data) => {
+            if (data.error) {
+               return this.setState({ error: data.error });
+            }
+            return cart.emptyCart(() =>
+               this.setState({
+                  orderId: data._id,
+                  redirect: true,
+               }));
+         });
       });
    };
 
@@ -89,15 +110,15 @@ class PlaceOrder extends Component {
                      {error}
                   </Typography>
                )}
-               <Button
-                  color="secondary"
-                  variant="raised"
-                  className={classes.btn}
-                  onClick={this.placeOrder}
-               >
-                  Place Order
-               </Button>
             </div>
+            <Button
+               color="secondary"
+               variant="raised"
+               className={classes.btn}
+               onClick={this.placeOrder}
+            >
+               Place Order
+            </Button>
          </Fragment>
       );
    }
