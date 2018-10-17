@@ -16,7 +16,9 @@ router
       orderCtrl.create,
    );
 
-router.route('/api/orders/shop/:shopId').get(authCtrl.requireSignin, shopCtrl.isOwner);
+router
+   .route('/api/orders/shop/:shopId')
+   .get(authCtrl.requireSignin, shopCtrl.isOwner, orderCtrl.listByShop);
 
 router.param('userId', userCtrl.userByID);
 router.param('shopId', shopCtrl.shopById);

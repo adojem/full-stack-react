@@ -17,6 +17,7 @@ import Product from './product/Product';
 import EditProduct from './product/EditProduct';
 import Cart from './cart/Cart';
 import StripeConnect from './user/StripeConnect';
+import ShopOrders from './order/ShopOrders';
 import PrivateRoute from './auth/PrivateRoute';
 
 class MainRouter extends Component {
@@ -45,6 +46,8 @@ class MainRouter extends Component {
 
                <Route path="/shops/all" component={Shops} />
                <Route path="/shops/:shopId" component={Shop} />
+
+               <PrivateRoute path="/seller/orders/:shop/:shopId" component={ShopOrders} />
 
                <PrivateRoute path="/seller/shops" component={MyShops} />
                <PrivateRoute path="/seller/shop/new" component={NewShop} />
