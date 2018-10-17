@@ -185,6 +185,7 @@ class EditProduct extends Component {
                />
                <br />
                <TextField
+                  type="number"
                   id="quantity"
                   label="Quantity"
                   className={classes.textField}

@@ -94,7 +94,7 @@ class Profile extends Component {
                   </ListItemAvatar>
                   <ListItemText primary={user.name} secondary={user.email} />
                   {auth.isAuthenticated().user
-                     && auth.isAuthenticated().user._id == user._id && (
+                     && auth.isAuthenticated().user._id === user._id && (
                      <ListItemSecondaryAction>
                         {user.seller && user.stripe_seller ? (
                            <Button
@@ -106,7 +106,7 @@ class Profile extends Component {
                            </Button>
                         ) : (
                            <a
-                              href={`https://connect.stripe.com/oauth/authorize?response_type=code&clinet_id=${
+                              href={`https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${
                                  config.stripe_connect_test_client_id
                               }&scope=read_write`}
                               className={classes.stripe_connect}

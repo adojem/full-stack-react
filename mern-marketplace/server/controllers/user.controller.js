@@ -140,7 +140,7 @@ const stripeCustomer = (req, res, next) => {
             source: req.body.token,
          })
          .then((customer) => {
-            User.update(
+            User.updateOne(
                { _id: req.profile._id },
                { $set: { stripe_customer: customer._id } },
                (err, order) => {

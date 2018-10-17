@@ -9,7 +9,7 @@ const create = (params, credentials, order, token) =>
       body: JSON.stringify({ order, token }),
    })
       .then(response => response.json())
-      .catch(err => console.lgo(err));
+      .catch(err => console.log(err));
 
 const listByShop = (params, credentials) =>
    fetch(`/api/orders/shop/${params.shopId}`, {

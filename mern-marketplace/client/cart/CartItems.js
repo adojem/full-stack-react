@@ -189,11 +189,11 @@ class CartItems extends Component {
                            Checkout
                         </Button>
                      ) : (
-                        <Link to="/signin">
+                        !checkout && (
                            <Button color="primary" variant="raised">
                               Sign in to checkout
                            </Button>
-                        </Link>
+                        )
                      )}
                   </div>
                </Fragment>
@@ -209,6 +209,8 @@ class CartItems extends Component {
 
 CartItems.propTypes = {
    classes: PropTypes.object.isRequired,
+   checkout: PropTypes.bool.isRequired,
+   setCheckout: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(CartItems);

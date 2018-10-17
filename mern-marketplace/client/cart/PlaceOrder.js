@@ -44,8 +44,22 @@ class PlaceOrder extends Component {
       redirect: false,
    };
 
+   componentDidMount = () => {
+      const { checkoutDetails } = this.props;
+      if (localStorage.getItem('cart')) {
+         const products = JSON.parse(localStorage.getItem('cart'));
+         this.setState({
+            order: {
+               ...checkoutDetails,
+               products,
+            },
+         });
+      }
+   };
+
    placeOrder = () => {
-      const { stripe, checkoutDetails } = this.props;
+      const { stripe } = this.props;
+      const { order } = this.state;
       stripe.createToken().then((payload) => {
          if (payload.error) {
             return this.setState({ error: payload.error.message });
@@ -58,7 +72,7 @@ class PlaceOrder extends Component {
             {
                t: jwt.token,
             },
-            checkoutDetails,
+            order,
             payload.token.id,
          ).then((data) => {
             if (data.error) {

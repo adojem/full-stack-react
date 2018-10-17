@@ -41,11 +41,13 @@ class Cart extends Component {
                <Grid item xs={6} sm={6}>
                   <CartItems checkout={checkout} setCheckout={this.setCheckout} />
                </Grid>
-               <Grid item xs={6} sm={6}>
-                  <StripeProvider stripe={stripe}>
-                     <Checkout />
-                  </StripeProvider>
-               </Grid>
+               {checkout && (
+                  <Grid item xs={6} sm={6}>
+                     <StripeProvider stripe={stripe}>
+                        <Checkout />
+                     </StripeProvider>
+                  </Grid>
+               )}
             </Grid>
          </div>
       );

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import queryString from 'querystring';
+import queryString from 'query-string';
 import auth from '../auth/auth-helper';
 import { stripeUpdate } from './api-user';
 
@@ -37,7 +37,7 @@ class StripeConnect extends Component {
       const { location } = this.props;
       const parsed = queryString.parse(location.search);
       if (parsed.error) {
-         this.setState({ error: true });
+         return this.setState({ error: true });
       }
       if (parsed.code) {
          this.setState({ connecting: true, error: false });
@@ -60,7 +60,7 @@ class StripeConnect extends Component {
             }
             return this.setState({
                error: false,
-               connecting: true,
+               connecting: false,
                connected: true,
             });
          });

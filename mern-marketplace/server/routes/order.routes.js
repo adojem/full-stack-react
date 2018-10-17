@@ -20,3 +20,5 @@ router.route('/api/orders/shop/:shopId').get(authCtrl.requireSignin, shopCtrl.is
 
 router.param('userId', userCtrl.userByID);
 router.param('shopId', shopCtrl.shopById);
+
+export default router;
