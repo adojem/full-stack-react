@@ -45,12 +45,10 @@ class PlaceOrder extends Component {
    };
 
    componentDidMount = () => {
-      const { checkoutDetails } = this.props;
       if (localStorage.getItem('cart')) {
          const products = JSON.parse(localStorage.getItem('cart'));
          this.setState({
             order: {
-               ...checkoutDetails,
                products,
             },
          });
@@ -58,7 +56,7 @@ class PlaceOrder extends Component {
    };
 
    placeOrder = () => {
-      const { stripe } = this.props;
+      const { stripe, checkoutDetails } = this.props;
       const { order } = this.state;
       stripe.createToken().then((payload) => {
          if (payload.error) {
@@ -72,7 +70,10 @@ class PlaceOrder extends Component {
             {
                t: jwt.token,
             },
-            order,
+            {
+               ...checkoutDetails,
+               ...order,
+            },
             payload.token.id,
          ).then((data) => {
             if (data.error) {
@@ -90,6 +91,7 @@ class PlaceOrder extends Component {
    render() {
       const { error, redirect, orderId } = this.state;
       const { classes } = this.props;
+
       if (redirect) {
          return <Redirect to={`/order/${orderId}`} />;
       }

@@ -149,6 +149,7 @@ const listCategories = (req, res) => {
 };
 
 const decreaseQuantity = (req, res, next) => {
+   console.log(req.body);
    const bulkOps = req.body.order.products.map(item => ({
       updateOne: {
          filter: {

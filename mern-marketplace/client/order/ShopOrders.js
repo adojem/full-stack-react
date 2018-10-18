@@ -12,6 +12,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import auth from '../auth/auth-helper';
 import { listByShop } from './api-order';
+import ProductOrderEdit from './ProductOrderEdit';
 
 const styles = theme => ({
    root: theme.mixins.gutters({
@@ -79,7 +80,7 @@ class ShopOrders extends Component {
             <Typography variant="title" className={classes.title}>
                {`Orders in ${this.match.params.shop}`}
             </Typography>
-            <List>
+            <List dense>
                {orders.map((order, index) => (
                   <span key={order._id}>
                      <ListItem button onClick={this.handleClick(index)}>
@@ -91,6 +92,11 @@ class ShopOrders extends Component {
                      </ListItem>
                      <Divider />
                      <Collapse component="li" in={open === index} timeout="auto" unmountOnExit>
+                        <ProductOrderEdit
+                           shopId={this.match.params.shopId}
+                           order={order}
+                           orderIndex={index}
+                        />
                         <div className={classes.customerDetails}>
                            <Typography
                               variant="subheading"
