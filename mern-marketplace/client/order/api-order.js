@@ -53,6 +53,19 @@ const getStatusValues = () =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const processCharget = (params, credentials, product) =>
+   fetch(`/api/order/${params.orderId}/charge/${params.userId}/${params.shopId}`, {
+      method: 'PUT',
+      headers: {
+         Accept: 'application/json',
+         'Cotnent-Type': 'application.json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+      body: JSON.stringify(product),
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 export {
-   cancelProduct, create, getStatusValues, listByShop, update,
+   cancelProduct, create, getStatusValues, listByShop, processCharget, update,
 };

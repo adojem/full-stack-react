@@ -27,11 +27,16 @@ router
    .put(authCtrl.requireSignin, shopCtrl.isOwner, productCtrl.increaseQuantity, orderCtrl.update);
 
 router
+   .route('/api/order/:orderId/charge/:userId/:shopId')
+   .put(authCtrl.requireSignin, shopCtrl.isOwner, userCtrl.createCharge, orderCtrl.update);
+
+router
    .route('/api/order/status/:shopId')
    .put(authCtrl.requireSignin, shopCtrl.isOwner, orderCtrl.update);
 
 router.param('userId', userCtrl.userByID);
 router.param('shopId', shopCtrl.shopById);
 router.param('productId', productCtrl.productById);
+router.param('orderId', orderCtrl.orderById);
 
 export default router;

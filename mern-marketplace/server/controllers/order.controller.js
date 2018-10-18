@@ -52,9 +52,24 @@ const update = (req, res) => {
 
 const getStatusValues = (req, res) => res.json(CartItem.schema.path('status').enumValues);
 
+const orderById = (req, res, next, id) => {
+   Order.findById(id)
+      .populate('products.product', 'name price')
+      .exec((err, order) => {
+         if (err || !order) {
+            return res.status(400).json({
+               error: 'Order not found',
+            });
+         }
+         req.order = order;
+         return next();
+      });
+};
+
 export default {
    create,
    getStatusValues,
    listByShop,
+   orderById,
    update,
 };
