@@ -8,7 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { getStatusValues, update } from './api-order';
+import { cancelProduct, getStatusValues, update } from './api-order';
 import auth from '../auth/auth-helper';
 
 const styles = theme => ({
@@ -34,6 +34,10 @@ const styles = theme => ({
       margin: 0,
       color: '#5f7c8b',
       fontSize: '0.875rem',
+   },
+   textField: {
+      width: '10rem',
+      marginRight: '1rem',
    },
 });
 
@@ -67,8 +71,26 @@ class ProductOrderEdit extends Component {
       const jwt = auth.isAuthenticated();
 
       if (event.target.value === 'Cancelled') {
-      }
-      else if (event.target.value === 'Processing') {
+         cancelProduct(
+            {
+               shopId,
+               productId: product.product._id,
+            },
+            {
+               t: jwt.token,
+            },
+            {
+               cartItemId: product._id,
+               status: event.target.value,
+               quantity: product.quantity,
+            },
+         ).then((data) => {
+            if (data.error) {
+               return this.setState({ error: 'Status not updated, try again' });
+            }
+            updateOrders(orderIndex, order);
+            return this.setState({ error: '' });
+         });
       }
       else {
          update(
@@ -95,9 +117,8 @@ class ProductOrderEdit extends Component {
    };
 
    render() {
-      const { error, open, statusValues } = this.state;
+      const { error, statusValues } = this.state;
       const { classes, order, shopId } = this.props;
-      console.log(statusValues);
 
       return (
          <Fragment>
@@ -126,6 +147,7 @@ class ProductOrderEdit extends Component {
                                  </div>
                               )}
                            />
+
                            <TextField
                               select
                               id="select-status"

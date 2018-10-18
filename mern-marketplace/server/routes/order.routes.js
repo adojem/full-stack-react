@@ -23,10 +23,15 @@ router
 router.route('/api/order/status_values').get(orderCtrl.getStatusValues);
 
 router
+   .route('/api/order/:shopId/cancel/:productId')
+   .put(authCtrl.requireSignin, shopCtrl.isOwner, productCtrl.increaseQuantity, orderCtrl.update);
+
+router
    .route('/api/order/status/:shopId')
    .put(authCtrl.requireSignin, shopCtrl.isOwner, orderCtrl.update);
 
 router.param('userId', userCtrl.userByID);
 router.param('shopId', shopCtrl.shopById);
+router.param('productId', productCtrl.productById);
 
 export default router;

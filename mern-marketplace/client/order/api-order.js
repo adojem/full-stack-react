@@ -27,7 +27,20 @@ const update = (params, credentials, product) =>
       method: 'PUT',
       headers: {
          Accept: 'application/json',
-         'Content-type': 'applicaiton/json',
+         'Content-type': 'application/json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+      body: JSON.stringify(product),
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
+const cancelProduct = (params, credentials, product) =>
+   fetch(`/api/order/${params.shopId}/cancel/${params.productId}`, {
+      method: 'PUT',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type': 'application/json',
          Authorization: `Bearer ${credentials.t}`,
       },
       body: JSON.stringify(product),
@@ -41,5 +54,5 @@ const getStatusValues = () =>
       .catch(err => console.log(err));
 
 export {
-   create, getStatusValues, listByShop, update,
+   cancelProduct, create, getStatusValues, listByShop, update,
 };

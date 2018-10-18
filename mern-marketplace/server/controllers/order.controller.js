@@ -29,7 +29,7 @@ const listByShop = (req, res) => {
 };
 
 const update = (req, res) => {
-   Order.update(
+   Order.updateOne(
       {
          'products._id': req.body.cartItemId,
       },

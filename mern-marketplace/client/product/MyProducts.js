@@ -88,11 +88,12 @@ class MyProducts extends Component {
             <Typography variant="title" className={classes.title}>
                Products
                <span className={classes.addButton}>
-                  <Link to={`/seller/${this.shopId}/products/new`} />
-                  <Button color="primary" variant="raised">
-                     <Icon className={classes.leftIcon}>add_box</Icon>
-                     New Product
-                  </Button>
+                  <Link to={`/seller/${this.shopId}/products/new`}>
+                     <Button color="primary" variant="raised">
+                        <Icon className={classes.leftIcon}>add_box</Icon>
+                        New Product
+                     </Button>
+                  </Link>
                </span>
             </Typography>
             <List dense>
