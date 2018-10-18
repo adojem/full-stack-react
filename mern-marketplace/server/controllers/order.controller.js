@@ -1,4 +1,4 @@
-import { Order } from '../models/order.model';
+import { Order, CartItem } from '../models/order.model';
 import errorHandler from '../helpers/dbErrorHandler';
 
 const create = (req, res) => {
@@ -28,7 +28,10 @@ const listByShop = (req, res) => {
       });
 };
 
+const getStatusValues = (req, res) => res.json(CartItem.schema.path('status').enumValues);
+
 export default {
    create,
+   getStatusValues,
    listByShop,
 };

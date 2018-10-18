@@ -12,8 +12,8 @@ const CartItemSchema = new mongoose.Schema({
    },
    status: {
       type: String,
-      default: 'Not processsed',
-      enum: ['Not processsed', 'Processsing', 'Shipped', 'Delivered', 'Cancelled'],
+      default: 'Not processed',
+      enum: ['Not processed', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
    },
 });
 

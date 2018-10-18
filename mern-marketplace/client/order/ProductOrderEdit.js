@@ -5,11 +5,13 @@ import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import { getStatusValues } from './api-order';
 
 const styles = theme => ({
-   nessted: {
+   nested: {
       paddingLeft: theme.spacing.unit,
       paddingBottom: 0,
    },
@@ -40,8 +42,22 @@ class ProductOrderEdit extends Component {
       error: '',
    };
 
+   componentDidMount = () => this.loadStatusValues();
+
+   loadStatusValues = () => {
+      getStatusValues().then((data) => {
+         if (data.error) {
+            return this.setState({ error: 'Could not get status' });
+         }
+         return this.setState({
+            statusValues: data,
+            error: '',
+         });
+      });
+   };
+
    render() {
-      const { error } = this.state;
+      const { error, statusValues } = this.state;
       const { classes, order, shopId } = this.props;
 
       return (
@@ -49,11 +65,11 @@ class ProductOrderEdit extends Component {
             <Typography component="span" color="error" className={classes.statusMessage}>
                {error}
             </Typography>
-            <List>
+            <List disablePadding style={{ backgroundColor: '#f8f8f8' }}>
                {order.products.map((item, index) => (
                   <span key={item._id}>
                      {item.shop === shopId && (
-                        <ListItem button className={classes.nessted}>
+                        <ListItem button className={classes.nested}>
                            <ListItemText
                               primary={(
                                  <div>
@@ -84,7 +100,11 @@ class ProductOrderEdit extends Component {
                               }}
                               margin="normal"
                            >
-                              Status Value
+                              {statusValues.map(option => (
+                                 <MenuItem key={option} value={option}>
+                                    {option}
+                                 </MenuItem>
+                              ))}
                            </TextField>
                         </ListItem>
                      )}

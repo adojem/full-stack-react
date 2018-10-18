@@ -20,6 +20,8 @@ router
    .route('/api/orders/shop/:shopId')
    .get(authCtrl.requireSignin, shopCtrl.isOwner, orderCtrl.listByShop);
 
+router.route('/api/order/status_values').get(orderCtrl.getStatusValues);
+
 router.param('userId', userCtrl.userByID);
 router.param('shopId', shopCtrl.shopById);
 

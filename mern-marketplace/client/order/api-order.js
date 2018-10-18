@@ -22,4 +22,9 @@ const listByShop = (params, credentials) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create, listByShop };
+const getStatusValues = () =>
+   fetch('/api/order/status_values', { method: 'GET' })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
+export { create, getStatusValues, listByShop };
