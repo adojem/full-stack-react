@@ -28,10 +28,33 @@ const listByShop = (req, res) => {
       });
 };
 
+const update = (req, res) => {
+   Order.update(
+      {
+         'products._id': req.body.cartItemId,
+      },
+      {
+         $set: {
+            'products.$.status': req.body.status,
+         },
+      },
+      (err, order) => {
+         if (err) {
+            return res.status(400).send({
+               error: errorHandler.getErrorMessage(err),
+            });
+         }
+
+         return res.json(order);
+      },
+   );
+};
+
 const getStatusValues = (req, res) => res.json(CartItem.schema.path('status').enumValues);
 
 export default {
    create,
    getStatusValues,
    listByShop,
+   update,
 };

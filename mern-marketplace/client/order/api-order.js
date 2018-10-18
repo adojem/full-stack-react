@@ -22,9 +22,24 @@ const listByShop = (params, credentials) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const update = (params, credentials, product) =>
+   fetch(`/api/order/status/${params.shopId}`, {
+      method: 'PUT',
+      headers: {
+         Accept: 'application/json',
+         'Content-type': 'applicaiton/json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+      body: JSON.stringify(product),
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 const getStatusValues = () =>
    fetch('/api/order/status_values', { method: 'GET' })
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create, getStatusValues, listByShop };
+export {
+   create, getStatusValues, listByShop, update,
+};

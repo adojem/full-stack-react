@@ -8,7 +8,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { getStatusValues } from './api-order';
+import { getStatusValues, update } from './api-order';
+import auth from '../auth/auth-helper';
 
 const styles = theme => ({
    nested: {
@@ -38,6 +39,7 @@ const styles = theme => ({
 
 class ProductOrderEdit extends Component {
    state = {
+      open: 0,
       statusValues: [],
       error: '',
    };
@@ -56,9 +58,46 @@ class ProductOrderEdit extends Component {
       });
    };
 
+   handleStatusChange = productIndex => (event) => {
+      const {
+         order, orderIndex, shopId, updateOrders,
+      } = this.props;
+      order.products[productIndex].status = event.target.value;
+      const product = order.products[productIndex];
+      const jwt = auth.isAuthenticated();
+
+      if (event.target.value === 'Cancelled') {
+      }
+      else if (event.target.value === 'Processing') {
+      }
+      else {
+         update(
+            {
+               shopId,
+            },
+            {
+               t: jwt.token,
+            },
+            {
+               cartItemId: product._id,
+               status: event.target.value,
+            },
+         ).then((data) => {
+            if (data.error) {
+               return this.setState({
+                  error: 'Status not updated, try again',
+               });
+            }
+            updateOrders(orderIndex, order);
+            return this.setState({ error: '' });
+         });
+      }
+   };
+
    render() {
-      const { error, statusValues } = this.state;
+      const { error, open, statusValues } = this.state;
       const { classes, order, shopId } = this.props;
+      console.log(statusValues);
 
       return (
          <Fragment>
@@ -99,6 +138,7 @@ class ProductOrderEdit extends Component {
                                  },
                               }}
                               margin="normal"
+                              onChange={this.handleStatusChange(index)}
                            >
                               {statusValues.map(option => (
                                  <MenuItem key={option} value={option}>
@@ -120,7 +160,9 @@ class ProductOrderEdit extends Component {
 ProductOrderEdit.propTypes = {
    classes: PropTypes.object.isRequired,
    order: PropTypes.object.isRequired,
+   orderIndex: PropTypes.number.isRequired,
    shopId: PropTypes.string.isRequired,
+   updateOrders: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(ProductOrderEdit);

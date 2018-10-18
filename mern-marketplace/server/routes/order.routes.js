@@ -22,6 +22,10 @@ router
 
 router.route('/api/order/status_values').get(orderCtrl.getStatusValues);
 
+router
+   .route('/api/order/status/:shopId')
+   .put(authCtrl.requireSignin, shopCtrl.isOwner, orderCtrl.update);
+
 router.param('userId', userCtrl.userByID);
 router.param('shopId', shopCtrl.shopById);
 

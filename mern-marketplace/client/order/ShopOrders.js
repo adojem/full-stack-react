@@ -71,6 +71,12 @@ class ShopOrders extends Component {
 
    handleClick = index => () => this.setState({ open: index });
 
+   updateOrders = (index, updatedOrder) => {
+      const { orders } = this.state;
+      orders[index] = updatedOrder;
+      this.setState({ orders });
+   };
+
    render() {
       const { open, orders } = this.state;
       const { classes } = this.props;
@@ -96,6 +102,7 @@ class ShopOrders extends Component {
                            shopId={this.match.params.shopId}
                            order={order}
                            orderIndex={index}
+                           updateOrders={this.updateOrders}
                         />
                         <div className={classes.customerDetails}>
                            <Typography
