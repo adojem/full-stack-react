@@ -4,6 +4,11 @@
   "main": "index.js",
   "author": "Shama Hoque",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon",
+    "build": "webpack --config webpack.config.client.production.js && webpack --mode=production --config webpack.config.server.js",
+    "start": "NODE_ENV=production node ./dist/server.generated.js"
+  },
   "dependencies": {
     "express": "^4.16.3",
     "mongodb": "^3.1.6",

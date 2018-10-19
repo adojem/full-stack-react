@@ -8,7 +8,7 @@ const config = {
    mode: 'development',
    devtool: 'eval-source-map',
    entry: [
-      'webpack-hot-middleware/clinet?reload=true',
+      'webpack-hot-middleware/client?reload=true',
       path.join(CURRENT_WORKING_DIR, 'client/main.js'),
    ],
    output: {
