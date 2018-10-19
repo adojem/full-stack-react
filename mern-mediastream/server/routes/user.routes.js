@@ -1,5 +1,6 @@
 import express from 'express';
 import userCtrl from '../controllers/user.controller';
+import authCtrl from '../controllers/auth.controller';
 
 const router = express.Router();
 
@@ -10,9 +11,9 @@ router
 
 router
    .route('/api/users/:userId')
-   .get(userCtrl.read)
-   .put(userCtrl.update)
-   .delete(userCtrl.remove);
+   .get(authCtrl.requireSign, userCtrl.read)
+   .put(authCtrl.requireSign, authCtrl.hasAuthorization, userCtrl.update)
+   .delete(authCtrl.requireSign, authCtrl.hasAuthorization, userCtrl.remove);
 
 router.param('userId', userCtrl.userByID);
 
