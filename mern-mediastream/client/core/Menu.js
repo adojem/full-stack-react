@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import HomeIcon from '@material-ui/icons/Home';
+import auth from '../auth/auth-helper';
 
 const isActive = (history, path) => {
    if (history.location.pathname === path) {
@@ -38,7 +39,14 @@ const Menu = ({ history }) => (
                <Link to="/signin">
                   <Button style={isActive(history, '/signin')}>Sign In</Button>
                </Link>
-               <Button color="inherit">Sign Out</Button>
+               <Button
+                  color="inherit"
+                  onClick={() => {
+                     auth.signout(() => history.push('/'));
+                  }}
+               >
+                  Sign Out
+               </Button>
             </span>
          </div>
       </Toolbar>

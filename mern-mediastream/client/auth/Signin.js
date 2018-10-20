@@ -9,6 +9,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import { signin } from './api-auth';
+import auth from './auth-helper';
 
 const styles = theme => ({
    card: {
@@ -57,7 +59,13 @@ class Signin extends Component {
          email: email || undefined,
          password: password || undefined,
       };
-      this.setState({ redirectToReferrer: true });
+
+      signin(user).then((data) => {
+         if (data.error) {
+            return this.setState({ error: data.error });
+         }
+         return auth.authenticate(data, () => this.setState({ redirectToReferrer: true }));
+      });
    };
 
    render() {
