@@ -1,5 +1,5 @@
 import React from 'react';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -34,7 +34,7 @@ const Home = ({ classes }) => (
 );
 
 Home.propTypes = {
-   classes: Proptypes.object.isRequired,
+   classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Home);

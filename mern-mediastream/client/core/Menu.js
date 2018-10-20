@@ -29,13 +29,13 @@ const Menu = ({ history }) => (
          </div>
          <div style={{ position: 'absolute', right: '10px' }}>
             <span style={{ float: 'right' }}>
-               <Link to="/users" style={{ textDecoration: 'none' }}>
+               <Link to="/users">
                   <Button style={isActive(history, '/users')}>Users</Button>
                </Link>
-               <Link to="/signup" style={{ textDecoration: 'none' }}>
+               <Link to="/signup">
                   <Button style={isActive(history, '/signup')}>Sign Up</Button>
                </Link>
-               <Link to="/signin" style={{ textDecoration: 'none' }}>
+               <Link to="/signin">
                   <Button style={isActive(history, '/signin')}>Sign In</Button>
                </Link>
                <Button color="inherit">Sign Out</Button>
