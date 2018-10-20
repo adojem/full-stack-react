@@ -14,6 +14,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import { create } from './api-user';
 
 const styles = theme => ({
    card: {
@@ -58,9 +59,20 @@ class Signup extends Component {
    handleChange = name => event => this.setState({ [name]: event.target.value });
 
    clickSubmit = () => {
-      this.setState({
-         error: '',
-         open: true,
+      const { name, email, password } = this.state;
+      const user = {
+         name: name || undefined,
+         email: email || undefined,
+         password: password || undefined,
+      };
+      create(user).then((data) => {
+         if (data.error) {
+            return this.setState({ error: data.error });
+         }
+         return this.setState({
+            error: '',
+            open: true,
+         });
       });
    };
 
