@@ -10,4 +10,16 @@ const create = user =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create };
+const read = (params, credentials) =>
+   fetch(`/api/users/${params.userId}`, {
+      method: 'GET',
+      headers: {
+         Accept: 'application/josn',
+         'Content-Type': 'application/json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
+export { create, read };

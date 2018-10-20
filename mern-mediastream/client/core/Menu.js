@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -30,23 +30,35 @@ const Menu = ({ history }) => (
          </div>
          <div style={{ position: 'absolute', right: '10px' }}>
             <span style={{ float: 'right' }}>
-               <Link to="/users">
-                  <Button style={isActive(history, '/users')}>Users</Button>
-               </Link>
-               <Link to="/signup">
-                  <Button style={isActive(history, '/signup')}>Sign Up</Button>
-               </Link>
-               <Link to="/signin">
-                  <Button style={isActive(history, '/signin')}>Sign In</Button>
-               </Link>
-               <Button
-                  color="inherit"
-                  onClick={() => {
-                     auth.signout(() => history.push('/'));
-                  }}
-               >
-                  Sign Out
-               </Button>
+               {!auth.isAuthenticated() && (
+                  <Fragment>
+                     <Link to="/signup">
+                        <Button style={isActive(history, '/signup')}>Sign Up</Button>
+                     </Link>
+                     <Link to="/signin">
+                        <Button style={isActive(history, '/signin')}>Sign In</Button>
+                     </Link>
+                  </Fragment>
+               )}
+               {auth.isAuthenticated() && (
+                  <Fragment>
+                     <Link to={`/user/${auth.isAuthenticated().user._id}`}>
+                        <Button
+                           style={isActive(history, `/user/${auth.isAuthenticated().user._id}`)}
+                        >
+                           My Profile
+                        </Button>
+                     </Link>
+                     <Button
+                        color="inherit"
+                        onClick={() => {
+                           auth.signout(() => history.push('/'));
+                        }}
+                     >
+                        Sign Out
+                     </Button>
+                  </Fragment>
+               )}
             </span>
          </div>
       </Toolbar>
