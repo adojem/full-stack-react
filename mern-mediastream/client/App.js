@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { red, brown } from '@material-ui/core/colors';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import MainRouter from './MainRouter';
 
 const theme = createMuiTheme({
@@ -31,6 +32,7 @@ const theme = createMuiTheme({
 const App = () => (
    <BrowserRouter>
       <MuiThemeProvider theme={theme}>
+         <CssBaseline />
          <MainRouter />
       </MuiThemeProvider>
    </BrowserRouter>
