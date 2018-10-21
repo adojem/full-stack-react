@@ -22,4 +22,17 @@ const read = (params, credentials) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create, read };
+const update = (params, credentials, user) =>
+   fetch(`/api/users/${params.userId}`, {
+      method: 'PUT',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type': 'application/json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+      body: JSON.stringify(user),
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
+export { create, read, update };

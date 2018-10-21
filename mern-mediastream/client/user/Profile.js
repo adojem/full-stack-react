@@ -42,7 +42,7 @@ class Profile extends Component {
 
    componentDidMount = () => this.init(this.match.params.userId);
 
-   componentWillReceiveProps = props => this.init(props.match.params.userId);
+   componentDidUpdate = props => this.init(props.match.params.userId);
 
    init = (userId) => {
       const jwt = auth.isAuthenticated();
@@ -79,7 +79,7 @@ class Profile extends Component {
                      && auth.isAuthenticated().user._id === user._id && (
                      <ListItemSecondaryAction>
                         <Link to={`/user/edit/${user._id}`}>
-                           <IconButton>
+                           <IconButton aria-label="Edit" color="primary">
                               <EditIcon />
                            </IconButton>
                         </Link>
