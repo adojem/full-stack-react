@@ -35,4 +35,18 @@ const update = (params, credentials, user) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create, read, update };
+const remove = (params, credentials) =>
+   fetch(`/api/users/${params.userId}`, {
+      method: 'DELETE',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type': 'application/json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
+export {
+   create, read, remove, update,
+};

@@ -4,7 +4,7 @@ import app from './express';
 
 // Connection URL
 mongoose.Promise = global.Promise;
-mongoose.connect(
+mongoose.set('useCreateIndex', true).connect(
    config.mongoUri,
    { useNewUrlParser: true },
 );

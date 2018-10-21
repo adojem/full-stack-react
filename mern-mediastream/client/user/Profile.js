@@ -16,6 +16,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Person from '@material-ui/icons/Person';
 import auth from '../auth/auth-helper';
 import { read } from './api-user';
+import DeleteUser from './DeleteUser';
 
 const styles = theme => ({
    root: theme.mixins.gutters({
@@ -42,7 +43,7 @@ class Profile extends Component {
 
    componentDidMount = () => this.init(this.match.params.userId);
 
-   componentDidUpdate = props => this.init(props.match.params.userId);
+   componentWillReceiveProps = props => this.init(props.match.params.userId);
 
    init = (userId) => {
       const jwt = auth.isAuthenticated();
@@ -83,6 +84,7 @@ class Profile extends Component {
                               <EditIcon />
                            </IconButton>
                         </Link>
+                        <DeleteUser userid={user._id} />
                      </ListItemSecondaryAction>
                   )}
                </ListItem>
