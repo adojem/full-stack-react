@@ -24,6 +24,7 @@ import MainRouter from '../client/MainRouter';
 
 import userRoutes from './routes/user.routes';
 import authRoutes from './routes/auth.routes';
+import mediaRoutes from './routes/media.routes';
 import template from '../template';
 
 // comment out before building for production
@@ -47,6 +48,7 @@ app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));
 // mount routes
 app.use('/', userRoutes);
 app.use('/', authRoutes);
+app.use('/', mediaRoutes);
 
 app.get('*', (req, res) => {
    const sheetsRegistry = new SheetsRegistry();
