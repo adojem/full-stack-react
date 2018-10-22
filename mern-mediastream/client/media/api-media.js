@@ -1,4 +1,4 @@
-const create = (parmas, credentials, media) =>
+const create = (params, credentials, media) =>
    fetch(`/api/media/new/${params.userId}`, {
       method: 'POST',
       headers: {
@@ -10,4 +10,4 @@ const create = (parmas, credentials, media) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export default { create };
+export { create };

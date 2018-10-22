@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import HomeIcon from '@material-ui/icons/Home';
 import auth from '../auth/auth-helper';
 
@@ -42,6 +43,12 @@ const Menu = ({ history }) => (
                )}
                {auth.isAuthenticated() && (
                   <Fragment>
+                     <Link to="/media/new">
+                        <Button style={isActive(history, '/media/new')}>
+                           <AddBoxIcon style={{ marginRight: '8px' }} />
+                           Add Media
+                        </Button>
+                     </Link>
                      <Link to={`/user/${auth.isAuthenticated().user._id}`}>
                         <Button
                            style={isActive(history, `/user/${auth.isAuthenticated().user._id}`)}
