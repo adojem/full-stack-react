@@ -38,4 +38,74 @@ const create = (req, res, next) => {
    });
 };
 
-export default { create };
+const video = (req, res) => {
+   gridfs.findOne(
+      {
+         _id: req.media._id,
+      },
+      (err, file) => {
+         if (err) {
+            return res.status(400).json({
+               error: errorHandler.getErrorMessage(err),
+            });
+         }
+         if (!file) {
+            return res.status(404).json({
+               error: 'No video found',
+            });
+         }
+
+         if (req.headers.range) {
+            const parts = req.headers.range.replace(/bytes=/, '').split('-');
+            const partiallstart = parts[0];
+            const partialend = parts[1];
+
+            const start = parseInt(partiallstart, 10);
+            const end = partialend ? parseInt(partialend, 10) : file.length - 1;
+            const chunksize = end - start + 1;
+
+            res.writeHead(206, {
+               'Accept-Ranges': 'bytes',
+               'Content-Lnegth': chunksize,
+               'Content-Range': `bytes ${start}-${end}/${file.length}`,
+               'Content-Type': file.contentType,
+            });
+
+            return gridfs
+               .createReadStream({
+                  _id: file._id,
+                  range: {
+                     startPos: start,
+                     endPos: end,
+                  },
+               })
+               .pipe(res);
+         }
+
+         res.header('Content-Lenth', file.length);
+         res.header('Content-Type', file.contentType);
+
+         return gridfs
+            .createReadStream({
+               _id: file._id,
+            })
+            .pipe(res);
+      },
+   );
+};
+
+const mediaById = (req, res, next, id) => {
+   Media.findById(id)
+      .populate('postedBy', '_id name')
+      .exec((err, media) => {
+         if (err || !media) {
+            return res.status(400).json({
+               error: 'Media not found',
+            });
+         }
+         req.media = media;
+         return next();
+      });
+};
+
+export default { create, mediaById, video };

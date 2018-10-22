@@ -7,6 +7,9 @@ const router = express.Router();
 
 router.route('/api/media/new/:userId').post(authCtrl.requireSign, mediaCtrl.create);
 
+router.route('/api/medias/video/:mediaId').get(mediaCtrl.video);
+
 router.param('userId', userCtrl.userByID);
+router.param('mediaId', mediaCtrl.mediaById);
 
 export default router;
