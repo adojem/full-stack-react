@@ -16,7 +16,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import Person from '@material-ui/icons/Person';
 import auth from '../auth/auth-helper';
 import { read } from './api-user';
+import { listByUser } from '../media/api-media';
 import DeleteUser from './DeleteUser';
+import MediaList from '../media/MediaList';
 
 const styles = theme => ({
    root: theme.mixins.gutters({
@@ -29,6 +31,10 @@ const styles = theme => ({
       margin: `${theme.spacing.unit * 3}px 0 ${theme.spacing.unit * 2}px`,
       color: theme.palette.protectedTitle,
    },
+   avatar: {
+      backgroundColor: theme.palette.primary.light,
+      color: theme.palette.primary.contrastText,
+   },
 });
 
 class Profile extends Component {
@@ -37,6 +43,7 @@ class Profile extends Component {
       this.state = {
          user: '',
          redirectToSignin: false,
+         media: [],
       };
       this.match = match;
    }
@@ -51,12 +58,18 @@ class Profile extends Component {
          if (data.error) {
             return this.setState({ redirectToSignin: true });
          }
-         return this.setState({ user: data });
+         this.setState({ user: data });
+         return listByUser({ userId: data._id }).then((media) => {
+            if (media.error) {
+               return console.log(media.error);
+            }
+            return this.setState({ media });
+         });
       });
    };
 
    render() {
-      const { redirectToSignin, user } = this.state;
+      const { media, redirectToSignin, user } = this.state;
       const { classes } = this.props;
 
       if (redirectToSignin) {
@@ -68,12 +81,10 @@ class Profile extends Component {
             <Typography className={classes.title} variant="h6">
                Profile
             </Typography>
-            <List>
+            <List dense>
                <ListItem>
                   <ListItemAvatar>
-                     <Avatar>
-                        <Person />
-                     </Avatar>
+                     <Avatar className={classes.avatar}>{user.name && user.name[0]}</Avatar>
                   </ListItemAvatar>
                   <ListItemText primary={user.name} secondary={user.email} />
                   {auth.isAuthenticated().user
@@ -92,6 +103,7 @@ class Profile extends Component {
                <ListItem>
                   <ListItemText primary={`Joined: ${new Date(user.created).toDateString()}`} />
                </ListItem>
+               <MediaList media={media} />
             </List>
          </Paper>
       );

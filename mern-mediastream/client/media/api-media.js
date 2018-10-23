@@ -21,4 +21,15 @@ const listPopular = () =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create, listPopular };
+const listByUser = params =>
+   fetch(`/api/media/by/${params.userId}`, {
+      method: 'GET',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type': 'application/json',
+      },
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
+export { create, listByUser, listPopular };
