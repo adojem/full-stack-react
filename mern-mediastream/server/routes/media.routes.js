@@ -13,6 +13,8 @@ router.route('/api/media/popular').get(mediaCtrl.listPopular);
 
 router.route('/api/media/by/:userId').get(mediaCtrl.listByUser);
 
+router.route('/api/media/:mediaId').get(mediaCtrl.incrementViews, mediaCtrl.read);
+
 router.param('userId', userCtrl.userByID);
 router.param('mediaId', mediaCtrl.mediaById);
 

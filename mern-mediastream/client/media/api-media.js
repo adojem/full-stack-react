@@ -1,3 +1,10 @@
+import config from '../../config/config';
+
+const read = params =>
+   fetch(`${config.serverUrl}/api/media/${params.mediaId}`, { method: 'GET' })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 const create = (params, credentials, media) =>
    fetch(`/api/media/new/${params.userId}`, {
       method: 'POST',
@@ -32,4 +39,6 @@ const listByUser = params =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create, listByUser, listPopular };
+export {
+   create, listByUser, listPopular, read,
+};

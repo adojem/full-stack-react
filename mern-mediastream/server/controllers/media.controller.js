@@ -12,6 +12,8 @@ mongoose.connection.on('connected', () => {
    gridfs = Grid(mongoose.connection.db);
 });
 
+const read = (req, res) => res.json(req.media);
+
 const create = (req, res, next) => {
    const form = new formidable.IncomingForm();
    form.keepExtensions = true;
@@ -123,6 +125,23 @@ const listByUser = (req, res) => {
       });
 };
 
+const incrementViews = (req, res, next) => {
+   Media.findByIdAndUpdate(
+      req.media._id,
+      {
+         $inc: { views: 1 },
+      },
+      { new: true },
+   ).exec((err, result) => {
+      if (err) {
+         return res.status(400).json({
+            error: errorHandler.getErrorMessage(err),
+         });
+      }
+      return next();
+   });
+};
+
 const mediaById = (req, res, next, id) => {
    Media.findById(id)
       .populate('postedBy', '_id name')
@@ -139,8 +158,10 @@ const mediaById = (req, res, next, id) => {
 
 export default {
    create,
+   incrementViews,
    listByUser,
    listPopular,
    mediaById,
+   read,
    video,
 };
