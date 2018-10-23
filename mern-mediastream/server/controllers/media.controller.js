@@ -124,5 +124,8 @@ const mediaById = (req, res, next, id) => {
 };
 
 export default {
-   create, listPopular, mediaById, video,
+   create,
+   listPopular,
+   mediaById,
+   video,
 };

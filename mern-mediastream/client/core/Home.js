@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import MediaList from '../media/MediaList';
 import { listPopular } from '../media/api-media';
 
 const styles = theme => ({
@@ -36,6 +35,7 @@ class Home extends Component {
    };
 
    render() {
+      const { media } = this.state;
       const { classes } = this.props;
 
       return (
@@ -43,10 +43,7 @@ class Home extends Component {
             <Typography variant="h5" component="h2" className={classes.title}>
                Popular videos
             </Typography>
-            <CardMedia className={classes.media} image={seashellImg} title="Unicorn Shells" />
-            <CardContent>
-               <Typography component="p">Welcome to the Mern Mediastream home page</Typography>
-            </CardContent>
+            <MediaList className={classes.media} media={media} />
          </Card>
       );
    }
