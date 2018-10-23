@@ -94,6 +94,21 @@ const video = (req, res) => {
    );
 };
 
+const listPopular = (req, res) => {
+   Media.find({})
+      .limit(10)
+      .populate('postedBy', '_id name')
+      .sort('-views')
+      .exec((err, posts) => {
+         if (err) {
+            return res.status(400).json({
+               error: errorHandler.getErrorMessage(err),
+            });
+         }
+         return res.json(posts);
+      });
+};
+
 const mediaById = (req, res, next, id) => {
    Media.findById(id)
       .populate('postedBy', '_id name')
@@ -108,4 +123,6 @@ const mediaById = (req, res, next, id) => {
       });
 };
 
-export default { create, mediaById, video };
+export default {
+   create, listPopular, mediaById, video,
+};

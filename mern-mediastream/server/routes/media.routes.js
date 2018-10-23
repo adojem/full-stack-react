@@ -9,6 +9,8 @@ router.route('/api/media/new/:userId').post(authCtrl.requireSign, mediaCtrl.crea
 
 router.route('/api/medias/video/:mediaId').get(mediaCtrl.video);
 
+router.route('/api/media/popular').get(mediaCtrl.listPopular);
+
 router.param('userId', userCtrl.userByID);
 router.param('mediaId', mediaCtrl.mediaById);
 

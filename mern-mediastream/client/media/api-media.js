@@ -10,4 +10,15 @@ const create = (params, credentials, media) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create };
+const listPopular = () =>
+   fetch('/api/media/popular', {
+      method: 'GET',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type': 'application/json',
+      },
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
+export { create, listPopular };
