@@ -42,6 +42,7 @@ const create = (req, res, next) => {
 
 const update = (req, res, next) => {
    let { media } = req;
+   console.log('before', media);
    media = _.extend(media, req.body);
    media.updated = Date.now();
    media.save((err) => {
@@ -157,7 +158,7 @@ const incrementViews = (req, res, next) => {
 };
 
 const isPoster = (req, res, next) => {
-   const isPoster = req.media && req.auth && req.media.postedBy._id === req.auth._id;
+   const isPoster = req.media && req.auth && req.media.postedBy._id == req.auth._id;
    if (!isPoster) {
       return res.status(403).json({
          error: 'User is not authorized',

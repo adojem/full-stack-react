@@ -16,7 +16,7 @@ router.route('/api/media/by/:userId').get(mediaCtrl.listByUser);
 router
    .route('/api/media/:mediaId')
    .get(mediaCtrl.incrementViews, mediaCtrl.read)
-   .put(authCtrl.requireSign);
+   .put(authCtrl.requireSign, mediaCtrl.isPoster, mediaCtrl.update);
 
 router.param('userId', userCtrl.userByID);
 router.param('mediaId', mediaCtrl.mediaById);

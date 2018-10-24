@@ -19,10 +19,10 @@ const create = (params, credentials, media) =>
 
 const update = (params, credentials, media) =>
    fetch(`/api/media/${params.mediaId}`, {
-      method: 'GET',
+      method: 'PUT',
       headers: {
          Accept: 'application/json',
-         'Content-Teyp': 'applicaiton/json',
+         'Content-Type': 'application/json',
          Authorization: `Bearer ${credentials.t}`,
       },
       body: JSON.stringify(media),

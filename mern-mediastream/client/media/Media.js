@@ -76,7 +76,7 @@ const Media = ({ classes, media }) => {
                   && auth.isAuthenticated().user._id === media.postedBy._id && (
                   <ListItemSecondaryAction>
                      <Link to={`/media/edit/${media._id}`}>
-                        <IconButton>
+                        <IconButton aria-label="Edit" color="secondary">
                            <EditIcon />
                         </IconButton>
                      </Link>
