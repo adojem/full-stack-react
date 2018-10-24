@@ -1,6 +1,6 @@
 import formidable from 'formidable';
 import fs from 'fs';
-
+import _ from 'lodash';
 import mongoose from 'mongoose';
 import Grid from 'gridfs-stream';
 import errorHandler from '../helpers/dbErrorHandler';
@@ -37,6 +37,20 @@ const create = (req, res, next) => {
          }
          return res.json(result);
       });
+   });
+};
+
+const update = (req, res, next) => {
+   let { media } = req;
+   media = _.extend(media, req.body);
+   media.updated = Date.now();
+   media.save((err) => {
+      if (err) {
+         return res.status(400).json({
+            error: errorHandler.getErrorMessage(err),
+         });
+      }
+      return res.json(media);
    });
 };
 
@@ -142,6 +156,16 @@ const incrementViews = (req, res, next) => {
    });
 };
 
+const isPoster = (req, res, next) => {
+   const isPoster = req.media && req.auth && req.media.postedBy._id === req.auth._id;
+   if (!isPoster) {
+      return res.status(403).json({
+         error: 'User is not authorized',
+      });
+   }
+   return next();
+};
+
 const mediaById = (req, res, next, id) => {
    Media.findById(id)
       .populate('postedBy', '_id name')
@@ -159,9 +183,11 @@ const mediaById = (req, res, next, id) => {
 export default {
    create,
    incrementViews,
+   isPoster,
    listByUser,
    listPopular,
    mediaById,
    read,
+   update,
    video,
 };

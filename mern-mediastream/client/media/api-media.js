@@ -17,6 +17,19 @@ const create = (params, credentials, media) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const update = (params, credentials, media) =>
+   fetch(`/api/media/${params.mediaId}`, {
+      method: 'GET',
+      headers: {
+         Accept: 'application/json',
+         'Content-Teyp': 'applicaiton/json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+      body: JSON.stringify(media),
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 const listPopular = () =>
    fetch('/api/media/popular', {
       method: 'GET',
@@ -40,5 +53,5 @@ const listByUser = params =>
       .catch(err => console.log(err));
 
 export {
-   create, listByUser, listPopular, read,
+   create, listByUser, listPopular, read, update,
 };
