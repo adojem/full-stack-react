@@ -7,6 +7,7 @@ import Signin from './auth/Signin';
 import Profile from './user/Profile';
 import EditProfile from './user/EditProfile';
 import NewMedia from './media/NewMedia';
+import PlayMeida from './media/PlayMedia';
 import PrivateRoute from './auth/PrivateRoute';
 
 class MainRooter extends Component {
@@ -29,6 +30,8 @@ class MainRooter extends Component {
                <Route path="/user/:userId" component={Profile} />
 
                <PrivateRoute path="/media/new" component={NewMedia} />
+
+               <Route path="/media/:mediaId" component={PlayMeida} />
             </Switch>
          </Fragment>
       );
