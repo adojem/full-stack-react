@@ -30,6 +30,18 @@ const update = (params, credentials, media) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const remove = (params, credentials) =>
+   fetch(`/api/media/${params.mediaId}`, {
+      method: 'DELETE',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type:': 'application/json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 const listPopular = () =>
    fetch('/api/media/popular', {
       method: 'GET',
