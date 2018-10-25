@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { read } from './api-media';
 import Media from './Media';
+import RelatedMedia from './RelatedMedia';
+import { listRelated, read } from './api-media';
 
 const styles = theme => ({});
 
@@ -11,6 +12,7 @@ class PlayMedia extends Component {
       super();
       this.state = {
          media: { postedBy: {} },
+         relatedMedia: [],
       };
       this.match = match;
    }
@@ -24,17 +26,26 @@ class PlayMedia extends Component {
          if (data.error) {
             return this.setState({ error: data.error });
          }
-         return this.setState({ media: data });
+         this.setState({ media: data });
+         listRelated({
+            mediaId: data._id,
+         }).then((data) => {
+            if (data.error) {
+               return console.log(data.error);
+            }
+            return this.setState({ relatedMedia: data });
+         });
       });
    };
 
    render() {
-      const { media } = this.state;
+      const { media, relatedMedia } = this.state;
       const { classes } = this.props;
 
       return (
          <div className={classes.root}>
             <Media media={media} />
+            <RelatedMedia media={relatedMedia} />
          </div>
       );
    }

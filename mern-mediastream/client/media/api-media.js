@@ -61,7 +61,7 @@ const listRelated = params =>
          'Content-Type': 'application/json',
       },
    })
-      .then(response => response.json)
+      .then(response => response.json())
       .catch(err => console.log(err));
 
 const listByUser = params =>
