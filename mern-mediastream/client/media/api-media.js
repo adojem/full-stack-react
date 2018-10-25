@@ -35,7 +35,7 @@ const remove = (params, credentials) =>
       method: 'DELETE',
       headers: {
          Accept: 'application/json',
-         'Content-Type:': 'application/json',
+         'Content-Type': 'application/json',
          Authorization: `Bearer ${credentials.t}`,
       },
    })
@@ -65,5 +65,5 @@ const listByUser = params =>
       .catch(err => console.log(err));
 
 export {
-   create, listByUser, listPopular, read, update,
+   create, listByUser, listPopular, read, remove, update,
 };

@@ -15,6 +15,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import EditIcon from '@material-ui/icons/Edit';
 import auth from '../auth/auth-helper';
+import DeleteMedia from './DeleteMedia';
 
 const styles = theme => ({
    card: {
@@ -80,6 +81,7 @@ const Media = ({ classes, media }) => {
                            <EditIcon />
                         </IconButton>
                      </Link>
+                     <DeleteMedia mediaId={media._id} mediaTitle={media.title} />
                   </ListItemSecondaryAction>
                )}
             </ListItem>

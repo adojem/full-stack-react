@@ -55,7 +55,7 @@ const update = (req, res, next) => {
    });
 };
 
-const remove = (req, res, next) => {
+const remove = (req, res) => {
    const { media } = req;
    media.remove((err, deletedMedia) => {
       if (err) {
