@@ -53,6 +53,17 @@ const listPopular = () =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const listRelated = params =>
+   fetch(`/api/media/related/${params.mediaId}`, {
+      method: 'GET',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type': 'application/json',
+      },
+   })
+      .then(response => response.json)
+      .catch(err => console.log(err));
+
 const listByUser = params =>
    fetch(`/api/media/by/${params.userId}`, {
       method: 'GET',
@@ -65,5 +76,5 @@ const listByUser = params =>
       .catch(err => console.log(err));
 
 export {
-   create, listByUser, listPopular, read, remove, update,
+   create, listByUser, listPopular, listRelated, read, remove, update,
 };

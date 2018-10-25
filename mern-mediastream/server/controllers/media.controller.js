@@ -139,6 +139,21 @@ const listPopular = (req, res) => {
       });
 };
 
+const listRelated = (req, res) => {
+   Media.find({ _id: { $ne: req.media }, genre: req.media.genre })
+      .limit(4)
+      .sort('-views')
+      .populate('postedBy', '_id name')
+      .exec((err, posts) => {
+         if (err) {
+            return res.status(400).json({
+               error: errorHandler.getErrorMessage(err),
+            });
+         }
+         return res.json(posts);
+      });
+};
+
 const listByUser = (req, res) => {
    Media.find({ postedBy: req.profile._id })
       .populate('postedBy', '_id name')
@@ -200,6 +215,7 @@ export default {
    isPoster,
    listByUser,
    listPopular,
+   listRelated,
    mediaById,
    read,
    remove,
