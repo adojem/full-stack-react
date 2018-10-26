@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import Media from './Media';
 import RelatedMedia from './RelatedMedia';
 import { listRelated, read } from './api-media';
 
-const styles = theme => ({});
+const styles = () => ({
+   root: {
+      flexGrow: 1,
+      margin: 30,
+   },
+});
 
 class PlayMedia extends Component {
    constructor({ match }) {
@@ -20,6 +26,8 @@ class PlayMedia extends Component {
    componentDidMount = () => {
       this.loadMedia(this.match.params.mediaId);
    };
+
+   componentWillReceiveProps = ({ match }) => this.loadMedia(match.params.mediaId);
 
    loadMedia = (mediaId) => {
       read({ mediaId }).then((data) => {
@@ -40,12 +48,21 @@ class PlayMedia extends Component {
 
    render() {
       const { media, relatedMedia } = this.state;
+      const nextUrl = relatedMedia.length > 0 ? `/media/${relatedMedia[0]._id}` : '';
       const { classes } = this.props;
 
       return (
          <div className={classes.root}>
-            <Media media={media} />
-            <RelatedMedia media={relatedMedia} />
+            <Grid container spacing={24}>
+               <Grid item xs={12} md={8}>
+                  <Media media={media} nextUrl={nextUrl} />
+               </Grid>
+               {relatedMedia.length > 0 && (
+                  <Grid item xs={12} md={4}>
+                     <RelatedMedia media={relatedMedia} />
+                  </Grid>
+               )}
+            </Grid>
          </div>
       );
    }

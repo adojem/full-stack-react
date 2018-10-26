@@ -87,7 +87,7 @@ const RelatedMedia = ({ classes, media }) => (
                            {item.title}
                         </Typography>
                      </Link>
-                     <Typography className={classes.subheading} variant="subheading">
+                     <Typography className={classes.subheading} variant="subtitle1">
                         {item.genre}
                      </Typography>
                      <Typography className={classes.date} component="p">

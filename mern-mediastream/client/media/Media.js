@@ -16,6 +16,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import EditIcon from '@material-ui/icons/Edit';
 import auth from '../auth/auth-helper';
 import DeleteMedia from './DeleteMedia';
+import MediaPlayer from './MediaPlayer';
 
 const styles = theme => ({
    card: {
@@ -36,7 +37,7 @@ const styles = theme => ({
    },
 });
 
-const Media = ({ classes, media }) => {
+const Media = ({ classes, media, nextUrl }) => {
    const mediaUrl = media._id ? `/api/media/video/${media._id}` : null;
 
    return (
@@ -47,21 +48,7 @@ const Media = ({ classes, media }) => {
             subheader={media.genre}
             action={<span className={classes.action}>{`${media.views} views`}</span>}
          />
-         <ReactPlayer
-            controls
-            url={mediaUrl}
-            width="inherit"
-            height="inherit"
-            sytle={{ maxHeight: '500px' }}
-            config={{
-               attributes: {
-                  style: {
-                     height: '100%',
-                     width: '100%',
-                  },
-               },
-            }}
-         />
+         <MediaPlayer srcUrl={mediaUrl} nextUrl={nextUrl} />
          <List>
             <ListItem>
                <ListItemAvatar>
@@ -97,6 +84,7 @@ const Media = ({ classes, media }) => {
 Media.propTypes = {
    classes: PropTypes.object.isRequired,
    media: PropTypes.object,
+   nextUrl: PropTypes.string,
 };
 
 export default withStyles(styles)(Media);
