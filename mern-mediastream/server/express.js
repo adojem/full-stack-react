@@ -19,6 +19,7 @@ import {
 } from '@material-ui/core/styles';
 import { red, brown } from '@material-ui/core/colors';
 
+import { matchRoutes } from 'react-router-config'; // For SSR
 import MainRouter from '../client/MainRouter';
 // end
 
@@ -26,6 +27,10 @@ import userRoutes from './routes/user.routes';
 import authRoutes from './routes/auth.routes';
 import mediaRoutes from './routes/media.routes';
 import template from '../template';
+
+// For SSR wwith data
+import routes from '../client/routeConfig';
+import 'isomorphic-fetch';
 
 // comment out before building for production
 import devBundle from './devBundle';
@@ -35,6 +40,18 @@ const app = express();
 
 // comment out before building for production
 devBundle.compile(app);
+
+// For SSR with data
+const loadBranchData = (location) => {
+   const branch = matchRoutes(routes, location);
+   // console.log('branch', branch);
+   const promises = branch.map(
+      ({ route, match }) =>
+         (route.loadData ? route.loadData(branch[0].match.params) : Promise.resolve(null)),
+   );
+
+   return Promise.all(promises);
+};
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -49,6 +66,8 @@ app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));
 app.use('/', userRoutes);
 app.use('/', authRoutes);
 app.use('/', mediaRoutes);
+
+app.get('/favicon.ico', (req, res) => res.status(204));
 
 app.get('*', (req, res) => {
    const sheetsRegistry = new SheetsRegistry();
@@ -76,25 +95,30 @@ app.get('*', (req, res) => {
    });
    const generateClassName = createGenerateClassName();
    const context = {};
-   const markup = ReactDOMServer.renderToString(
-      <StaticRouter location={req.url} context={context}>
-         <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-            <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
-               <MainRouter />
-            </MuiThemeProvider>
-         </JssProvider>
-      </StaticRouter>,
-   );
-   if (context.url) {
-      return res.redirect(303, context.url);
-   }
-   const css = sheetsRegistry.toString();
-   return res.status(200).send(
-      template({
-         markup,
-         css,
-      }),
-   );
+
+   loadBranchData(req.url)
+      .then((data) => {
+         const markup = ReactDOMServer.renderToString(
+            <StaticRouter location={req.url} context={context}>
+               <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
+                  <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
+                     <MainRouter data={data} />
+                  </MuiThemeProvider>
+               </JssProvider>
+            </StaticRouter>,
+         );
+         if (context.url) {
+            return res.redirect(303, context.url);
+         }
+         const css = sheetsRegistry.toString();
+         return res.status(200).send(
+            template({
+               markup,
+               css,
+            }),
+         );
+      })
+      .catch(err => res.status(500).send({ error: 'Could not load React view with data' }));
 });
 
 // Catch unauthorized errors

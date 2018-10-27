@@ -83,9 +83,16 @@ class PlayMedia extends Component {
    };
 
    render() {
+      const { classes, data } = this.props;
+
+      if (data && data[0] !== null) {
+         this.state.media = data[0];
+         this.state.relatedMedia = [];
+      }
+
       const { autoPlay, media, relatedMedia } = this.state;
+
       const nextUrl = relatedMedia.length > 0 ? `/media/${relatedMedia[0]._id}` : '';
-      const { classes } = this.props;
 
       return (
          <div className={classes.root}>

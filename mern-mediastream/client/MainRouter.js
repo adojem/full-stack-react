@@ -11,7 +11,12 @@ import EditMedia from './media/EditMedia';
 import PlayMeida from './media/PlayMedia';
 import PrivateRoute from './auth/PrivateRoute';
 
-class MainRooter extends Component {
+class MainRouter extends Component {
+   constructor({ data }) {
+      super();
+      this.data = data;
+   }
+
    componentDidMount = () => {
       const jssStyles = document.getElementById('jss-server-side');
       if (jssStyles && jssStyles.parentNode) {
@@ -33,11 +38,14 @@ class MainRooter extends Component {
                <PrivateRoute path="/media/new" component={NewMedia} />
                <PrivateRoute path="/media/edit/:mediaId" component={EditMedia} />
 
-               <Route path="/media/:mediaId" component={PlayMeida} />
+               <Route
+                  path="/media/:mediaId"
+                  render={props => <PlayMeida {...props} data={this.data} />}
+               />
             </Switch>
          </Fragment>
       );
    }
 }
 
-export default MainRooter;
+export default MainRouter;
