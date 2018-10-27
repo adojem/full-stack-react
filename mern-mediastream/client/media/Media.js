@@ -5,7 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Divider from '@material-ui/core/Divider';
-import ReactPlayer from 'react-player';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -37,7 +36,9 @@ const styles = theme => ({
    },
 });
 
-const Media = ({ classes, media, nextUrl }) => {
+const Media = ({
+   classes, handleAutoplay, media, nextUrl,
+}) => {
    const mediaUrl = media._id ? `/api/media/video/${media._id}` : null;
 
    return (
@@ -48,7 +49,7 @@ const Media = ({ classes, media, nextUrl }) => {
             subheader={media.genre}
             action={<span className={classes.action}>{`${media.views} views`}</span>}
          />
-         <MediaPlayer srcUrl={mediaUrl} nextUrl={nextUrl} />
+         <MediaPlayer srcUrl={mediaUrl} nextUrl={nextUrl} handleAutoplay={handleAutoplay} />
          <List>
             <ListItem>
                <ListItemAvatar>
@@ -85,6 +86,7 @@ Media.propTypes = {
    classes: PropTypes.object.isRequired,
    media: PropTypes.object,
    nextUrl: PropTypes.string,
+   handleAutoplay: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(Media);

@@ -95,7 +95,8 @@ class MediaPlayer extends Component {
    onLoop = () => this.setState(state => ({ loop: !state.loop }));
 
    onProgress = (progress) => {
-      if (!this.state.seeking) {
+      const { seeking } = this.state;
+      if (!seeking) {
          this.setState({
             played: progress.played,
             loaded: progress.loaded,
@@ -106,13 +107,18 @@ class MediaPlayer extends Component {
    onClickFullscreen = () => screenfull.request(findDOMNode(this.player));
 
    onEnded = () => {
-      if (this.state.loop) {
+      const { loop } = this.state;
+      const { handleAutoplay } = this.props;
+
+      if (loop) {
          this.setState({ playing: true });
       }
       else {
-         this.setState({
-            ended: true,
-            playing: false,
+         handleAutoplay(() => {
+            this.setState({
+               ended: true,
+               playing: false,
+            });
          });
       }
    };
@@ -262,6 +268,9 @@ class MediaPlayer extends Component {
 
 MediaPlayer.propTypes = {
    classes: PropTypes.object.isRequired,
+   srcUrl: PropTypes.string,
+   nextUrl: PropTypes.string,
+   handleAutoplay: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(MediaPlayer);

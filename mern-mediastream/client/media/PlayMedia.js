@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
+import Switch from '@material-ui/core/Switch';
 import Media from './Media';
 import RelatedMedia from './RelatedMedia';
 import { listRelated, read } from './api-media';
@@ -19,6 +21,7 @@ class PlayMedia extends Component {
       this.state = {
          media: { postedBy: {} },
          relatedMedia: [],
+         autoPlay: false,
       };
       this.match = match;
    }
@@ -35,7 +38,7 @@ class PlayMedia extends Component {
             return this.setState({ error: data.error });
          }
          this.setState({ media: data });
-         listRelated({
+         return listRelated({
             mediaId: data._id,
          }).then((data) => {
             if (data.error) {
@@ -46,8 +49,41 @@ class PlayMedia extends Component {
       });
    };
 
+   handleChange = (event) => {
+      this.setState({ autoPlay: event.target.checked });
+   };
+
+   handleAutoplay = (updateMediaControls) => {
+      const { autoPlay, relatedMedia: playList } = this.state;
+      const playMedia = playList[0];
+
+      if (!autoPlay || playList.length === 0) {
+         return updateMediaControls();
+      }
+
+      if (playList.length > 1) {
+         playList.shift();
+         return this.setState({
+            media: playMedia,
+            relatedMedia: playList,
+         });
+      }
+
+      return listRelated({
+         mediaId: playMedia._id,
+      }).then((data) => {
+         if (data.error) {
+            return console.log(data.error);
+         }
+         return this.setState({
+            media: playMedia,
+            relatedMedia: data,
+         });
+      });
+   };
+
    render() {
-      const { media, relatedMedia } = this.state;
+      const { autoPlay, media, relatedMedia } = this.state;
       const nextUrl = relatedMedia.length > 0 ? `/media/${relatedMedia[0]._id}` : '';
       const { classes } = this.props;
 
@@ -55,10 +91,21 @@ class PlayMedia extends Component {
          <div className={classes.root}>
             <Grid container spacing={24}>
                <Grid item xs={12} md={8}>
-                  <Media media={media} nextUrl={nextUrl} />
+                  <Media media={media} nextUrl={nextUrl} handleAutoplay={this.handleAutoplay} />
                </Grid>
                {relatedMedia.length > 0 && (
                   <Grid item xs={12} md={4}>
+                     <FormControlLabel
+                        className={classes.toggle}
+                        label={autoPlay ? 'Autoplay ON' : 'Autoplay OFF'}
+                        control={(
+                           <Switch
+                              color="primary"
+                              checked={autoPlay}
+                              onChange={this.handleChange}
+                           />
+                        )}
+                     />
                      <RelatedMedia media={relatedMedia} />
                   </Grid>
                )}
