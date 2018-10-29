@@ -1,34 +1,20 @@
-import path from 'path';
-import express from 'express';
-import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
+import config from '../config/config';
+import app from './express';
 import template from '../template';
-// comment out before building for production
-import devBundle from './devBundle';
 
-const app = express();
+mongoose.Promise = global.Promise;
+mongoose.connect(config.mongoUri);
 
-// comment out before building for production
-devBundle.compile(app);
-
-const CURRENT_WORKING_DIR = process.cwd();
-app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));
+mongoose.connection.on('error', () => {
+   throw new Error(`unable to connect to databse: ${config.mongoUri}`);
+});
 
 app.get('/', (req, res) => res.status(200).send(template()));
 
-const port = process.env.PORT || 3000;
-app.listen(port, (err) => {
+app.listen(config.port, (err) => {
    if (err) {
       console.log(err);
    }
-   console.info('Server started on port %s.', port);
+   console.info('Server started on port %s.', config.port);
 });
-
-// Database Connection URL
-const url = process.env.MONGO_URI || 'mongodb://localhost:27017/mernVRGame';
-MongoClient.connect(
-   url,
-   (err, db) => {
-      console.log('Connected successfully to mongodb server');
-      db.close();
-   },
-);
