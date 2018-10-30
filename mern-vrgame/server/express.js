@@ -5,6 +5,7 @@ import compress from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
 import userRutes from './routes/user.routes';
+import authRoutes from './routes/auth.routes';
 
 // comment out before building for production
 import devBundle from './devBundle';
@@ -30,5 +31,15 @@ app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));
 
 // mount routes
 app.use('/', userRutes);
+app.use('/', authRoutes);
+
+// Catch unauthorized errors
+app.use((err, req, res, next) => {
+   if (err.name === 'UnauthorizedError') {
+      res.status(401).json({
+         error: `${err.name}: ${err.message}`,
+      });
+   }
+});
 
 export default app;
