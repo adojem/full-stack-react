@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import compress from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
+import userRutes from './routes/user.routes';
 
 // comment out before building for production
 import devBundle from './devBundle';
@@ -26,5 +27,8 @@ app.use(helmet());
 app.use(cors());
 
 app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));
+
+// mount routes
+app.use('/', userRutes);
 
 export default app;
