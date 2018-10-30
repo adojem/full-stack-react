@@ -23,6 +23,9 @@ const theme = createMuiTheme({
       protectedTitle: '#7da453',
       type: 'light',
    },
+   typography: {
+      useNextVariants: true,
+   },
 });
 
 const App = () => (
