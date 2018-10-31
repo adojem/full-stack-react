@@ -16,7 +16,7 @@ const isActive = (history, path) => {
 };
 
 const Menu = withRouter(({ history }) => (
-   <AppBar>
+   <AppBar position="static">
       <Toolbar>
          <Typography variant="h6" color="inherit">
             MERN VR Game
