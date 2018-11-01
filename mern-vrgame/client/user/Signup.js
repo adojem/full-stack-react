@@ -54,6 +54,8 @@ class Signup extends Component {
 
    handleChange = name => event => this.setState({ [name]: event.target.value });
 
+   handleKeydown = e => e.keyCode === 13 && this.clickSubmit();
+
    clickSubmit = () => {
       const { name, email, password } = this.state;
       const user = {
@@ -106,6 +108,7 @@ class Signup extends Component {
                      margin="normal"
                      value={password}
                      onChange={this.handleChange('password')}
+                     onKeyDown={this.handleKeydown}
                   />
                   {error && (
                      <Typography className={classes.error} component="p" color="error">

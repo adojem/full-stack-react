@@ -2,7 +2,7 @@ import _ from 'lodash';
 import User from '../models/user.model';
 import errorHandler from '../helpers/dbErrorHandler';
 
-const create = (req, res, next) => {
+const create = (req, res) => {
    const user = new User(req.body);
    user.save((err, result) => {
       if (err) {
