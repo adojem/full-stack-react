@@ -11,4 +11,9 @@ const signin = user =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { signin };
+const signout = () =>
+   fetch('/auth/signout', { method: 'GET' })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
+export { signin, signout };

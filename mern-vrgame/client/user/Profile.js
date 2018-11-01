@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Edit from '@material-ui/icons/Edit';
 import Person from '@material-ui/icons/Person';
+import DeleteUser from './DeleteUser';
 import auth from '../auth/auth-helper';
 import { read } from './api-user';
 
@@ -79,10 +80,11 @@ class Profile extends Component {
                      && auth.isAuthenticated().user._id === user._id && (
                      <ListItemSecondaryAction>
                         <Link to={`/user/edit/${user._id}`}>
-                           <IconButton>
+                           <IconButton aria-label="Edit" color="primary">
                               <Edit />
                            </IconButton>
                         </Link>
+                        <DeleteUser userId={user._id} />
                      </ListItemSecondaryAction>
                   )}
                </ListItem>
