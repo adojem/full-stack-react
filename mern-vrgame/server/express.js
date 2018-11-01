@@ -33,7 +33,7 @@ app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));
 app.use('/', userRutes);
 app.use('/', authRoutes);
 
-app.get('/favicon.ico', (req, res) => res.status(204));
+// app.get('/favicon.ico', (req, res) => res.status(204));
 
 // Catch unauthorized errors
 app.use((err, req, res, next) => {
