@@ -1,3 +1,8 @@
+const list = () =>
+   fetch('/api/games', { method: 'GET' })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 const create = (params, credentials, game) =>
    fetch(`/api/games/by/${params.userId}`, {
       method: 'POST',
@@ -11,4 +16,4 @@ const create = (params, credentials, game) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create };
+export { create, list };
