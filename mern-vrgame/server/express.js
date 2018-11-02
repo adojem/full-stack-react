@@ -22,6 +22,7 @@ import MainRouter from '../client/MainRouter';
 import template from '../template';
 import userRutes from './routes/user.routes';
 import authRoutes from './routes/auth.routes';
+import gameRoutes from './routes/game.routes';
 
 // comment out before building for production
 import devBundle from './devBundle';
@@ -48,6 +49,7 @@ app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));
 // mount routes
 app.use('/', userRutes);
 app.use('/', authRoutes);
+app.use('/', gameRoutes);
 
 // app.get('/favicon.ico', (req, res) => res.status(204));
 
