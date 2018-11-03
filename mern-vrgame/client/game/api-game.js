@@ -42,6 +42,18 @@ const update = (params, credentials, game) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const remove = (params, credentials) =>
+   fetch(`/api/games/${params.gameId}`, {
+      method: 'DELETE',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type': 'application/json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+   })
+      .then(resposne => resposne.json())
+      .catch(err => console.log(err));
+
 export {
-   create, list, listByMaker, read, update,
+   create, list, listByMaker, read, remove, update,
 };

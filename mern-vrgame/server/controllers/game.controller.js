@@ -56,6 +56,18 @@ const update = (req, res) => {
    });
 };
 
+const remove = (req, res) => {
+   const { game } = req;
+   game.remove((err, deletedGame) => {
+      if (err) {
+         return res.status(400).json({
+            error: errorHandler.getErrorMessage(err),
+         });
+      }
+      return res.json(deletedGame);
+   });
+};
+
 const gameById = (req, res, next, id) => {
    Game.findById(id)
       .populate('maker', '_id name')
@@ -87,5 +99,6 @@ export default {
    list,
    listByMaker,
    read,
+   remove,
    update,
 };
