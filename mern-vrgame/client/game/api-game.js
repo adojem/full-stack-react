@@ -29,6 +29,19 @@ const create = (params, credentials, game) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const update = (params, credentials, game) =>
+   fetch(`/api/games/${params.gameId}`, {
+      method: 'PUT',
+      headers: {
+         Accept: 'application/json',
+         'Content-type': 'application/json',
+         Authorization: `Bearer ${credentials.t}`,
+      },
+      body: JSON.stringify(game),
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 export {
-   create, list, listByMaker, read,
+   create, list, listByMaker, read, update,
 };

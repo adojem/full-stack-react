@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Game from '../models/game.model';
 import errorHandler from '../helpers/dbErrorHandler';
 
@@ -41,6 +42,20 @@ const create = (req, res) => {
    });
 };
 
+const update = (req, res) => {
+   let { game } = req;
+   game = _.extend(game, req.body);
+   game.updated = Date.now();
+   game.save((err) => {
+      if (err) {
+         return res.status(400).send({
+            error: errorHandler.getErrorMessage(err),
+         });
+      }
+      return res.json(game);
+   });
+};
+
 const gameById = (req, res, next, id) => {
    Game.findById(id)
       .populate('maker', '_id name')
@@ -55,10 +70,22 @@ const gameById = (req, res, next, id) => {
       });
 };
 
+const isMaker = (req, res, next) => {
+   const isMaker = req.game && req.auth && req.game.maker._id == req.auth._id;
+   if (!isMaker) {
+      return res.status(403).json({
+         error: 'User is not authorized',
+      });
+   }
+   return next();
+};
+
 export default {
    create,
    gameById,
+   isMaker,
    list,
    listByMaker,
    read,
+   update,
 };
