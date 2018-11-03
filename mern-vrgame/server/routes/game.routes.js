@@ -12,6 +12,9 @@ router
    .get(gameCtrl.listByMaker)
    .post(authCtrl.requireSignin, authCtrl.hasAuthorization, gameCtrl.create);
 
+router.route('/api/game/:gameId').get(gameCtrl.read);
+
+router.param('gameId', gameCtrl.gameById);
 router.param('userId', userCtrl.userById);
 
 export default router;

@@ -1,3 +1,8 @@
+const read = (params, credentials) =>
+   fetch('/api/game', { method: 'GET' })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 const list = () =>
    fetch('/api/games', { method: 'GET' })
       .then(response => response.json())
@@ -24,4 +29,6 @@ const create = (params, credentials, game) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create, list, listByMaker };
+export {
+   create, list, listByMaker, read,
+};

@@ -1,6 +1,8 @@
 import Game from '../models/game.model';
 import errorHandler from '../helpers/dbErrorHandler';
 
+const read = (req, res) => res.json(req.game);
+
 const list = (req, res) => {
    Game.find({})
       .populate('maker', '_id name')
@@ -39,4 +41,24 @@ const create = (req, res) => {
    });
 };
 
-export default { create, list, listByMaker };
+const gameById = (req, res, next, id) => {
+   Game.findById(id)
+      .populate('maker', '_id name')
+      .exec((err, game) => {
+         if (err || !game) {
+            return res.status(400).json({
+               error: 'Game not found',
+            });
+         }
+         req.game = game;
+         return next();
+      });
+};
+
+export default {
+   create,
+   gameById,
+   list,
+   listByMaker,
+   read,
+};
