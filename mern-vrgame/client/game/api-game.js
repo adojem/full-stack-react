@@ -3,6 +3,14 @@ const list = () =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
+const listByMaker = params =>
+   fetch(`/api/games/by/${params.userId}`, {
+      method: 'GET',
+      headers: 'application/json',
+   })
+      .then(response => response.json())
+      .catch(err => console.log(err));
+
 const create = (params, credentials, game) =>
    fetch(`/api/games/by/${params.userId}`, {
       method: 'POST',
@@ -16,4 +24,4 @@ const create = (params, credentials, game) =>
       .then(response => response.json())
       .catch(err => console.log(err));
 
-export { create, list };
+export { create, list, listByMaker };

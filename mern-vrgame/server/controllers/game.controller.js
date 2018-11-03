@@ -15,6 +15,17 @@ const list = (req, res) => {
       });
 };
 
+const listByMaker = (req, res) => {
+   Game.find({ maker: req.profile._id }, (err, games) => {
+      if (err) {
+         return res.status(400).json({
+            error: errorHandler.getErrorMessage(err),
+         });
+      }
+      return res.json(games);
+   }).populate('maker', '_id name');
+};
+
 const create = (req, res) => {
    const game = new Game(req.body);
    game.maker = req.profile;
@@ -28,4 +39,4 @@ const create = (req, res) => {
    });
 };
 
-export default { create, list };
+export default { create, list, listByMaker };
