@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import HomeIcon from '@material-ui/icons/Home';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import auth from '../auth/auth-helper';
@@ -46,6 +47,12 @@ const Menu = withRouter(({ history }) => (
             )}
             {auth.isAuthenticated() && (
                <Fragment>
+                  <Link to="/game/new">
+                     <Button style={isActive(history, '/game/new')}>
+                        <AddBoxIcon color="secondary" style={{ marginRight: '8px' }} />
+                        Make Game
+                     </Button>
+                  </Link>
                   <Link to={`/user/${auth.isAuthenticated().user._id}`}>
                      <Button style={isActive(history, `/user/${auth.isAuthenticated().user._id}`)}>
                         My Profile
