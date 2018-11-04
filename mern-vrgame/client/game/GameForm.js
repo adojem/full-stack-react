@@ -14,6 +14,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import VRObjectForm from './VRObjectForm';
 
 const styles = theme => ({
    card: {
@@ -44,6 +45,13 @@ const styles = theme => ({
    },
    objectDetails: {
       overflow: 'auto',
+   },
+   error: {
+      marginTop: theme.spacing.unit * 2,
+   },
+   errorIcon: {
+      marginRight: '0.3rem',
+      verticalAlign: 'middle',
    },
    submit: {
       margin: 'auto',
@@ -76,9 +84,23 @@ class GameForm extends Component {
       this.setState({ game: newGame });
    };
 
+   handleObjectChange = (index, type, name, val) => {
+      const { game: newGame } = this.state;
+      newGame[type][index][name] = val;
+      this.setState({ game: newGame });
+   };
+
+   removeObject = (type, index) => (event) => {
+      const { game: newGame } = this.state;
+      newGame[type].splice(index, 1);
+      this.setState({ game: newGame });
+   };
+
    render() {
       const { game, readError } = this.state;
-      const { classes, errorMsg, gameId } = this.props;
+      const {
+         classes, errorMsg, gameId, onSubmit,
+      } = this.props;
 
       return (
          <Card className={classes.card}>
@@ -122,6 +144,17 @@ class GameForm extends Component {
                      <Typography className={classes.heading}>VR Objects to collect</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails className={classes.objectDetails}>
+                     {game.answerObjects.map((item, i) => (
+                        <div key={i}>
+                           <VRObjectForm
+                              index={i}
+                              type="answerObjects"
+                              vrObject={item}
+                              handleUpdate={this.handleObjectChange}
+                              removeObject={this.removeObject}
+                           />
+                        </div>
+                     ))}
                      <Button
                         variant="contained"
                         color="primary"
@@ -137,6 +170,17 @@ class GameForm extends Component {
                      <Typography className={classes.heading}>Other VR objects</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails className={classes.objectDetails}>
+                     {game.wrongObjects.map((item, i) => (
+                        <div key={i}>
+                           <VRObjectForm
+                              index={i}
+                              type="wrongObjects"
+                              vrObject={item}
+                              handleUpdate={this.handleObjectChange}
+                              removeObject={this.removeObject}
+                           />
+                        </div>
+                     ))}
                      <Button
                         variant="contained"
                         color="primary"
@@ -148,14 +192,19 @@ class GameForm extends Component {
                   </ExpansionPanelDetails>
                </ExpansionPanel>
                {(errorMsg || readError) && (
-                  <Typography>
-                     <Icon>error</Icon>
+                  <Typography className={classes.error} component="p" color="error">
+                     <Icon className={classes.errorIcon}>error</Icon>
                      {errorMsg || readError}
                   </Typography>
                )}
             </CardContent>
             <CardActions>
-               <Button className={classes.submit} variant="contained" color="primary">
+               <Button
+                  className={classes.submit}
+                  variant="contained"
+                  color="primary"
+                  onClick={onSubmit(game)}
+               >
                   Submit
                </Button>
                <Link to="/" className={classes.submit}>
