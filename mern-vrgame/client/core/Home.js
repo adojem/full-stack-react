@@ -1,40 +1,48 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import seashellImg from '../assets/images/seashell.jpg';
+import GameDetail from '../game/GameDetail';
+import { list } from '../game/api-game';
 
 const styles = theme => ({
-   card: {
-      maxWidth: 600,
-      margin: 'auto',
-      marginTop: theme.spacing.unit * 5,
-   },
-   title: {
-      padding: `${theme.spacing.unit * 3}px ${theme.spacing.unit * 2.5}px ${theme.spacing.unit
-         * 2}px`,
-
-      color: theme.palette.text.secondary,
-   },
-   media: {
-      minHeight: 330,
+   root: {
+      flexGrow: 1,
+      margin: '10px 24px',
    },
 });
 
-const Home = ({ classes }) => (
-   <Card className={classes.card}>
-      <Typography variant="h6" component="h2" className={classes.title}>
-         Home Page
-      </Typography>
-      <CardMedia className={classes.media} image={seashellImg} />
-      <CardContent>
-         <Typography component="p">Welcome to the MERN VR Game</Typography>
-      </CardContent>
-   </Card>
-);
+class Home extends Component {
+   state = {
+      games: [],
+   };
+
+   componentDidMount = () => {
+      list().then((data) => {
+         if (data.error) {
+            return console.log(data.error);
+         }
+         return this.setState({ games: data });
+      });
+   };
+
+   render() {
+      const { games } = this.state;
+      const { classes } = this.props;
+      console.log(this.state);
+
+      return (
+         <div className={classes.root}>
+            {games.map(game => (
+               <GameDetail key={game._id} game={game} />
+            ))}
+         </div>
+      );
+   }
+}
 
 Home.propTypes = {
    classes: PropTypes.object.isRequired,
