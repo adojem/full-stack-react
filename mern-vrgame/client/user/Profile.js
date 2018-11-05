@@ -15,8 +15,10 @@ import Typography from '@material-ui/core/Typography';
 import Edit from '@material-ui/icons/Edit';
 import Person from '@material-ui/icons/Person';
 import DeleteUser from './DeleteUser';
+import GameDetail from '../game/GameDetail';
 import auth from '../auth/auth-helper';
 import { read } from './api-user';
+import { listByMaker } from '../game/api-game';
 
 const styles = theme => ({
    root: theme.mixins.gutters({
@@ -37,6 +39,7 @@ class Profile extends Component {
       this.state = {
          user: '',
          redirectToSignin: false,
+         games: [],
       };
       this.match = match;
    }
@@ -51,13 +54,19 @@ class Profile extends Component {
          if (data.error) {
             return this.setState({ redirectToSignin: true });
          }
-         return this.setState({ user: data });
+         this.setState({ user: data });
+         return listByMaker({ userId: data._id }).then((data) => {
+            if (data.error) {
+               return console.log(data.error);
+            }
+            return this.setState({ games: data });
+         });
       });
    };
 
    render() {
       const { classes } = this.props;
-      const { user, redirectToSignin } = this.state;
+      const { games, user, redirectToSignin } = this.state;
 
       if (redirectToSignin) {
          return <Redirect to="/signin" />;
@@ -92,6 +101,13 @@ class Profile extends Component {
                <ListItem>
                   <ListItemText primary={`Joined: ${new Date(user.created).toDateString()}`} />
                </ListItem>
+               {user
+                  && games.length > 0 && (
+                  <Typography>{`${user.name.split(' ')[0]}'s Games`}</Typography>
+               )}
+               {games.map(game => (
+                  <GameDetail key={game._id} game={game} />
+               ))}
             </List>
          </Paper>
       );

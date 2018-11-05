@@ -1,5 +1,5 @@
-const read = (params, credentials) =>
-   fetch('/api/game', { method: 'GET' })
+const read = params =>
+   fetch(`/api/games/${params.gameId}`, { method: 'GET' })
       .then(response => response.json())
       .catch(err => console.log(err));
 
@@ -11,7 +11,9 @@ const list = () =>
 const listByMaker = params =>
    fetch(`/api/games/by/${params.userId}`, {
       method: 'GET',
-      headers: 'application/json',
+      headers: {
+         Accept: 'application/json',
+      },
    })
       .then(response => response.json())
       .catch(err => console.log(err));

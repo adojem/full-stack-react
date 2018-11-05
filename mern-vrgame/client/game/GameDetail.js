@@ -66,7 +66,7 @@ const GameDetail = ({ classes, game }) => (
       </div>
       <CardMedia className={classes.media} image={game.world} title={game.name} />
       <div className={classes.heading}>
-         <Typography className={classes.maker} variant="subheading" component="h4">
+         <Typography className={classes.maker} variant="subtitle1" component="h4">
             <em>by</em>
             {' '}
             {game.maker.name}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -15,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import VRObjectForm from './VRObjectForm';
+import { read } from './api-game';
 
 const styles = theme => ({
    card: {
@@ -29,6 +31,9 @@ const styles = theme => ({
       marginTop: theme.spacing.uint * 2,
       color: theme.palette.openTitle,
       fontSize: '1.125rem',
+   },
+   imgPreview: {
+      width: '300px',
    },
    textField: {
       display: 'block',
@@ -72,6 +77,19 @@ class GameForm extends Component {
       },
    };
 
+   componentDidMount = () => {
+      const { gameId } = this.props;
+
+      if (gameId) {
+         read({ gameId }).then((data) => {
+            if (data.error) {
+               return this.setState({ readError: data.error });
+            }
+            return this.setState({ game: data });
+         });
+      }
+   };
+
    handleChange = name => (event) => {
       const { game: newGame } = this.state;
       newGame[name] = event.target.value;
@@ -109,6 +127,7 @@ class GameForm extends Component {
                   {gameId ? 'Edit ' : 'New '}
                   Game
                </Typography>
+               <img className={classes.imgPreview} src={game.world} alt={game.name} />
                <TextField
                   id="world"
                   className={classes.textField}
@@ -214,6 +233,11 @@ class GameForm extends Component {
          </Card>
       );
    }
+}
+
+GameForm.propTypes = {
+   classes: PropTypes.object.isRequired,
+   gameId: PropTypes.string
 }
 
 export default withStyles(styles)(GameForm);

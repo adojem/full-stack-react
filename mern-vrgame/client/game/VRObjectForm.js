@@ -40,6 +40,24 @@ class VRObjectForm extends Component {
       color: 'white',
    };
 
+   componentDidMount = () => {
+      if (this.props.vrObject && Object.keys(this.props.vrObject).length !== 0) {
+         const { vrObject } = this.props;
+         this.setState({
+            objUrl: vrObject.objUrl,
+            mtlUrl: vrObject.mtlUrl,
+            translateX: Number(vrObject.translateX),
+            translateY: Number(vrObject.translateY),
+            translateZ: Number(vrObject.translateZ),
+            rotateX: Number(vrObject.rotateX),
+            rotateY: Number(vrObject.rotateY),
+            rotateZ: Number(vrObject.rotateZ),
+            scale: Number(vrObject.scale),
+            color: vrObject.color,
+         });
+      }
+   };
+
    handleChange = name => (event) => {
       const { handleUpdate, index, type } = this.props;
       this.setState({ [name]: event.target.value });

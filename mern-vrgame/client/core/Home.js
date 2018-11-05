@@ -32,7 +32,6 @@ class Home extends Component {
    render() {
       const { games } = this.state;
       const { classes } = this.props;
-      console.log(this.state);
 
       return (
          <div className={classes.root}>

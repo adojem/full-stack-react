@@ -8,6 +8,7 @@ import Profile from './user/Profile';
 import EditProfile from './user/EditProfile';
 import PrivateRoute from './auth/PrivateRoute';
 import NewGame from './game/NewGame';
+import EditGame from './game/EditGame';
 
 class MainRouter extends Component {
    componentDidMount() {
@@ -29,6 +30,7 @@ class MainRouter extends Component {
                <Route path="/user/:userId" component={Profile} />
 
                <PrivateRoute path="/game/new" component={NewGame} />
+               <PrivateRoute path="/game/edit/:gameId" component={EditGame} />
             </Switch>
          </Fragment>
       );
