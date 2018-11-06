@@ -29,6 +29,13 @@ class Home extends Component {
       });
    };
 
+   updateGames = (game) => {
+      const { games: updatedGames } = this.state;
+      const index = updatedGames.indexOf(game);
+      updatedGames.splice(index, 1);
+      this.setState({ games: updatedGames });
+   };
+
    render() {
       const { games } = this.state;
       const { classes } = this.props;
@@ -36,7 +43,7 @@ class Home extends Component {
       return (
          <div className={classes.root}>
             {games.map(game => (
-               <GameDetail key={game._id} game={game} />
+               <GameDetail key={game._id} game={game} updateGames={this.updateGames} />
             ))}
          </div>
       );

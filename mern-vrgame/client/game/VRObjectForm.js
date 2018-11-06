@@ -77,7 +77,9 @@ class VRObjectForm extends Component {
          translateY,
          translateZ,
       } = this.state;
-      const { classes } = this.props;
+      const {
+         classes, index, removeObject, type,
+      } = this.props;
 
       return (
          <Card className={classes.card}>
@@ -163,7 +165,7 @@ class VRObjectForm extends Component {
                margin="normal"
                onChange={this.handleChange('color')}
             />
-            <Button>
+            <Button onClick={removeObject(type, index)}>
                <Icon style={{ marginRight: '5px' }}>cancel</Icon>
                Delete
             </Button>

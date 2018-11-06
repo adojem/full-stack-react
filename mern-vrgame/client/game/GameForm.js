@@ -108,7 +108,7 @@ class GameForm extends Component {
       this.setState({ game: newGame });
    };
 
-   removeObject = (type, index) => (event) => {
+   removeObject = (type, index) => () => {
       const { game: newGame } = this.state;
       newGame[type].splice(index, 1);
       this.setState({ game: newGame });
@@ -119,6 +119,7 @@ class GameForm extends Component {
       const {
          classes, errorMsg, gameId, onSubmit,
       } = this.props;
+      console.log(game)
 
       return (
          <Card className={classes.card}>

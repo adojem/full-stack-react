@@ -64,6 +64,13 @@ class Profile extends Component {
       });
    };
 
+   updateGames = (game) => {
+      const { games: updatedGames } = this.state;
+      const index = updatedGames.indexOf(game);
+      updatedGames.splice(index, 1);
+      this.setState({ games: updatedGames });
+   };
+
    render() {
       const { classes } = this.props;
       const { games, user, redirectToSignin } = this.state;
@@ -106,7 +113,7 @@ class Profile extends Component {
                   <Typography>{`${user.name.split(' ')[0]}'s Games`}</Typography>
                )}
                {games.map(game => (
-                  <GameDetail key={game._id} game={game} />
+                  <GameDetail key={game._id} game={game} updatedGames={this.updateGames} />
                ))}
             </List>
          </Paper>

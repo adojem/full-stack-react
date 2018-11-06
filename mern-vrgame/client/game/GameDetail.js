@@ -7,13 +7,15 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import DeleteGame from './DeleteGame';
 import auth from '../auth/auth-helper';
 
 const styles = theme => ({
    card: {
       display: 'inline-table',
-      width: 600,
-      margin: theme.spacing.unit * 2,
+      width: '100%',
+      margin: 'auto',
+      marginTop: theme.spacing.unit * 2,
       textAlign: 'center',
    },
    heading: {
@@ -57,7 +59,7 @@ const styles = theme => ({
    },
 });
 
-const GameDetail = ({ classes, game }) => (
+const GameDetail = ({ classes, game, updateGames }) => (
    <Card className={classes.card}>
       <div className={classes.heading}>
          <Typography className={classes.title} variant="h5" component="h2">
@@ -90,6 +92,7 @@ const GameDetail = ({ classes, game }) => (
                      Edit
                </Button>
             </Link>
+            <DeleteGame game={game} removeGame={updateGames} />
          </div>
       )}
    </Card>
@@ -98,6 +101,7 @@ const GameDetail = ({ classes, game }) => (
 GameDetail.propTypes = {
    classes: PropTypes.object.isRequired,
    game: PropTypes.object.isRequired,
+   updateGames: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(GameDetail);
